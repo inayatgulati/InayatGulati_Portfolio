@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playground — Inayat</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #faf8f2;
+      --paper-dark: #f0ecdf;
+      --paper-worn: #e8e2d0;
+      --ink: #1a1612;
+      --ink-light: #3d3530;
+      --ink-faint: #8a7f72;
+      --pencil: #b8b0a0;
+      --accent-red: #c0392b;
+      --accent-blue: #2c5f8a;
+      --accent-yellow: #e8b84b;
+      --accent-green: #3a7d44;
+      --font-hand: 'Caveat', cursive;
+      --font-scrawl: 'Reenie Beanie', cursive;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-hand);
+      font-size: 18px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.13) 27px, rgba(180,170,155,0.13) 28px),
+        repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(180,170,155,0.05) 27px, rgba(180,170,155,0.05) 28px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    .spiral-binding {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 32px;
+      background: var(--paper-worn);
+      border-right: 2.5px solid var(--ink);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 24px;
+      pointer-events: none;
+    }
+
+    .spiral-hole {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      margin-bottom: 28px;
+      flex-shrink: 0;
+      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+    }
+
+    nav,
+    section,
+    footer {
+      margin-left: 32px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--paper);
+      border-bottom: 2.5px solid var(--ink);
+      padding: 14px 48px;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-hand);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent-red);
+      border-radius: 2px;
+      transform: rotate(-0.8deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--ink);
+      transition: width 0.25s;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 2px;
+      background: var(--ink);
+    }
+
+    .hero {
+      position: relative;
+      padding: 90px 48px 50px;
+      z-index: 1;
+    }
+
+    .margin-strip {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 44px;
+      border-right: 2px solid rgba(192,57,43,0.2);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--accent-red);
+    }
+
+    .page-title {
+      font-family: var(--font-hand);
+      font-size: clamp(58px, 9vw, 110px);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .page-subtitle {
+      max-width: 760px;
+      font-size: 24px;
+      line-height: 1.55;
+      color: var(--ink-light);
+    }
+
+    .play-note {
+      max-width: 760px;
+      margin-top: 30px;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      padding: 22px 26px;
+      position: relative;
+      transform: rotate(-0.4deg);
+      box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+    }
+
+    .play-note::before {
+      content: '';
+      position: absolute;
+      top: -11px;
+      left: 28px;
+      width: 56px;
+      height: 22px;
+      background: rgba(232,184,75,0.4);
+      border-top: 1px solid rgba(232,184,75,0.5);
+      border-bottom: 1px solid rgba(232,184,75,0.5);
+      transform: rotate(1deg);
+    }
+
+    .play-note-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 8px;
+    }
+
+    .play-note-text {
+      font-size: 23px;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+
+    .playground-section {
+      position: relative;
+      padding: 50px 48px 90px;
+      z-index: 1;
+    }
+
+    .section-header {
+      max-width: 1200px;
+      margin: 0 auto 42px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      font-family: var(--font-hand);
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1.5px;
+      background: var(--ink);
+      opacity: 0.2;
+    }
+
+    .filter-tabs {
+      max-width: 1200px;
+      margin: 0 auto 38px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .filter-tab {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      font-weight: 700;
+      padding: 8px 18px;
+      background: transparent;
+      border: 2px solid var(--ink);
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      transform: rotate(-0.4deg);
+    }
+
+    .filter-tab:nth-child(even) {
+      transform: rotate(0.5deg);
+    }
+
+    .filter-tab:hover,
+    .filter-tab.active {
+      background: var(--ink);
+      color: var(--paper);
+      transform: translate(-2px, -2px);
+      box-shadow: 3px 3px 0 rgba(26,22,18,0.18);
+    }
+
+    .play-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+
+    .play-card {
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+    }
+
+    .play-card:nth-child(odd) {
+      transform: rotate(-0.3deg);
+    }
+
+    .play-card:nth-child(even) {
+      transform: rotate(0.4deg);
+    }
+
+    .play-card:hover {
+      transform: rotate(0deg) translate(-3px, -3px);
+      box-shadow: 6px 6px 0 rgba(26,22,18,0.18);
+    }
+
+    .play-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+      border-top: 1px solid var(--pencil);
+      border-left: 1px solid var(--pencil);
+      pointer-events: none;
+    }
+
+    .play-image {
+      height: 280px;
+      background: var(--paper-dark);
+      border-bottom: 2px solid var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .play-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 23px,
+        rgba(180,170,155,0.12) 23px,
+        rgba(180,170,155,0.12) 24px
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .play-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.95) contrast(0.98);
+      transition: transform 0.35s ease;
+    }
+
+    .play-card:hover .play-image img {
+      transform: scale(1.04);
+    }
+
+    .play-content {
+      padding: 22px;
+      position: relative;
+    }
+
+    .play-content::before {
+      content: '';
+      position: absolute;
+      top: -11px;
+      left: 24px;
+      width: 54px;
+      height: 22px;
+      background: rgba(232,184,75,0.35);
+      border-top: 1px solid rgba(232,184,75,0.5);
+      border-bottom: 1px solid rgba(232,184,75,0.5);
+      transform: rotate(-1.5deg);
+      pointer-events: none;
+    }
+
+    .play-category {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 8px;
+    }
+
+    .play-title {
+      font-family: var(--font-hand);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .play-desc {
+      font-size: 18px;
+      color: var(--ink-light);
+      line-height: 1.45;
+    }
+
+    .wide-card {
+      grid-column: span 2;
+    }
+
+    .tall-card .play-image {
+      height: 420px;
+    }
+
+    .contact-section {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 80px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(255,255,255,0.04) 27px, rgba(255,255,255,0.04) 28px);
+      pointer-events: none;
+    }
+
+    .contact-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .contact-title {
+      font-family: var(--font-hand);
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+
+    .contact-sub {
+      font-size: 20px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 34px;
+      max-width: 650px;
+    }
+
+    .contact-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .contact-link {
+      border: 2px solid rgba(255,255,255,0.25);
+      color: var(--paper);
+      text-decoration: none;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .contact-link:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 5px 5px 0 rgba(255,255,255,0.12);
+      border-color: var(--paper);
+    }
+
+    .contact-link strong {
+      font-size: 26px;
+    }
+
+    .contact-link span {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    footer {
+      border-top: 2px solid var(--ink);
+      padding: 22px 48px;
+      background: var(--paper);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    @media (max-width: 1024px) {
+      .play-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .wide-card {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .spiral-binding {
+        display: none;
+      }
+
+      nav,
+      section,
+      footer {
+        margin-left: 0;
+      }
+
+      nav {
+        padding: 14px 24px;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 62px;
+        left: -100%;
+        width: 100%;
+        background: var(--paper);
+        border-bottom: 2px solid var(--ink);
+        flex-direction: column;
+        padding: 24px;
+        gap: 18px;
+        transition: left 0.3s ease;
+      }
+
+      .nav-links.active {
+        left: 0;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .hero,
+      .playground-section,
+      .contact-section {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero {
+        padding-top: 64px;
+      }
+
+      .play-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wide-card {
+        grid-column: span 1;
+      }
+
+      .tall-card .play-image,
+      .play-image {
+        height: 260px;
+      }
+
+      .contact-links {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="spiral-binding" aria-hidden="true"></div>
+
+  <nav>
+    <div class="nav-container">
+      <a href="./index.html" class="logo">Inayat</a>
+
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./About.html">About</a></li>
+        <li><a href="./Projects.html">Projects</a></li>
+        <li><a href="./Playground.html" class="active">Playground</a></li>
+        <li><a href="./assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
+        <li><a href="./index.html#contact">Contact</a></li>
+      </ul>
+
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="margin-strip"></div>
+
+    <div class="hero-inner">
+      <div class="hero-tag">Sketches · Posters · Models · Experiments</div>
+
+      <h1 class="page-title">Playground</h1>
+
+      <p class="page-subtitle">
+        A collection of creative experiments outside polished case studies — handmade models,
+        poster explorations, architectural sketches, visual studies, and small design jams.
+      </p>
+
+      <div class="play-note">
+        <p class="play-note-label">Why this page exists</p>
+        <p class="play-note-text">
+          Not every design process ends as a case study. Some ideas live better as sketches,
+          material tests, playful posters, or quick experiments — this is where those pieces belong.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="playground-section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Creative archive</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="sketches">Sketches</button>
+      <button class="filter-tab" data-filter="posters">Posters</button>
+      <button class="filter-tab" data-filter="models">Handmade Models</button>
+      <button class="filter-tab" data-filter="experiments">Experiments</button>
+    </div>
+
+    <div class="play-grid">
+      <article class="play-card wide-card" data-category="sketches">
+        <div class="play-image">
+          <img src="./Images/playground/architecture-sketch-1.jpg" alt="Architecture sketch">
+        </div>
+        <div class="play-content">
+          <p class="play-category">Sketchbook</p>
+          <h3 class="play-title">Architecture Sketches</h3>
+          <p class="play-desc">
+            Hand-drawn studies of buildings, structure, windows, rhythm, and spatial composition.
+          </p>
+        </div>
+      </article>
+
+      <article class="play-card" data-category="posters">
+        <div class="play-image">
+          <img src="./Images/playground/poster-1.jpg" alt="Poster design">
+        </div>
+        <div class="play-content">
+          <p class="play-category">Poster Design</p>
+          <h3 class="play-title">Visual Posters</h3>
+          <p class="play-desc">
+            Typography, layout, color, and visual hierarchy explorations from class and personal work.
+          </p>
+        </div>
+      </article>
+
+      <article class="play-card tall-card" data-category="models">
+        <div class="play-image">
+          <img src="./Images/playground/model-1.jpg" alt="Handmade model">
+        </div>
+        <div class="play-content">
+          <p class="play-category">Handmade Models</p>
+          <h3 class="play-title">Physical Prototypes</h3>
+          <p class="play-desc">
+            Handmade models exploring form, balance, materiality, structure, and spatial ideas.
+          </p>
+        </div>
+      </article>
+
+      <article class="play-card" data-category="sketches">
+        <div class="play-image">
+          <img src="./Images/playground/sketch-2.jpg" alt="Building sketch">
+        </div>
+        <div class="play-content">
+          <p class="play-category">Sketchbook</p>
+          <h3 class="play-title">Building Details</h3>
+          <p class="play-desc">
+            Quick studies of facades, edges, repetition, shadow, and architectural texture.
+          </p>
+        </div>
+      </article>
+
+      <article class="play-card" data-category="experiments">
+        <div class="play-image">
+          <img src="./Images/playground/design-jam-1.jpg" alt="Design jam experiment">
+        </div>
+        <div class="play-content">
+          <p class="play-category">Design Experiments</p>
+          <h3 class="play-title">Design Jam Concepts</h3>
+          <p class="play-desc">
+            Fast concept sketches and playful ideation from workshops, events, and design jams.
+          </p>
+        </div>
+      </article>
+
+      <article class="play-card wide-card" data-category="posters">
+        <div class="play-image">
+          <img src="./Images/playground/poster-2.jpg" alt="Creative poster">
+        </div>
+        <div class="play-content">
+          <p class="play-category">Poster Design</p>
+          <h3 class="play-title">Speculative Posters</h3>
+          <p class="play-desc">
+            Visual communication experiments using bold typography, contrast, metaphor, and critique.
+          </p>
+        </div>
+      </article>
+
+      <article class="play-card" data-category="models">
+        <div class="play-image">
+          <img src="./Images/playground/model-2.jpg" alt="Model making">
+        </div>
+        <div class="play-content">
+          <p class="play-category">Handmade Models</p>
+          <h3 class="play-title">Material Studies</h3>
+          <p class="play-desc">
+            Small-scale explorations with paper, cardboard, clay, foam board, or found materials.
+          </p>
+        </div>
+      </article>
+
+      <article class="play-card" data-category="experiments">
+        <div class="play-image">
+          <img src="./Images/playground/experiment-1.jpg" alt="Creative experiment">
+        </div>
+        <div class="play-content">
+          <p class="play-category">Experiments</p>
+          <h3 class="play-title">Loose Ideas</h3>
+          <p class="play-desc">
+            Rough visual thoughts, early concepts, unfinished experiments, and process snapshots.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" class="contact-section">
+    <div class="contact-inner">
+      <h2 class="contact-title">Want to see more?</h2>
+      <p class="contact-sub">
+        I’m always collecting sketches, models, and visual experiments. This page will keep growing.
+      </p>
+
+      <div class="contact-links">
+        <a href="mailto:inayatgulati@gmail.com" class="contact-link">
+          <strong>Email</strong>
+          <span>inayatgulati@gmail.com</span>
+        </a>
+
+        <a href="https://www.linkedin.com/in/inayat-inayat" target="_blank" class="contact-link">
+          <strong>LinkedIn</strong>
+          <span>Connect with me</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Inayat. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const spiral = document.querySelector(".spiral-binding");
+    const holeCount = Math.floor(window.innerHeight / 44) + 2;
+
+    for (let i = 0; i < holeCount; i++) {
+      const hole = document.createElement("div");
+      hole.className = "spiral-hole";
+      spiral.appendChild(hole);
+    }
+
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+
+    document.querySelectorAll(".nav-links a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
+      });
+    });
+
+    const filterTabs = document.querySelectorAll(".filter-tab");
+    const playCards = document.querySelectorAll(".play-card");
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        filterTabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        const filter = tab.getAttribute("data-filter");
+
+        playCards.forEach((card) => {
+          const category = card.getAttribute("data-category");
+
+          if (filter === "all" || category === filter) {
+            card.style.display = "block";
+            setTimeout(() => {
+              card.style.opacity = "1";
+              card.style.transform = "";
+            }, 10);
+          } else {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px)";
+            setTimeout(() => {
+              card.style.display = "none";
+            }, 250);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
