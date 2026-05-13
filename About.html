@@ -225,7 +225,62 @@
         z-index: 1;
         text-align: center;
       }
-      .page-title {
+      .hero-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 8px 14px;
+  border: 2px solid var(--ink);
+  margin-bottom: 24px;
+  background: var(--paper-dark);
+  transform: rotate(-1deg);
+  color: var(--ink);
+  box-shadow: 3px 3px 0 rgba(26,22,18,0.1);
+}
+
+.hero-note {
+  margin-top: 30px;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  color: var(--ink-light);
+  max-width: 700px;
+  line-height: 1.6;
+  border-left: 3px solid var(--accent-red);
+  padding-left: 20px;
+  position: relative;
+}
+
+.hero-note::before {
+  content: "✦";
+  position: absolute;
+  left: -13px;
+  top: -2px;
+  color: var(--accent-red);
+  font-size: 18px;
+  background: var(--paper);
+}
+
+.page-title {
+  font-family: var(--font-hand);
+  font-size: clamp(58px, 9vw, 110px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -1px;
+  color: var(--ink);
+  margin-bottom: 22px;
+}
+
+.page-subtitle {
+  max-width: 760px;
+  font-family: var(--font-hand);
+  font-size: 24px;
+  line-height: 1.55;
+  color: var(--ink-light);
+}
+
+   /*   .page-title {
         font-family: "Cormorant Garamond", serif;
         font-size: 4rem;
         font-weight: 600;
@@ -245,7 +300,7 @@
         color: var(--text-secondary);
         max-width: 700px;
         margin: 0 auto;
-      }
+      } */
 
       /* ── POV BANNER ── */
       .pov-banner {
@@ -921,7 +976,7 @@
           <li><a href="./index.html">Home</a></li>
           <li><a href="./About.html" class="active">About</a></li>
           <li><a href="./Projects.html">Projects</a></li>
-          <li><a href="./Resume.html">Resume</a></li>
+          <li><a href="./assets/Resume_InayatDesign.pdf">Resume</a></li>
           <li><a href="./index.html#contact">Contact</a></li>
         </ul>
         <div class="hamburger"><span></span><span></span><span></span></div>
@@ -929,15 +984,30 @@
     </nav>
 
     <!-- Hero -->
-    <section class="hero">
-      <div class="hero-container">
-        <h1 class="page-title">About Me</h1>
-        <p class="page-subtitle">
-          UX/UI designer based in Vancouver — research-first, technically
-          literate, and targeting full-time roles for fall 2026.
-        </p>
-      </div>
-    </section>
+   <section class="hero">
+  <div class="hero-container">
+
+    <div class="hero-tag">
+      Designer • Researcher • Builder
+    </div>
+
+    <h1 class="page-title">
+      About Me
+    </h1>
+
+    <p class="page-subtitle">
+      Vancouver-based UX/UI designer blending interaction design,
+      frontend development, and human-centered research to create
+      thoughtful digital experiences.
+    </p>
+
+    <div class="hero-note">
+      Currently exploring the intersection of UX, architecture,
+      service design, AI-assisted experiences, and interactive systems.
+    </div>
+
+  </div>
+</section>
 
     <!-- POV Banner -->
     <div class="pov-banner">
@@ -1050,7 +1120,7 @@
           </div>
 
           <div class="about-ctas">
-            <a href="./Resume.html" class="about-btn">Download Resume</a>
+            <a href="./assets/Resume_InayatDesign.pdf" class="about-btn">Download Resume</a>
           </div>
         </div>
       </div>
