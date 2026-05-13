@@ -1,951 +1,829 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --primary-bg: #0a0a0a;
-        --text-primary: #ffffff;
-        --text-secondary: #a0a0a0;
-        --accent: #14b8a6;
-        --accent-light: #2dd4bf;
-        --card-bg: rgba(255, 255, 255, 0.03);
-        --border: rgba(255, 255, 255, 0.1);
-        --gradient-1: #14b8a6;
-        --gradient-2: #06b6d4;
-        --gradient-3: #0891b2;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Inayat</title>
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=DM+Serif+Display&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-      body {
-        font-family: "Work Sans", sans-serif;
-        background-color: var(--primary-bg);
-        color: var(--text-primary);
-        line-height: 1.6;
-        overflow-x: hidden;
-      }
+  <style>
+    :root {
+      --paper: #faf8f2;
+      --paper-dark: #f0ecdf;
+      --paper-worn: #e8e2d0;
+      --ink: #1a1612;
+      --ink-light: #3d3530;
+      --ink-faint: #8a7f72;
+      --pencil: #b8b0a0;
+      --accent-red: #c0392b;
+      --accent-blue: #2c5f8a;
+      --accent-yellow: #e8b84b;
+      --accent-green: #3a7d44;
+      --font-hand: 'Caveat', cursive;
+      --font-scrawl: 'Reenie Beanie', cursive;
+      --font-mono: 'Space Mono', monospace;
+    }
 
-      /* ── Custom Cursor ── */
-      * {
-        cursor: none !important;
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      #cursor-dot {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 8px;
-        height: 8px;
-        background: #14b8a6;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 99999;
-        transform: translate(-50%, -50%);
-        transition:
-          width 0.2s,
-          height 0.2s,
-          background 0.2s,
-          opacity 0.2s;
-      }
-      #cursor-ring {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 32px;
-        height: 32px;
-        border: 1.5px solid rgba(20, 184, 166, 0.5);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 99998;
-        transform: translate(-50%, -50%);
-        transition:
-          width 0.3s ease,
-          height 0.3s ease,
-          border-color 0.3s;
-      }
-      body.cursor-hover #cursor-dot {
-        width: 12px;
-        height: 12px;
-        background: #2dd4bf;
-      }
-      body.cursor-hover #cursor-ring {
-        width: 44px;
-        height: 44px;
-        border-color: rgba(45, 212, 191, 0.7);
-      }
-      body.cursor-click #cursor-dot {
-        width: 6px;
-        height: 6px;
-      }
-      body.cursor-click #cursor-ring {
-        width: 22px;
-        height: 22px;
-        border-color: #14b8a6;
-      }
-      @media (pointer: coarse) {
-        * {
-          cursor: auto !important;
-        }
-        #cursor-dot,
-        #cursor-ring {
-          display: none;
-        }
-      }
+    html {
+      scroll-behavior: smooth;
+    }
 
-      /* Navigation */
-      nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: rgba(10, 10, 10, 0.8);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        z-index: 1000;
-        padding: 1.5rem 2rem;
-        border-bottom: 1px solid var(--border);
-      }
-      .nav-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .logo {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.5rem;
-        font-weight: 400;
-        letter-spacing: 1px;
-        color: var(--text-primary);
-        text-decoration: none;
-      }
-      .nav-links {
-        display: flex;
-        gap: 2.5rem;
-        list-style: none;
-      }
-      .nav-links a {
-        color: var(--text-primary);
-        text-decoration: none;
-        font-weight: 400;
-        font-size: 0.95rem;
-        letter-spacing: 0.5px;
-        position: relative;
-        transition: color 0.3s ease;
-      }
-      .nav-links a::after {
-        content: "";
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: var(--accent);
-        transition: width 0.3s ease;
-      }
-      .nav-links a:hover::after,
-      .nav-links a.active::after {
-        width: 100%;
-      }
-      .nav-links a:hover,
-      .nav-links a.active {
-        color: var(--accent);
-      }
-      .hamburger {
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-hand);
+      font-size: 18px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.13) 27px, rgba(180,170,155,0.13) 28px),
+        repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(180,170,155,0.05) 27px, rgba(180,170,155,0.05) 28px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    .spiral-binding {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 32px;
+      background: var(--paper-worn);
+      border-right: 2.5px solid var(--ink);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 24px;
+      pointer-events: none;
+    }
+
+    .spiral-hole {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      margin-bottom: 28px;
+      box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
+    }
+
+    nav,
+    .hero,
+    .projects-container,
+    .projects-section,
+    footer {
+      margin-left: 32px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--paper);
+      border-bottom: 2.5px solid var(--ink);
+      padding: 14px 48px;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-hand);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent-red);
+      border-radius: 2px;
+      transform: rotate(-0.8deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--ink);
+      transition: width 0.25s;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 2px;
+      background: var(--ink);
+    }
+
+    .hero {
+      padding: 90px 48px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 44px;
+      border-right: 2px solid rgba(192,57,43,0.2);
+      pointer-events: none;
+    }
+
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--accent-red);
+    }
+
+    .page-title {
+      font-family: var(--font-hand);
+      font-size: clamp(54px, 8vw, 92px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -1px;
+      color: var(--ink);
+      margin-bottom: 18px;
+    }
+
+    .page-subtitle {
+      max-width: 720px;
+      font-family: var(--font-hand);
+      font-size: 22px;
+      color: var(--ink-light);
+      line-height: 1.55;
+    }
+
+    .projects-container {
+      max-width: 1400px;
+      margin-right: auto;
+      padding: 0 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 28px auto 48px;
+    }
+
+    .filter-tab {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      font-weight: 700;
+      padding: 8px 18px;
+      background: transparent;
+      border: 2px solid var(--ink);
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      transform: rotate(-0.4deg);
+    }
+
+    .filter-tab:nth-child(even) {
+      transform: rotate(0.5deg);
+    }
+
+    .filter-tab:hover,
+    .filter-tab.active {
+      background: var(--ink);
+      color: var(--paper);
+      transform: translate(-2px, -2px);
+      box-shadow: 3px 3px 0 rgba(26,22,18,0.18);
+    }
+
+    .projects-section {
+      padding: 0 48px 90px;
+      position: relative;
+    }
+
+    .projects-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-card {
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
+      border-top: 1px solid var(--pencil);
+      border-left: 1px solid var(--pencil);
+      pointer-events: none;
+    }
+
+    .project-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0 rgba(26,22,18,0.18);
+    }
+
+    .project-card-link {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .project-image {
+      width: 100%;
+      height: 280px;
+      background: var(--paper-dark) !important;
+      border-bottom: 2px solid var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 23px,
+        rgba(180,170,155,0.15) 23px,
+        rgba(180,170,155,0.15) 24px
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .project-image img,
+    .project-image video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(0.9) contrast(0.98);
+      transition: transform 0.35s ease;
+    }
+
+    .project-card:hover .project-image img,
+    .project-card:hover .project-image video {
+      transform: scale(1.04);
+    }
+
+    .project-content {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      position: relative;
+    }
+
+    .project-content::before {
+      content: '';
+      position: absolute;
+      top: -11px;
+      left: 24px;
+      width: 54px;
+      height: 22px;
+      background: rgba(232,184,75,0.35);
+      border-top: 1px solid rgba(232,184,75,0.5);
+      border-bottom: 1px solid rgba(232,184,75,0.5);
+      transform: rotate(-1.5deg);
+      pointer-events: none;
+    }
+
+    .project-category {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 10px;
+    }
+
+    .project-title {
+      font-family: var(--font-hand);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .project-description {
+      font-family: var(--font-hand);
+      font-size: 18px;
+      color: var(--ink-light);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .project-link {
+      margin-top: 18px;
+      font-family: var(--font-hand);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-red);
+      border-bottom: 1.5px solid var(--pencil);
+      align-self: flex-start;
+      transition: all 0.2s ease;
+    }
+
+    .project-card:hover .project-link {
+      color: var(--ink);
+      border-color: var(--ink);
+    }
+
+    footer {
+      border-top: 2px solid var(--ink);
+      padding: 22px 48px;
+      background: var(--paper);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .spiral-binding {
         display: none;
+      }
+
+      nav,
+      .hero,
+      .projects-container,
+      .projects-section,
+      footer {
+        margin-left: 0;
+      }
+
+      nav {
+        padding: 14px 24px;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 62px;
+        left: -100%;
+        width: 100%;
+        background: var(--paper);
+        border-bottom: 2px solid var(--ink);
         flex-direction: column;
-        gap: 5px;
-        cursor: pointer;
-      }
-      .hamburger span {
-        width: 25px;
-        height: 2px;
-        background: var(--text-primary);
-        transition: all 0.3s ease;
+        padding: 24px;
+        gap: 18px;
+        transition: left 0.3s ease;
       }
 
-      /* Hero */
-      .hero {
-        padding: 10rem 2rem 4rem;
-        position: relative;
-        overflow: hidden;
-      }
-      .hero::before {
-        content: "";
-        position: absolute;
-        top: -20%;
-        right: -10%;
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(
-          circle,
-          var(--gradient-1) 0%,
-          transparent 70%
-        );
-        filter: blur(120px);
-        opacity: 0.4;
-        z-index: 0;
-      }
-      .hero-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 1;
-        text-align: center;
-      }
-      .page-title {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 4rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        background: linear-gradient(
-          135deg,
-          var(--gradient-1) 0%,
-          var(--gradient-2) 50%,
-          var(--gradient-3) 100%
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-      .page-subtitle {
-        font-size: 1.2rem;
-        color: var(--text-secondary);
-        max-width: 700px;
-        margin: 0 auto 3rem;
-      }
-
-      /* Filter Tabs */
-      .filter-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-bottom: 4rem;
-      }
-      .filter-tab {
-        padding: 0.8rem 2rem;
-        background: var(--card-bg);
-        backdrop-filter: blur(10px);
-        border: 1px solid var(--border);
-        border-radius: 50px;
-        color: var(--text-secondary);
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        font-size: 0.9rem;
-        font-family: "Work Sans", sans-serif;
-      }
-      .filter-tab:hover,
-      .filter-tab.active {
-        background: rgba(20, 184, 166, 0.1);
-        border-color: var(--accent);
-        color: var(--accent-light);
-      }
-
-      /* Projects Grid */
-      .projects-section {
-        padding: 0 2rem 8rem;
-        position: relative;
-      }
-      .projects-section::before {
-        content: "";
-        position: absolute;
-        bottom: 20%;
-        left: -5%;
-        width: 600px;
-        height: 600px;
-        background: radial-gradient(
-          circle,
-          var(--gradient-2) 0%,
-          transparent 70%
-        );
-        filter: blur(140px);
-        opacity: 0.3;
-        z-index: 0;
-      }
-      .projects-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 1;
-      }
-      .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-        gap: 2.5rem;
-      }
-
-      .project-card {
-        background: var(--card-bg);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 20px;
-        overflow: hidden;
-        transition: all 0.4s ease;
-        border: 1px solid var(--border);
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-      .project-card-link {
-        text-decoration: none;
-        color: inherit;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-      .project-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
+      .nav-links.active {
         left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(
-          90deg,
-          var(--gradient-1) 0%,
-          var(--gradient-2) 50%,
-          var(--gradient-3) 100%
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
       }
-      .project-card:hover::before {
-        opacity: 1;
+
+      .hamburger {
+        display: flex;
       }
-      .project-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 30px 60px rgba(20, 184, 166, 0.25);
-        border-color: rgba(20, 184, 166, 0.3);
+
+      .hero {
+        padding: 64px 24px 32px;
+      }
+
+      .projects-container {
+        padding: 0 24px;
+      }
+
+      .projects-section {
+        padding: 0 24px 70px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
       }
 
       .project-image {
-        width: 100%;
-        height: 300px;
-        background: linear-gradient(
-          135deg,
-          rgba(20, 184, 166, 0.1) 0%,
-          rgba(6, 182, 212, 0.1) 100%
-        );
-        position: relative;
-        overflow: hidden;
+        height: 240px;
       }
-      .project-image img,
-      .project-image video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.9;
-        transition: all 0.4s ease;
-        display: block;
-      }
-      .project-card:hover .project-image img,
-      .project-card:hover .project-image video {
-        transform: scale(1.05);
-        opacity: 1;
-      }
-      .project-image::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          180deg,
-          transparent 0%,
-          rgba(10, 10, 10, 0.5) 100%
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-      .project-card:hover .project-image::after {
-        opacity: 1;
-      }
+    }
+  </style>
+</head>
 
-      .project-content {
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-      }
-      .project-category {
-        font-size: 0.8rem;
-        color: var(--accent-light);
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        font-weight: 500;
-        margin-bottom: 0.8rem;
-      }
-      .project-title {
-        font-family: "Cormorant Garamond", serif;
-        font-size: 1.8rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--text-primary);
-      }
-      .project-description {
-        color: var(--text-secondary);
-        line-height: 1.7;
-        margin-bottom: auto;
-        flex: 1;
-        font-size: 0.95rem;
-      }
-      .project-link {
-        color: var(--accent);
-        text-decoration: none;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: gap 0.3s ease;
-        margin-top: 1.5rem;
-        align-self: flex-start;
-      }
-      .project-link:hover {
-        gap: 1rem;
-      }
+<body>
+  <div class="spiral-binding" aria-hidden="true"></div>
 
-      footer {
-        background: #050508;
-        color: rgba(255, 255, 255, 0.5);
-        padding: 2rem;
-        text-align: center;
-        border-top: 1px solid var(--border);
-      }
+  <nav>
+    <div class="nav-container">
+      <a href="./index.html" class="logo">Inayat</a>
 
-      @media (max-width: 768px) {
-        nav {
-          padding: 1rem 1.5rem;
-        }
-        .nav-links {
-          position: fixed;
-          top: 70px;
-          left: -100%;
-          width: 100%;
-          background: rgba(10, 10, 10, 0.98);
-          backdrop-filter: blur(20px);
-          flex-direction: column;
-          padding: 2rem;
-          gap: 1.5rem;
-          transition: left 0.3s ease;
-          border-bottom: 1px solid var(--border);
-        }
-        .nav-links.active {
-          left: 0;
-        }
-        .hamburger {
-          display: flex;
-        }
-        .hero {
-          padding: 8rem 1.5rem 3rem;
-        }
-        .page-title {
-          font-size: 2.5rem;
-        }
-        .projects-grid {
-          grid-template-columns: 1fr;
-          gap: 2rem;
-        }
-        .filter-tabs {
-          flex-direction: column;
-          align-items: center;
-        }
-        .filter-tab {
-          width: 100%;
-          max-width: 300px;
-          text-align: center;
-        }
-      }
-      @media (max-width: 480px) {
-        .page-title {
-          font-size: 2rem;
-        }
-        .project-content {
-          padding: 1.5rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Custom Cursor -->
-    <div id="cursor-dot"></div>
-    <div id="cursor-ring"></div>
+      <ul class="nav-links">
+        <li><a href="./index.html">Home</a></li>
+        <li><a href="./About.html">About</a></li>
+        <li><a href="./Projects.html" class="active">Projects</a></li>
+        <li><a href="./assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
+        <li><a href="./index.html#contact">Contact</a></li>
+      </ul>
 
-    <!-- Navigation -->
-    <nav>
-      <div class="nav-container">
-        <a href="./index.html" class="logo">INAYAT</a>
-        <ul class="nav-links">
-          <li><a href="./index.html">Home</a></li>
-          <li><a href="./About.html">About</a></li>
-          <li><a href="./Projects.html" class="active">Projects</a></li>
-          <li><a href="./Resume.html">Resume</a></li>
-          <li><a href="./index.html#contact">Contact</a></li>
-        </ul>
-        <div class="hamburger"><span></span><span></span><span></span></div>
-      </div>
-    </nav>
-
-    <!-- Hero -->
-    <section class="hero">
-      <div class="hero-container">
-        <h1 class="page-title">My Projects</h1>
-        <p class="page-subtitle">
-          A collection of design and development work spanning UI/UX design, web
-          development, mobile interfaces, and interactive experiences.
-        </p>
-      </div>
-    </section>
-
-    <!-- Filter Tabs -->
-    <div class="projects-container">
-      <div class="filter-tabs">
-        <button class="filter-tab active" data-filter="all">
-          All Projects
-        </button>
-        <button class="filter-tab" data-filter="internship">Internship</button>
-        <button class="filter-tab" data-filter="ui-ux">UI/UX Design</button>
-        <button class="filter-tab" data-filter="web">Web Development</button>
-        <button class="filter-tab" data-filter="mobile">Mobile App</button>
-        <button class="filter-tab" data-filter="3d">3D Modelling</button>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </div>
+  </nav>
 
-    <!-- Projects Grid -->
-    <section class="projects-section">
-      <div class="projects-container">
-        <div class="projects-grid">
-          <div class="project-card" data-category="internship">
-            <a
-              href="./Projects/Mastercard_Project.html"
-              class="project-card-link"
-            >
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(20, 184, 166, 0.15) 0%,
-                    rgba(6, 182, 212, 0.1) 100%
-                  );
-                "
-              >
-                <img
-                  src="./Images/Mastercard.png"
-                  alt="MasterCard SharePoint"
-                />
-              </div>
-              <div class="project-content">
-                <p class="project-category">Internship</p>
-                <h3 class="project-title">WEx SharePoint - MasterCard</h3>
-                <p class="project-description">
-                  Contributed to enterprise-level SharePoint solutions,
-                  enhancing user experience and functionality for internal
-                  collaboration and document management systems.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
-          </div>
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-tag">Selected design archive</div>
+      <h1 class="page-title">My Projects</h1>
+      <p class="page-subtitle">
+        A collection of design and development work spanning UX/UI design,
+        web development, mobile interfaces, interactive systems, and spatial experiments.
+      </p>
+    </div>
+  </section>
 
-          <div class="project-card" data-category="mobile ui-ux">
-            <a
-              href="./Projects/Chemtrails_Project.html"
-              class="project-card-link"
-            >
-              <div class="project-image">
-                <img src="./Images/SigninPage.png" alt="Chemtrails" />
-              </div>
-              <div class="project-content">
-                <p class="project-category">Mobile App UX/UI Design</p>
-                <h3 class="project-title">Chemtrails Mobile App</h3>
-                <p class="project-description">
-                  A user-centered travel planning and journaling app that
-                  reduces planning friction by consolidating discovery,
-                  organization, and memory capture into a single, intuitive
-                  mobile experience.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
-          </div>
+  <div class="projects-container">
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All Projects</button>
+      <button class="filter-tab" data-filter="internship">Internship</button>
+      <button class="filter-tab" data-filter="ui-ux">UI/UX Design</button>
+      <button class="filter-tab" data-filter="web">Web Development</button>
+      <button class="filter-tab" data-filter="mobile">Mobile App</button>
+      <button class="filter-tab" data-filter="3d">3D Modelling</button>
+    </div>
+  </div>
 
-          <div class="project-card" data-category="ui-ux">
-            <a
-              href="./Projects/mastercard-fraud-dashboard.html"
-              class="project-card-link"
-            >
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(20, 184, 166, 0.15) 0%,
-                    rgba(6, 182, 212, 0.1) 100%
-                  );
-                "
-              >
-                <img
-                  src="./Images/Chart 2.png"
-                  alt="Fraud Detection Dashboard"
-                />
-              </div>
-              <div class="project-content">
-                <p class="project-category">UX/UI Design</p>
-                <h3 class="project-title">
-                  Fraud Detection Dashboard - Case Study (MasterCard)
-                </h3>
-                <p class="project-description">
-                  Led participatory design research with MasterCard's fraud
-                  analyst team to redesign their fraud detection dashboard.
-                  Improved data visualization, workflow efficiency, and
-                  introduced AI-driven insights through user interviews and
-                  iterative prototyping.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
-          </div>
+  <section class="projects-section">
+    <div class="projects-grid">
 
-          <div class="project-card" data-category="mobile ui-ux">
-            <a href="./Projects/Fitness_App.html" class="project-card-link">
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(6, 182, 212, 0.1) 0%,
-                    rgba(8, 145, 178, 0.15) 100%
-                  );
-                "
-              >
-                <img src="./Images/Interface.png" alt="Fitness App" />
-              </div>
-              <div class="project-content">
-                <p class="project-category">Mobile App Interface</p>
-                <h3 class="project-title">Fitness Tracking App</h3>
-                <p class="project-description">
-                  Developed a Fitness Tracking App featuring real-time feedback
-                  for instant progress insights, gamification elements to boost
-                  motivation, and community engagement for social support.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
+      <div class="project-card" data-category="internship">
+        <a href="./Projects/Mastercard_Project.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/Mastercard.png" alt="MasterCard SharePoint" />
           </div>
-
-          <div class="project-card" data-category="mobile ui-ux">
-            <a href="./Projects/Pawth_Project.html" class="project-card-link">
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(20, 184, 166, 0.1) 0%,
-                    rgba(6, 182, 212, 0.15) 100%
-                  );
-                "
-              >
-                <video
-                  src="./Images/Pawth.mp4"
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                ></video>
-              </div>
-              <div class="project-content">
-                <p class="project-category">UX/UI Design · Frontend</p>
-                <h3 class="project-title">Pawth Pet App</h3>
-                <p class="project-description">
-                  A social platform for pet owners — share moments, discover
-                  pet-friendly places, and connect with a community of fellow
-                  pet lovers. Led UX/UI design and frontend implementation
-                  end-to-end.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
+          <div class="project-content">
+            <p class="project-category">Internship</p>
+            <h3 class="project-title">WEx SharePoint - MasterCard</h3>
+            <p class="project-description">
+              Contributed to enterprise-level SharePoint solutions, enhancing user experience
+              and functionality for internal collaboration and document management systems.
+            </p>
+            <span class="project-link">View Details →</span>
           </div>
-
-          <div class="project-card" data-category="web ui-ux">
-            <a href="./Projects/SojoyScribbles.html" class="project-card-link">
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(8, 145, 178, 0.15) 0%,
-                    rgba(20, 184, 166, 0.1) 100%
-                  );
-                "
-              >
-                <img src="./Images/Sojoy Scribble.png" alt="Sojoy Scribbles" />
-              </div>
-              <div class="project-content">
-                <p class="project-category">Web Development</p>
-                <h3 class="project-title">Sojoy Scribbles Website</h3>
-                <p class="project-description">
-                  A responsive product website designed for accessibility and
-                  easy navigation, enabling users to explore original
-                  illustrations and place personalized orders through a playful,
-                  user-friendly experience.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card" data-category="ui-ux web">
-            <a
-              href="./Projects/Discoverisola_project.html"
-              class="project-card-link"
-            >
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(6, 182, 212, 0.15) 0%,
-                    rgba(8, 145, 178, 0.1) 100%
-                  );
-                "
-              >
-                <img src="./Images/IsolaDesign.png" alt="IsolaDesign" />
-              </div>
-              <div class="project-content">
-                <p class="project-category">Interaction Design</p>
-                <h3 class="project-title">Discover Isola</h3>
-                <p class="project-description">
-                  A collaborative project featuring a website and posters that
-                  help locals and tourists explore restaurants, galleries, and
-                  exhibitions through a directory and interactive guide map.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
-          </div>
-
-          <!-- NEW CARD -->
-          <div class="project-card" data-category="ui-ux">
-            <a href="./Projects/Zine_Project.html" class="project-card-link">
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(20, 184, 166, 0.15) 0%,
-                    rgba(8, 145, 178, 0.2) 100%
-                  );
-                "
-              >
-                <img
-                  src="./Images/poster_pub.png"
-                  alt="Language in the Landscape"
-                />
-              </div>
-              <div class="project-content">
-                <p class="project-category">
-                  Publication Design · Indigenous Languages
-                </p>
-                <h3 class="project-title">Language in the Landscape</h3>
-                <p class="project-description">
-                  Led a team of three to design a pocket-sized zine helping
-                  newcomers in Vancouver engage with Indigenous languages and
-                  the unceded territories they now call home. Client: CityStudio
-                  Vancouver.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card" data-category="ui-ux">
-            <a href="./Projects/2D_PandaGame.html" class="project-card-link">
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(20, 184, 166, 0.1) 0%,
-                    rgba(6, 182, 212, 0.15) 100%
-                  );
-                "
-              >
-                <img src="./Images/Panda.png" alt="Panda game" />
-              </div>
-              <div class="project-content">
-                <p class="project-category">Game Design</p>
-                <h3 class="project-title">Panda Adventure Game</h3>
-                <p class="project-description">
-                  A 2D tile-based game where players guide Poh the panda through
-                  vibrant environments, collecting bamboo, defeating enemies,
-                  and unlocking pathways to reach the final goal.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
-          </div>
-
-          <div class="project-card" data-category="3d">
-            <a
-              href="./Projects/Sculpturepavilion.html"
-              class="project-card-link"
-            >
-              <div
-                class="project-image"
-                style="
-                  background: linear-gradient(
-                    135deg,
-                    rgba(8, 145, 178, 0.1) 0%,
-                    rgba(20, 184, 166, 0.15) 100%
-                  );
-                "
-              >
-                <img src="./Images/Sculpture.png" alt="Sculpture Pavilion" />
-              </div>
-              <div class="project-content">
-                <p class="project-category">Spatial Design - 3D Modelling</p>
-                <h3 class="project-title">Sculpture Pavilion</h3>
-                <p class="project-description">
-                  A two-story design featuring layered panels, dynamic pathways,
-                  and natural light integration, creating an immersive and
-                  accessible space for art and events.
-                </p>
-                <span class="project-link">View Details →</span>
-              </div>
-            </a>
-          </div>
-        </div>
+        </a>
       </div>
-    </section>
 
-    <footer>
-      <div class="footer-content">
-        <p>&copy; 2025 Inayat. All rights reserved.</p>
+      <div class="project-card" data-category="mobile ui-ux">
+        <a href="./Projects/Chemtrails_Project.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/SigninPage.png" alt="Chemtrails" />
+          </div>
+          <div class="project-content">
+            <p class="project-category">Mobile App UX/UI Design</p>
+            <h3 class="project-title">Chemtrails Mobile App</h3>
+            <p class="project-description">
+              A user-centered travel planning and journaling app that reduces planning friction
+              by consolidating discovery, organization, and memory capture into one experience.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
       </div>
-    </footer>
 
-    <script>
-      // Mobile nav
-      const hamburger = document.querySelector(".hamburger");
-      const navLinks = document.querySelector(".nav-links");
-      hamburger.addEventListener("click", () => {
-        hamburger.classList.toggle("active");
-        navLinks.classList.toggle("active");
+      <div class="project-card" data-category="ui-ux">
+        <a href="./Projects/mastercard-fraud-dashboard.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/Chart 2.png" alt="Fraud Detection Dashboard" />
+          </div>
+          <div class="project-content">
+            <p class="project-category">UX/UI Design</p>
+            <h3 class="project-title">Fraud Detection Dashboard - Case Study</h3>
+            <p class="project-description">
+              Led participatory design research with MasterCard's fraud analyst team to redesign
+              their dashboard, improve visualization, and introduce AI-driven insights.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="project-card" data-category="mobile ui-ux">
+        <a href="./Projects/Fitness_App.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/Interface.png" alt="Fitness App" />
+          </div>
+          <div class="project-content">
+            <p class="project-category">Mobile App Interface</p>
+            <h3 class="project-title">Fitness Tracking App</h3>
+            <p class="project-description">
+              A fitness tracking app featuring real-time feedback, gamification elements,
+              motivation systems, and community engagement for social support.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="project-card" data-category="mobile ui-ux">
+        <a href="./Projects/Pawth_Project.html" class="project-card-link">
+          <div class="project-image">
+            <video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video>
+          </div>
+          <div class="project-content">
+            <p class="project-category">UX/UI Design · Frontend</p>
+            <h3 class="project-title">Pawth Pet App</h3>
+            <p class="project-description">
+              A social platform for pet owners to share moments, discover pet-friendly places,
+              and connect with fellow pet lovers.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="project-card" data-category="web ui-ux">
+        <a href="./Projects/SojoyScribbles.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/Sojoy Scribble.png" alt="Sojoy Scribbles" />
+          </div>
+          <div class="project-content">
+            <p class="project-category">Web Development</p>
+            <h3 class="project-title">Sojoy Scribbles Website</h3>
+            <p class="project-description">
+              A responsive product website designed for accessibility and easy navigation,
+              helping users explore illustrations and place personalized orders.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="project-card" data-category="ui-ux web">
+        <a href="./Projects/Discoverisola_project.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/IsolaDesign.png" alt="IsolaDesign" />
+          </div>
+          <div class="project-content">
+            <p class="project-category">Interaction Design</p>
+            <h3 class="project-title">Discover Isola</h3>
+            <p class="project-description">
+              A collaborative website and poster project helping locals and tourists explore
+              restaurants, galleries, and exhibitions through an interactive guide map.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="project-card" data-category="ui-ux">
+        <a href="./Projects/Zine_Project.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/poster_pub.png" alt="Language in the Landscape" />
+          </div>
+          <div class="project-content">
+            <p class="project-category">Publication Design · Indigenous Languages</p>
+            <h3 class="project-title">Language in the Landscape</h3>
+            <p class="project-description">
+              Led a team of three to design a pocket-sized zine helping newcomers in Vancouver
+              engage with Indigenous languages and unceded territories.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="project-card" data-category="ui-ux">
+        <a href="./Projects/2D_PandaGame.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/Panda.png" alt="Panda game" />
+          </div>
+          <div class="project-content">
+            <p class="project-category">Game Design</p>
+            <h3 class="project-title">Panda Adventure Game</h3>
+            <p class="project-description">
+              A 2D tile-based game where players guide Poh the panda through environments,
+              collect bamboo, defeat enemies, and unlock pathways.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="project-card" data-category="3d">
+        <a href="./Projects/Sculpturepavilion.html" class="project-card-link">
+          <div class="project-image">
+            <img src="./Images/Sculpture.png" alt="Sculpture Pavilion" />
+          </div>
+          <div class="project-content">
+            <p class="project-category">Spatial Design · 3D Modelling</p>
+            <h3 class="project-title">Sculpture Pavilion</h3>
+            <p class="project-description">
+              A two-story design featuring layered panels, dynamic pathways, natural light,
+              and an immersive accessible space for art and events.
+            </p>
+            <span class="project-link">View Details →</span>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Inayat. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const spiral = document.querySelector(".spiral-binding");
+    const holeCount = Math.floor(window.innerHeight / 44) + 2;
+
+    for (let i = 0; i < holeCount; i++) {
+      const hole = document.createElement("div");
+      hole.className = "spiral-hole";
+      spiral.appendChild(hole);
+    }
+
+    const hamburger = document.querySelector(".hamburger");
+    const navLinks = document.querySelector(".nav-links");
+
+    hamburger.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+
+    document.querySelectorAll(".nav-links a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
       });
-      document.querySelectorAll(".nav-links a").forEach((link) => {
-        link.addEventListener("click", () => {
-          hamburger.classList.remove("active");
-          navLinks.classList.remove("active");
+    });
+
+    const filterTabs = document.querySelectorAll(".filter-tab");
+    const projectCards = document.querySelectorAll(".project-card");
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        filterTabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        const filter = tab.getAttribute("data-filter");
+
+        projectCards.forEach((card) => {
+          const categories = card.getAttribute("data-category").split(" ");
+
+          if (filter === "all" || categories.includes(filter)) {
+            card.style.display = "flex";
+            setTimeout(() => {
+              card.style.opacity = "1";
+              card.style.transform = "translate(0, 0)";
+            }, 10);
+          } else {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px)";
+            setTimeout(() => {
+              card.style.display = "none";
+            }, 250);
+          }
         });
       });
+    });
+  </script>
+const filterTabs = document.querySelectorAll(".filter-tab");
+    const projectCards = document.querySelectorAll(".project-card");
 
-      // Filter
-      const filterTabs = document.querySelectorAll(".filter-tab");
-      const projectCards = document.querySelectorAll(".project-card");
-      filterTabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-          filterTabs.forEach((t) => t.classList.remove("active"));
-          tab.classList.add("active");
-          const filter = tab.getAttribute("data-filter");
-          projectCards.forEach((card) => {
-            if (filter === "all") {
-              card.style.display = "block";
-              setTimeout(() => {
-                card.style.opacity = "1";
-                card.style.transform = "translateY(0)";
-              }, 10);
-            } else {
-              const cats = card.getAttribute("data-category").split(" ");
-              if (cats.includes(filter)) {
-                card.style.display = "block";
-                setTimeout(() => {
-                  card.style.opacity = "1";
-                  card.style.transform = "translateY(0)";
-                }, 10);
-              } else {
-                card.style.opacity = "0";
-                card.style.transform = "translateY(20px)";
-                setTimeout(() => {
-                  card.style.display = "none";
-                }, 300);
-              }
-            }
-          });
+    filterTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        filterTabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        const filter = tab.getAttribute("data-filter");
+
+        projectCards.forEach((card) => {
+          const categories = card.getAttribute("data-category").split(" ");
+
+          if (filter === "all" || categories.includes(filter)) {
+            card.style.display = "flex";
+            setTimeout(() => {
+              card.style.opacity = "1";
+              card.style.transform = "translate(0, 0)";
+            }, 10);
+          } else {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px)";
+            setTimeout(() => {
+              card.style.display = "none";
+            }, 250);
+          }
         });
       });
-
-      // ── Custom Cursor ──
-      (function () {
-        const dot = document.getElementById("cursor-dot");
-        const ring = document.getElementById("cursor-ring");
-        let mx = 0,
-          my = 0,
-          rx = 0,
-          ry = 0;
-
-        document.addEventListener("mousemove", (e) => {
-          mx = e.clientX;
-          my = e.clientY;
-          dot.style.left = mx + "px";
-          dot.style.top = my + "px";
-        });
-
-        function animRing() {
-          rx += (mx - rx) * 0.14;
-          ry += (my - ry) * 0.14;
-          ring.style.left = Math.round(rx) + "px";
-          ring.style.top = Math.round(ry) + "px";
-          requestAnimationFrame(animRing);
-        }
-        animRing();
-
-        document.addEventListener("mouseover", (e) => {
-          if (
-            e.target.closest(
-              "a, button, .project-card, .filter-tab, .hamburger",
-            )
-          )
-            document.body.classList.add("cursor-hover");
-        });
-        document.addEventListener("mouseout", (e) => {
-          if (
-            e.target.closest(
-              "a, button, .project-card, .filter-tab, .hamburger",
-            )
-          )
-            document.body.classList.remove("cursor-hover");
-        });
-
-        document.addEventListener("mousedown", () =>
-          document.body.classList.add("cursor-click"),
-        );
-        document.addEventListener("mouseup", () =>
-          document.body.classList.remove("cursor-click"),
-        );
-        document.addEventListener("mouseleave", () => {
-          dot.style.opacity = "0";
-          ring.style.opacity = "0";
-        });
-        document.addEventListener("mouseenter", () => {
-          dot.style.opacity = "1";
-          ring.style.opacity = "1";
-        });
-      })();
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
