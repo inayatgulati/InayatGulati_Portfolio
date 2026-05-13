@@ -18,6 +18,7 @@
       --ink-light: #3d3530;
       --ink-faint: #8a7f72;
       --pencil: #b8b0a0;
+      --pencil-light: #d4cfc4;
       --accent-red: #c0392b;
       --accent-blue: #2c5f8a;
       --accent-yellow: #e8b84b;
@@ -95,11 +96,7 @@
     }
 
     nav,
-    .hero,
-    .pov-banner,
-    .about-body,
-    .journey,
-    .contact,
+    section,
     footer {
       margin-left: 32px;
     }
@@ -187,26 +184,24 @@
       transition: all 0.3s ease;
     }
 
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(7px, 7px);
-    }
-
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -7px);
-    }
-
-    .hero {
+    section {
       position: relative;
-      padding: 90px 48px 54px;
-      overflow: hidden;
+      padding: 80px 48px;
+      z-index: 1;
     }
 
-    .hero::before {
+    .page-edge::before {
       content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .margin-strip {
       position: absolute;
       left: 0;
       top: 0;
@@ -214,105 +209,211 @@
       width: 44px;
       border-right: 2px solid rgba(192,57,43,0.2);
       pointer-events: none;
+      z-index: 1;
     }
 
-    .hero-container {
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      font-family: var(--font-hand);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      position: relative;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1.5px;
+      background: var(--ink);
+      opacity: 0.2;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
       max-width: 1200px;
       margin: 0 auto;
-      position: relative;
-      z-index: 1;
     }
 
-    .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      color: var(--ink-faint);
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-
-    .hero-tag::before {
-      content: '';
-      width: 24px;
-      height: 2px;
-      background: var(--accent-red);
-    }
-
-    .page-title {
+    .about-text {
       font-family: var(--font-hand);
-      font-size: clamp(58px, 9vw, 110px);
-      font-weight: 700;
-      line-height: 0.95;
-      letter-spacing: -1px;
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--ink-light);
+      position: relative;
+    }
+
+    .about-text strong {
       color: var(--ink);
-      margin-bottom: 22px;
+      font-weight: 700;
     }
 
-    .page-subtitle {
-      max-width: 760px;
-      font-family: var(--font-hand);
-      font-size: 24px;
-      line-height: 1.55;
-      color: var(--ink-light);
+    .highlight-yellow {
+      background: linear-gradient(120deg, rgba(232,184,75,0) 0%, rgba(232,184,75,0.45) 10%, rgba(232,184,75,0.45) 90%, rgba(232,184,75,0) 100%);
+      padding: 0 2px;
     }
 
-    .hero-note {
-      margin-top: 30px;
-      font-family: var(--font-hand);
-      font-size: 22px;
-      color: var(--ink-light);
-      max-width: 700px;
-      line-height: 1.6;
-      border-left: 3px solid var(--accent-red);
-      padding-left: 20px;
+    .highlight-blue {
+      background: linear-gradient(120deg, rgba(44,95,138,0) 0%, rgba(44,95,138,0.18) 10%, rgba(44,95,138,0.18) 90%, rgba(44,95,138,0) 100%);
+      padding: 0 2px;
+    }
+
+    .skills-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .skill-cluster {
+      border: 2px solid var(--ink);
+      padding: 16px;
       position: relative;
-    }
-
-    .hero-note::before {
-      content: "✦";
-      position: absolute;
-      left: -13px;
-      top: -2px;
-      color: var(--accent-red);
-      font-size: 18px;
       background: var(--paper);
+      transition: transform 0.2s;
     }
 
-    .pov-banner {
-      padding: 8px 48px 0;
-      position: relative;
-      z-index: 1;
+    .skill-cluster:nth-child(1) {
+      transform: rotate(-0.4deg);
     }
 
-    .pov-inner {
-      max-width: 1100px;
-      margin: 0 auto;
+    .skill-cluster:nth-child(2) {
+      transform: rotate(0.5deg);
+    }
+
+    .skill-cluster:nth-child(3) {
+      transform: rotate(0.3deg);
+    }
+
+    .skill-cluster:nth-child(4) {
+      transform: rotate(-0.5deg);
+    }
+
+    .skill-cluster:hover {
+      transform: rotate(0deg) translate(-2px, -2px);
+      box-shadow: 4px 4px 0 rgba(26,22,18,0.15);
+    }
+
+    .skill-cluster-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 10px;
+    }
+
+    .skill-item {
+      font-family: var(--font-hand);
+      font-size: 16px;
+      color: var(--ink-light);
+      padding: 2px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .skill-item::before {
+      content: '—';
+      color: var(--pencil);
+      font-size: 14px;
+    }
+
+    .process-strip {
+      display: flex;
+      gap: 0;
+      align-items: center;
+      flex-wrap: wrap;
       border: 2px solid var(--ink);
       background: var(--paper);
-      padding: 24px 28px;
+      padding: 16px 20px;
+      transform: rotate(-0.5deg);
       position: relative;
-      transform: rotate(-0.4deg);
-      box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+      margin-top: 32px;
     }
 
-    .pov-inner::before {
+    .process-strip::before {
       content: '';
       position: absolute;
-      top: -12px;
-      left: 32px;
-      width: 58px;
+      top: -11px;
+      left: 20px;
+      width: 50px;
       height: 22px;
       background: rgba(232,184,75,0.4);
       border-top: 1px solid rgba(232,184,75,0.5);
       border-bottom: 1px solid rgba(232,184,75,0.5);
-      transform: rotate(1.5deg);
+      transform: rotate(1deg);
     }
 
-    .pov-label {
+    .process-strip-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    .process-step {
+      font-family: var(--font-hand);
+      font-size: 16px;
+      color: var(--ink-light);
+      padding: 4px 10px;
+      border: 1.5px solid var(--pencil);
+      transition: background 0.2s;
+    }
+
+    .process-step.done {
+      color: var(--ink);
+      border-color: var(--ink);
+      background: var(--paper-dark);
+      font-weight: 700;
+    }
+
+    .process-arrow {
+      color: var(--pencil);
+      padding: 0 6px;
+    }
+
+    .about-note {
+      max-width: 1200px;
+      margin: 56px auto 0;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      padding: 22px 26px;
+      position: relative;
+      transform: rotate(-0.3deg);
+      box-shadow: 5px 5px 0 rgba(26,22,18,0.12);
+    }
+
+    .about-note::before {
+      content: '';
+      position: absolute;
+      top: -11px;
+      left: 26px;
+      width: 54px;
+      height: 22px;
+      background: rgba(232,184,75,0.4);
+      border-top: 1px solid rgba(232,184,75,0.5);
+      border-bottom: 1px solid rgba(232,184,75,0.5);
+    }
+
+    .about-note-label {
       font-family: var(--font-mono);
       font-size: 10px;
       letter-spacing: 0.12em;
@@ -321,212 +422,20 @@
       margin-bottom: 8px;
     }
 
-    .pov-text {
-      font-family: var(--font-hand);
-      font-size: 26px;
-      color: var(--ink);
+    .about-note-text {
+      font-size: 24px;
       line-height: 1.45;
+      color: var(--ink);
     }
 
-    .about-body {
-      padding: 70px 48px 80px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .about-container {
+    .resume-row {
       max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 0.85fr 1.15fr;
-      gap: 52px;
-      align-items: start;
+      margin: 36px auto 0;
     }
 
-    .about-photo-wrap {
-      position: relative;
-    }
-
-    .about-photo {
-      width: 100%;
-      aspect-ratio: 3/4;
-      border: 2.5px solid var(--ink);
-      background: var(--paper-dark);
-      overflow: hidden;
-      position: relative;
-      box-shadow: 6px 6px 0 rgba(26,22,18,0.15);
-      transform: rotate(-1deg);
-    }
-
-    .about-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      display: block;
-      filter: saturate(0.92) contrast(0.98);
-    }
-
-    .photo-tag {
-      position: absolute;
-      bottom: -16px;
-      right: -12px;
-      background: var(--accent-yellow);
-      border: 2px solid var(--ink);
-      padding: 12px 18px;
-      z-index: 2;
-      transform: rotate(2deg);
-      box-shadow: 3px 3px 0 rgba(26,22,18,0.15);
-    }
-
-    .photo-tag span {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(0,0,0,0.5);
-    }
-
-    .photo-tag strong {
-      display: block;
+    .btn-sketch {
       font-family: var(--font-hand);
       font-size: 18px;
-      color: var(--ink);
-    }
-
-    .photo-caption {
-      margin-top: 36px;
-      border: 2px solid var(--ink);
-      background: var(--paper);
-      padding: 20px;
-      position: relative;
-      transform: rotate(0.5deg);
-    }
-
-    .photo-caption-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 12px;
-    }
-
-    .photo-caption-fact {
-      display: flex;
-      gap: 10px;
-      font-size: 18px;
-      color: var(--ink-light);
-      line-height: 1.45;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--pencil-light);
-    }
-
-    .photo-caption-fact:last-child {
-      border-bottom: none;
-    }
-
-    .photo-caption-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent-red);
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 10px;
-    }
-
-    .about-content {
-      position: relative;
-    }
-
-    .about-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 12px;
-    }
-
-    .about-heading {
-      font-family: var(--font-hand);
-      font-size: clamp(40px, 5vw, 60px);
-      font-weight: 700;
-      line-height: 1.05;
-      margin-bottom: 24px;
-      color: var(--ink);
-    }
-
-    .about-heading em {
-      font-style: normal;
-      background: linear-gradient(120deg, rgba(232,184,75,0) 0%, rgba(232,184,75,0.45) 10%, rgba(232,184,75,0.45) 90%, rgba(232,184,75,0) 100%);
-      padding: 0 4px;
-    }
-
-    .about-text {
-      font-size: 21px;
-      color: var(--ink-light);
-      line-height: 1.65;
-      margin-bottom: 20px;
-    }
-
-    .currently-block {
-      margin: 30px 0;
-      padding: 22px;
-      border: 2px solid var(--ink);
-      background: var(--paper);
-      position: relative;
-      box-shadow: 5px 5px 0 rgba(26,22,18,0.1);
-      transform: rotate(-0.3deg);
-    }
-
-    .currently-block::before {
-      content: '';
-      position: absolute;
-      top: -11px;
-      left: 24px;
-      width: 54px;
-      height: 22px;
-      background: rgba(232,184,75,0.35);
-      border-top: 1px solid rgba(232,184,75,0.5);
-      border-bottom: 1px solid rgba(232,184,75,0.5);
-      transform: rotate(-1.5deg);
-    }
-
-    .currently-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 14px;
-    }
-
-    .currently-item {
-      display: flex;
-      gap: 12px;
-      font-size: 19px;
-      color: var(--ink-light);
-      line-height: 1.45;
-      margin-bottom: 10px;
-    }
-
-    .currently-item strong {
-      color: var(--ink);
-      min-width: 90px;
-      flex-shrink: 0;
-    }
-
-    .about-ctas {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .about-btn {
-      font-family: var(--font-hand);
-      font-size: 20px;
       font-weight: 700;
       padding: 12px 28px;
       border: 2.5px solid var(--ink);
@@ -542,52 +451,18 @@
       transform: rotate(-0.4deg);
     }
 
-    .about-btn:hover {
+    .btn-sketch:hover {
       transform: rotate(0deg) translate(-2px, -2px);
       box-shadow: 4px 4px 0 rgba(26,22,18,0.25);
     }
 
     .journey {
-      padding: 78px 48px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .journey-container {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 48px;
-    }
-
-    .section-num {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.1em;
-    }
-
-    .section-title {
-      font-family: var(--font-hand);
-      font-size: 42px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      position: relative;
-    }
-
-    .section-line {
-      flex: 1;
-      height: 1.5px;
-      background: var(--ink);
-      opacity: 0.2;
+      padding-top: 40px;
     }
 
     .timeline {
+      max-width: 1000px;
+      margin: 0 auto;
       position: relative;
       padding-left: 28px;
       border-left: 2px solid var(--ink);
@@ -660,15 +535,15 @@
       background: var(--paper);
     }
 
-    .contact {
+    .contact-section {
       background: var(--ink);
       color: var(--paper);
-      padding: 78px 48px;
+      padding: 80px 48px;
       position: relative;
       overflow: hidden;
     }
 
-    .contact::before {
+    .contact-section::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -677,31 +552,29 @@
       pointer-events: none;
     }
 
-    .contact-container {
-      max-width: 1000px;
-      margin: 0 auto;
+    .contact-inner {
       position: relative;
       z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
-    .contact .section-header {
-      margin-bottom: 28px;
+    .contact-title {
+      font-family: var(--font-hand);
+      font-size: 56px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
     }
 
-    .contact .section-title,
-    .contact .section-num {
-      color: var(--paper);
-    }
-
-    .contact .section-line {
-      background: var(--paper);
-    }
-
-    .contact-description {
+    .contact-sub {
+      font-family: var(--font-hand);
       font-size: 20px;
       color: rgba(255,255,255,0.65);
-      max-width: 620px;
-      margin-bottom: 34px;
+      margin-bottom: 36px;
+      line-height: 1.55;
+      max-width: 600px;
     }
 
     .contact-links {
@@ -710,34 +583,29 @@
       gap: 18px;
     }
 
-    .contact-item {
+    .contact-link {
       border: 2px solid rgba(255,255,255,0.25);
       color: var(--paper);
       text-decoration: none;
-      padding: 24px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s ease;
     }
 
-    .contact-item:hover {
+    .contact-link:hover {
       transform: translate(-3px, -3px);
       box-shadow: 5px 5px 0 rgba(255,255,255,0.12);
       border-color: var(--paper);
     }
 
-    .contact-icon {
-      display: none;
-    }
-
-    .contact-label {
-      font-family: var(--font-hand);
+    .contact-link strong {
       font-size: 26px;
-      font-weight: 700;
+      font-family: var(--font-hand);
     }
 
-    .contact-value {
+    .contact-link span {
       font-family: var(--font-mono);
       font-size: 12px;
       color: rgba(255,255,255,0.6);
@@ -760,27 +628,13 @@
       text-align: center;
     }
 
-    @media (max-width: 1024px) {
-      .about-container {
-        grid-template-columns: 1fr;
-      }
-
-      .about-photo {
-        max-width: 420px;
-      }
-    }
-
     @media (max-width: 768px) {
       .spiral-binding {
         display: none;
       }
 
       nav,
-      .hero,
-      .pov-banner,
-      .about-body,
-      .journey,
-      .contact,
+      section,
       footer {
         margin-left: 0;
       }
@@ -810,26 +664,25 @@
         display: flex;
       }
 
-      .hero,
-      .pov-banner,
-      .about-body,
-      .journey,
-      .contact {
-        padding-left: 24px;
-        padding-right: 24px;
+      section {
+        padding: 60px 24px;
       }
 
-      .hero {
-        padding-top: 64px;
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .skills-board {
+        grid-template-columns: 1fr;
       }
 
       .contact-links {
         grid-template-columns: 1fr;
       }
 
-      .currently-item {
-        flex-direction: column;
-        gap: 2px;
+      footer {
+        padding: 20px 24px;
       }
     }
   </style>
@@ -858,253 +711,191 @@
     </div>
   </nav>
 
-  <section class="hero">
-    <div class="hero-container">
-      <div class="hero-tag">Vancouver-based designer</div>
+  <section id="about" class="page-edge about-page">
+    <div class="margin-strip"></div>
 
-      <h1 class="page-title">About Me</h1>
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">A bit about me</h2>
+      <div class="section-line"></div>
+    </div>
 
-      <p class="page-subtitle">
-        UX/UI designer blending interaction design, frontend development,
-        and human-centered research to create thoughtful digital experiences.
-      </p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I’m a <strong>Vancouver-based UX/UI designer</strong> with a background in
+          frontend development and a <span class="highlight-yellow">genuine passion for architecture</span> —
+          sketchbook always close by.
+        </p>
 
-      <div class="hero-note">
-        I like turning messy, human problems into tested solutions — research-backed,
-        technically feasible, and built to actually ship.
+        <br>
+
+        <p>
+          I explored architecture for a while, and although I never finished the degree,
+          it left me with a <strong>deep love for sketching buildings</strong>,
+          thinking in systems, and caring obsessively about spatial logic.
+          That passion bleeds into everything I design.
+        </p>
+
+        <br>
+
+        <p>
+          My work tends to live at the intersection of
+          <span class="highlight-blue">research, craft, and technical feasibility.</span>
+          I can actually <strong>build the things I design.</strong> No pixel left unjustified.
+        </p>
+
+        <div class="process-strip">
+          <div class="process-strip-label">Process</div>
+          <span class="process-step">Discover</span>
+          <span class="process-arrow">→</span>
+          <span class="process-step">Define</span>
+          <span class="process-arrow">→</span>
+          <span class="process-step">Sketch</span>
+          <span class="process-arrow">→</span>
+          <span class="process-step done">Ship ✓</span>
+        </div>
+      </div>
+
+      <div class="skills-board">
+        <div class="skill-cluster">
+          <div class="skill-cluster-label">Design Tools</div>
+          <div class="skill-item">Figma</div>
+          <div class="skill-item">Framer</div>
+          <div class="skill-item">Prototyping</div>
+          <div class="skill-item">Design Systems</div>
+        </div>
+
+        <div class="skill-cluster">
+          <div class="skill-cluster-label">Research</div>
+          <div class="skill-item">User Interviews</div>
+          <div class="skill-item">Usability Testing</div>
+          <div class="skill-item">Journey Mapping</div>
+          <div class="skill-item">Heuristics</div>
+        </div>
+
+        <div class="skill-cluster">
+          <div class="skill-cluster-label">Frontend</div>
+          <div class="skill-item">HTML/CSS</div>
+          <div class="skill-item">JavaScript</div>
+          <div class="skill-item">React</div>
+          <div class="skill-item">Git</div>
+        </div>
+
+        <div class="skill-cluster">
+          <div class="skill-cluster-label">Architecture</div>
+          <div class="skill-item">Spatial Design</div>
+          <div class="skill-item">Building Sketches</div>
+          <div class="skill-item">AutoCAD</div>
+          <div class="skill-item">Rhino</div>
+        </div>
       </div>
     </div>
-  </section>
 
-  <div class="pov-banner">
-    <div class="pov-inner">
-      <p class="pov-label">Design philosophy</p>
-      <p class="pov-text">
-        “Most products do not fail because of bad visuals — they fail because
-        no one talked to the person using them first.”
+    <div class="about-note">
+      <p class="about-note-label">Design philosophy</p>
+      <p class="about-note-text">
+        “Most products do not fail because of bad visuals — they fail because no one talked to the person using them first.”
       </p>
     </div>
-  </div>
 
-  <section class="about-body">
-    <div class="about-container">
-      <div class="about-photo-col">
-        <div class="about-photo-wrap">
-          <div class="about-photo">
-            <img src="./Images/Inayat.JPG" alt="Inayat" />
-          </div>
-
-          <div class="photo-tag">
-            <span>Based in</span>
-            <strong>Vancouver, BC</strong>
-          </div>
-        </div>
-
-        <div class="photo-caption">
-          <p class="photo-caption-label">A few things about me</p>
-
-          <div class="photo-caption-fact">
-            <div class="photo-caption-dot"></div>
-            <span>
-              Quarry Rock in Deep Cove is my go-to reset — short enough to do
-              on a whim, view good enough to justify it every time.
-            </span>
-          </div>
-
-          <div class="photo-caption-fact">
-            <div class="photo-caption-dot"></div>
-            <span>
-              Architecture is one of my biggest design influences, especially
-              the way space, light, and movement shape experience.
-            </span>
-          </div>
-
-          <div class="photo-caption-fact">
-            <div class="photo-caption-dot"></div>
-            <span>
-              I’ve lived across cultures, which is why cross-cultural UX
-              problems feel personal, not just academic.
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="about-content">
-        <p class="about-label">Who I am</p>
-
-        <h2 class="about-heading">
-          Designer who makes things <em>actually work.</em>
-        </h2>
-
-        <p class="about-text">
-          I’m a UX/UI designer at SFU studying Interactive Arts & Technology,
-          with a concentration in Interaction Design and a foundation in
-          frontend development. That combination — research brain, build
-          instinct — is what I bring to every project.
-        </p>
-
-        <p class="about-text">
-          I got into UX because I kept encountering interfaces that looked
-          polished but failed the person using them. I wanted to be someone
-          who closed that gap. My approach is research-first by habit: I do not
-          trust my first idea, I test it. And because I can read and write code,
-          I design things that can survive contact with development.
-        </p>
-
-        <p class="about-text">
-          I’m drawn to messy, human problems — the kind where the real issue
-          only surfaces after sitting with a user, mapping their workflow, and
-          understanding what they are actually trying to do.
-        </p>
-
-        <div class="currently-block">
-          <p class="currently-label">Right now</p>
-
-          <div class="currently-item">
-            <strong>Building —</strong>
-            <span>Pawth, a social platform for pet owners, handling UX and frontend in React.</span>
-          </div>
-
-          <div class="currently-item">
-            <strong>Learning —</strong>
-            <span>AI interaction patterns and how to design for agentic, multi-step flows.</span>
-          </div>
-
-          <div class="currently-item">
-            <strong>Seeking —</strong>
-            <span>Full-time UX roles for fall 2026 — open to product, enterprise, and consumer UX.</span>
-          </div>
-        </div>
-
-        <div class="about-ctas">
-          <a href="./assets/Resume_InayatDesign.pdf" target="_blank" class="about-btn">
-            Download Resume →
-          </a>
-        </div>
-      </div>
+    <div class="resume-row">
+      <a href="./assets/Resume_InayatDesign.pdf" target="_blank" class="btn-sketch">
+        Download Resume →
+      </a>
     </div>
   </section>
 
   <section class="journey">
-    <div class="journey-container">
-      <div class="section-header">
-        <span class="section-num">02</span>
-        <h2 class="section-title">My Journey</h2>
-        <div class="section-line"></div>
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">My Journey</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2022 – 2023</div>
+        <h3 class="timeline-title">Where Creativity Meets Evidence</h3>
+        <p class="timeline-desc">
+          Started building fluency in Figma, usability testing, and information architecture while studying at SFU.
+          Realized design is not just about making things look good — it is about making things work.
+        </p>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Figma</span>
+          <span class="timeline-tag">User Research</span>
+          <span class="timeline-tag">Information Architecture</span>
+          <span class="timeline-tag">Prototyping</span>
+        </div>
       </div>
 
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">2022 – 2023</div>
-          <h3 class="timeline-title">Where Creativity Meets Evidence</h3>
-          <p class="timeline-desc">
-            Discovered that the best design decisions are not opinions — they are
-            hypotheses tested against real user behavior. Started building fluency
-            in Figma, usability testing, and information architecture while studying at SFU.
-          </p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Figma</span>
-            <span class="timeline-tag">User Research</span>
-            <span class="timeline-tag">Information Architecture</span>
-            <span class="timeline-tag">Prototyping</span>
-          </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2023 – 2024</div>
+        <h3 class="timeline-title">Research Changes Everything</h3>
+        <p class="timeline-desc">
+          Moved from designing for imagined users to designing for real ones. Conducted interviews,
+          mapped journeys, and learned to turn messy qualitative insights into clear design decisions.
+        </p>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Usability Testing</span>
+          <span class="timeline-tag">Journey Mapping</span>
+          <span class="timeline-tag">Personas</span>
+          <span class="timeline-tag">Iterative Design</span>
         </div>
+      </div>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">2023 – 2024</div>
-          <h3 class="timeline-title">Research Changes Everything</h3>
-          <p class="timeline-desc">
-            Moved from designing for imagined users to designing for real ones.
-            Ran structured usability tests, conducted contextual interviews, and
-            learned to translate messy qualitative data into clear design decisions.
-          </p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Usability Testing</span>
-            <span class="timeline-tag">Journey Mapping</span>
-            <span class="timeline-tag">Persona Development</span>
-            <span class="timeline-tag">Iterative Design</span>
-          </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">Summer 2025</div>
+        <h3 class="timeline-title">Enterprise UX at Mastercard</h3>
+        <p class="timeline-desc">
+          Worked on internal SharePoint experiences for Mastercard’s Workplace Experience team,
+          learning how to design for large-scale systems, global teams, and real business constraints.
+        </p>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Enterprise UX</span>
+          <span class="timeline-tag">SharePoint</span>
+          <span class="timeline-tag">Stakeholders</span>
+          <span class="timeline-tag">Cross-cultural UX</span>
         </div>
+      </div>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">Summer 2025</div>
-          <h3 class="timeline-title">Enterprise UX at Mastercard</h3>
-          <p class="timeline-desc">
-            Interned at Mastercard’s Vancouver Tech Hub, redesigning internal
-            SharePoint platforms for 15,000+ global employees. Worked across
-            cross-cultural research, enterprise constraints, and stakeholder communication.
-          </p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Enterprise UX</span>
-            <span class="timeline-tag">Cross-cultural Research</span>
-            <span class="timeline-tag">SharePoint</span>
-            <span class="timeline-tag">Stakeholders</span>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">Fall 2025</div>
-          <h3 class="timeline-title">From Design to Product — End to End</h3>
-          <p class="timeline-desc">
-            Led the design and development of Chemtrails, a full-stack mobile
-            travel app built in React Native with Firebase. Went from interviews
-            to product thinking, interaction design, and technical implementation.
-          </p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">React Native</span>
-            <span class="timeline-tag">Firebase</span>
-            <span class="timeline-tag">Mobile UX</span>
-            <span class="timeline-tag">Product Design</span>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-year">2026 — Now</div>
-          <h3 class="timeline-title">Design Beyond the Screen</h3>
-          <p class="timeline-desc">
-            Exploring how design principles translate across architecture,
-            physical products, service experiences, startup events, design jams,
-            and interactive systems.
-          </p>
-          <div class="timeline-tags">
-            <span class="timeline-tag">Service Design</span>
-            <span class="timeline-tag">Architecture</span>
-            <span class="timeline-tag">Product Design</span>
-            <span class="timeline-tag">Design Jams</span>
-            <span class="timeline-tag">Community</span>
-          </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2026 — Now</div>
+        <h3 class="timeline-title">Design Beyond the Screen</h3>
+        <p class="timeline-desc">
+          Exploring how design principles translate across digital products, architecture,
+          physical products, service experiences, startup events, and design jams.
+        </p>
+        <div class="timeline-tags">
+          <span class="timeline-tag">Service Design</span>
+          <span class="timeline-tag">Architecture</span>
+          <span class="timeline-tag">Product Design</span>
+          <span class="timeline-tag">Design Jams</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="contact" class="contact">
-    <div class="contact-container">
-      <div class="section-header">
-        <span class="section-num">03</span>
-        <h2 class="section-title">Get in Touch</h2>
-        <div class="section-line"></div>
-      </div>
-
-      <p class="contact-description">
-        I’m always open to discussing new projects, creative ideas, portfolio feedback,
-        or UX/product opportunities.
+  <section id="contact" class="contact-section">
+    <div class="contact-inner">
+      <h2 class="contact-title">Let’s talk</h2>
+      <p class="contact-sub">
+        I’m always open to discussing UX projects, design feedback, portfolio ideas, or new opportunities.
       </p>
 
       <div class="contact-links">
-        <a href="https://www.linkedin.com/in/inayat-inayat" target="_blank" class="contact-item">
-          <span class="contact-label">LinkedIn</span>
-          <span class="contact-value">Connect with me</span>
+        <a href="mailto:inayatgulati@gmail.com" class="contact-link">
+          <strong>Email</strong>
+          <span>inayatgulati@gmail.com</span>
         </a>
 
-        <a href="mailto:inayatgulati@gmail.com" class="contact-item">
-          <span class="contact-label">Email</span>
-          <span class="contact-value">inayatgulati@gmail.com</span>
+        <a href="https://www.linkedin.com/in/inayat-inayat" target="_blank" class="contact-link">
+          <strong>LinkedIn</strong>
+          <span>Connect with me</span>
         </a>
       </div>
     </div>
@@ -1128,13 +919,11 @@
     const navLinks = document.querySelector(".nav-links");
 
     hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("active");
       navLinks.classList.toggle("active");
     });
 
     document.querySelectorAll(".nav-links a").forEach((link) => {
       link.addEventListener("click", () => {
-        hamburger.classList.remove("active");
         navLinks.classList.remove("active");
       });
     });
