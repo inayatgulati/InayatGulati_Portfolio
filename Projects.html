@@ -42,7 +42,6 @@
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M3 17 L8 8 L14 14 Z' fill='%231a1612' stroke='%231a1612' stroke-width='0.5'/%3E%3Crect x='13' y='2' width='3' height='10' rx='1' transform='rotate(45 14.5 7)' fill='%231a1612'/%3E%3C/svg%3E"), auto;
     }
 
-    /* Paper ruled lines */
     body::before {
       content: '';
       position: fixed;
@@ -54,7 +53,6 @@
       z-index: 0;
     }
 
-    /* Paper grain */
     body::after {
       content: '';
       position: fixed;
@@ -170,6 +168,24 @@
     .nav-links a:hover::after,
     .nav-links a.active::after { width: 100%; }
 
+    /* ===== HAMBURGER — hidden by default, shown on mobile ===== */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 25px; height: 2px;
+      background: var(--ink);
+      transition: all 0.2s;
+    }
+
     /* ===== HERO ===== */
     .hero {
       position: relative;
@@ -240,7 +256,6 @@
       max-width: 640px;
     }
 
-    /* Count badge */
     .project-count-badge {
       display: inline-flex;
       align-items: center;
@@ -262,41 +277,12 @@
       font-family: var(--font-hand);
     }
 
-    /* Background hero doodles */
     .hero-doodles {
       position: absolute;
       right: 0; top: 0; bottom: 0;
       width: 40%;
       pointer-events: none;
       opacity: 0.12;
-    }
-
-    /* ===== WASHI TAPE BANNER ===== */
-    .washi-banner {
-      position: relative;
-      margin-left: 32px;
-      margin-right: 0;
-      padding: 10px 64px;
-      background: rgba(44,95,138,0.12);
-      border-top: 1.5px solid rgba(44,95,138,0.25);
-      border-bottom: 1.5px solid rgba(44,95,138,0.25);
-      font-family: var(--font-scrawl);
-      font-size: 18px;
-      color: var(--accent-blue);
-      letter-spacing: 0.08em;
-      overflow: hidden;
-      white-space: nowrap;
-      transform: rotate(-0.3deg);
-    }
-
-    .washi-banner-inner {
-      display: inline-block;
-      animation: marquee 22s linear infinite;
-    }
-
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
     }
 
     /* ===== PROJECTS WRAP ===== */
@@ -363,11 +349,6 @@
     }
 
     /* ===== GRID LAYOUT ===== */
-    /* 
-      Layout: 
-      Featured card spans full width (row 1)
-      Then 2-col grid for the rest
-    */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -387,7 +368,6 @@
       color: var(--ink);
     }
 
-    /* Shadow offset */
     .project-card::before {
       content: '';
       position: absolute;
@@ -400,7 +380,6 @@
       pointer-events: none;
     }
 
-    /* Corner fold */
     .project-card::after {
       content: '';
       position: absolute;
@@ -422,7 +401,6 @@
       opacity: 0.3;
     }
 
-    /* Featured card spans full width */
     .project-card.featured {
       grid-column: span 2;
       display: grid;
@@ -435,6 +413,7 @@
       overflow: hidden;
       border-bottom: 2px solid var(--ink);
       background: var(--paper-dark);
+      height: 240px;
     }
 
     .card-image::before {
@@ -467,13 +446,10 @@
       transform: scale(1.04);
     }
 
-   .card-image { height: 240px; }
-
-    /* Featured: image sits beside content, no bottom border, right border instead */
     .project-card.featured .card-image {
-       height: 240px; /* same as others */
-  border-right: 2px solid var(--ink);
-  border-bottom: none;
+      height: 240px;
+      border-right: 2px solid var(--ink);
+      border-bottom: none;
     }
 
     /* ===== CARD BODY ===== */
@@ -486,7 +462,6 @@
       z-index: 1;
     }
 
-    /* Tape strip */
     .card-body::before {
       content: '';
       position: absolute;
@@ -538,7 +513,6 @@
       font-size: 19px;
     }
 
-    /* Metric badge */
     .card-metric {
       display: inline-flex;
       align-items: center;
@@ -554,7 +528,6 @@
 
     .card-metric::before { content: "↑"; font-size: 14px; }
 
-    /* Tags row */
     .card-tags {
       display: flex;
       gap: 8px;
@@ -572,7 +545,6 @@
       opacity: 0.6;
     }
 
-    /* Arrow CTA */
     .card-arrow {
       display: inline-block;
       margin-top: 18px;
@@ -589,7 +561,6 @@
       border-color: var(--ink);
     }
 
-    /* Year stamp */
     .year-stamp {
       position: absolute;
       top: 18px;
@@ -605,7 +576,6 @@
       background: var(--paper);
     }
 
-    /* Annotation scrawl on featured card */
     .scrawl-note {
       position: absolute;
       font-family: var(--font-scrawl);
@@ -615,44 +585,6 @@
       line-height: 1.3;
       transform: rotate(-5deg);
       z-index: 6;
-    }
-
-    /* ===== SECTION DIVIDER ===== */
-    .section-divider {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 60px 0 40px;
-    }
-
-    .section-divider-num {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.1em;
-    }
-
-    .section-divider-title {
-      font-family: var(--font-hand);
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .section-divider-line {
-      flex: 1;
-      height: 1.5px;
-      background: var(--ink);
-      opacity: 0.18;
-    }
-
-    .section-divider-note {
-      font-family: var(--font-scrawl);
-      font-size: 16px;
-      color: var(--accent-red);
-      transform: rotate(2deg);
-      display: inline-block;
-      opacity: 0.8;
     }
 
     /* ===== SCROLL REVEAL ===== */
@@ -698,7 +630,6 @@
       text-transform: uppercase;
     }
 
-    /* Coffee ring decorations */
     footer::after {
       content: '';
       position: absolute;
@@ -711,7 +642,6 @@
       pointer-events: none;
     }
 
-    /* ===== HIDDEN (filtered out) ===== */
     .project-card.hidden {
       opacity: 0;
       pointer-events: none;
@@ -735,8 +665,7 @@
     @media (max-width: 768px) {
       .spiral-binding { display: none; }
 
-      nav, .hero, .projects-wrap, footer,
-      .washi-banner { margin-left: 0; }
+      nav, .hero, .projects-wrap, footer { margin-left: 0; }
 
       nav { padding: 14px 24px; }
 
@@ -755,34 +684,16 @@
 
       .nav-links.open { left: 0; }
 
-     .hamburger {
-  display: flex;   
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 4px;
-}
-
-.hamburger span {
-  display: block;
-  width: 25px; height: 2px;
-  background: var(--ink);
-  transition: all 0.2s;
-}
+      /* Show hamburger on mobile */
+      .hamburger { display: flex; }
 
       .hero { padding: 56px 24px 36px; }
 
       .projects-wrap { padding: 36px 24px 70px; }
 
-      .projects-grid {
-        grid-template-columns: 1fr;
-      }
+      .projects-grid { grid-template-columns: 1fr; }
 
-      .project-card.featured {
-        grid-column: span 1;
-      }
+      .project-card.featured { grid-column: span 1; }
 
       footer {
         flex-direction: column;
@@ -796,7 +707,6 @@
 <body>
   <div id="cursorTrail"></div>
 
-  <!-- Notebook spiral -->
   <div class="spiral-binding" aria-hidden="true"></div>
 
   <!-- NAV -->
@@ -819,7 +729,6 @@
 
   <!-- HERO -->
   <section class="hero">
-    <!-- Background architectural doodles -->
     <svg class="hero-doodles" viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <rect x="60" y="80" width="80" height="140" stroke="#1a1612" stroke-width="1.2" fill="none"/>
       <rect x="145" y="40" width="100" height="180" stroke="#1a1612" stroke-width="1.2" fill="none"/>
@@ -864,19 +773,9 @@
     </div>
   </section>
 
- <!-- <!-- WASHI TAPE BANNER -->
-  <!--<div class="washi-banner" aria-hidden="true">
-    <span class="washi-banner-inner">
-      ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
-      ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
-      ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
-    </span>
-  </div> -->
-
   <!-- PROJECTS SECTION -->
   <div class="projects-wrap">
 
-    <!-- Filter bar -->
     <div class="filter-bar">
       <span class="filter-label">filter →</span>
       <button class="filter-tab active" data-filter="all">All</button>
@@ -887,14 +786,13 @@
       <button class="filter-tab" data-filter="3d">3D / Spatial</button>
     </div>
 
-    <!-- Grid -->
     <div class="projects-grid" id="projectsGrid">
 
       <!-- 1. FEATURED: Mastercard Fraud Dashboard -->
       <a href="./Projects/mastercard-fraud-dashboard.html"
          class="project-card featured reveal"
          data-category="internship ui-ux">
-        <div class="card-image card-image-height-featured">
+        <div class="card-image">
           <img src="./Images/Chart 2.png" alt="Fraud Detection Dashboard" />
           <span class="scrawl-note" style="bottom: 24px; left: 20px;">← AI-driven flags!</span>
         </div>
@@ -1078,7 +976,6 @@
   </div>
   <!-- /projects-wrap -->
 
-  <!-- FOOTER -->
   <footer>
     <p>© 2025 Inayat Gulati</p>
     <p>Vancouver, BC</p>
@@ -1142,9 +1039,6 @@
     const projectCards = document.querySelectorAll('.project-card');
     const countEl = document.getElementById('visibleCount');
 
-    // Featured card should only span 2 cols when visible
-    const featuredCard = document.querySelector('.project-card.featured');
-
     function updateCount() {
       const visible = document.querySelectorAll('.project-card:not([style*="display: none"])').length;
       if (countEl) countEl.textContent = visible;
@@ -1165,7 +1059,6 @@
             card.style.display = '';
             card.style.opacity = '0';
             card.style.transform = 'translateY(16px)';
-            // Re-apply featured span only on "all"
             if (card.classList.contains('featured')) {
               card.style.gridColumn = (filter === 'all') ? 'span 2' : 'span 1';
             }
