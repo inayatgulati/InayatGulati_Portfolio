@@ -467,14 +467,13 @@
       transform: scale(1.04);
     }
 
-    .card-image-height-regular { min-height: 240px; }
-    .card-image-height-featured { min-height: 340px; }
+   .card-image { height: 240px; }
 
     /* Featured: image sits beside content, no bottom border, right border instead */
     .project-card.featured .card-image {
-      border-bottom: none;
-      border-right: 2px solid var(--ink);
-      min-height: 340px;
+       height: 240px; /* same as others */
+  border-right: 2px solid var(--ink);
+  border-bottom: none;
     }
 
     /* ===== CARD BODY ===== */
@@ -920,7 +919,7 @@
       <a href="./Projects/Mastercard_Project.html"
          class="project-card reveal"
          data-category="internship ui-ux web">
-        <div class="card-image card-image-height-regular">
+        <div class="card-image">
           <img src="./Images/Mastercard.png" alt="Mastercard SharePoint" />
         </div>
         <div class="card-body">
@@ -943,7 +942,7 @@
       <a href="./Projects/Pawth_Project.html"
          class="project-card reveal"
          data-category="mobile ui-ux">
-        <div class="card-image card-image-height-regular">
+        <div class="card-image">
           <video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video>
         </div>
         <div class="card-body">
@@ -965,7 +964,7 @@
       <a href="./Projects/Chemtrails_Project.html"
          class="project-card reveal"
          data-category="mobile ui-ux">
-        <div class="card-image card-image-height-regular">
+        <div class="card-image">
           <img src="./Images/SigninPage.png" alt="Chemtrails Travel App" />
         </div>
         <div class="card-body">
@@ -987,7 +986,7 @@
       <a href="./Projects/Fitness_App.html"
          class="project-card reveal"
          data-category="mobile ui-ux">
-        <div class="card-image card-image-height-regular">
+        <div class="card-image">
           <img src="./Images/Interface.png" alt="Fitness App" />
         </div>
         <div class="card-body">
@@ -1010,7 +1009,7 @@
       <a href="./Projects/Discoverisola_project.html"
          class="project-card reveal"
          data-category="ui-ux web">
-        <div class="card-image card-image-height-regular">
+        <div class="card-image">
           <img src="./Images/IsolaDesign.png" alt="Discover Isola Milan" />
         </div>
         <div class="card-body">
@@ -1033,7 +1032,7 @@
       <a href="./Projects/SojoyScribbles.html"
          class="project-card reveal"
          data-category="web ui-ux">
-        <div class="card-image card-image-height-regular">
+        <div class="card-image">
           <img src="./Images/Sojoy Scribble.png" alt="Sojoy Scribbles" />
         </div>
         <div class="card-body">
@@ -1055,7 +1054,7 @@
       <a href="./Projects/Sculpturepavilion.html"
          class="project-card reveal"
          data-category="3d">
-        <div class="card-image card-image-height-regular">
+        <div class="card-image">
           <img src="./Images/Sculpture.png" alt="Sculpture Pavilion" />
         </div>
         <div class="card-body">
