@@ -1,1720 +1,3661 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inayat — UX/UI Designer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=DM+Serif+Display&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --paper: #faf8f2;
-    --paper-dark: #f0ecdf;
-    --paper-worn: #e8e2d0;
-    --ink: #1a1612;
-    --ink-light: #3d3530;
-    --ink-faint: #8a7f72;
-    --pencil: #b8b0a0;
-    --pencil-light: #d4cfc4;
-    --accent-red: #c0392b;
-    --accent-blue: #2c5f8a;
-    --accent-yellow: #e8b84b;
-    --accent-green: #3a7d44;
-    --accent-orange: #c96a2b;
-    --font-hand: 'Caveat', cursive;
-    --font-scrawl: 'Reenie Beanie', cursive;
-    --font-mono: 'Space Mono', monospace;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--font-hand);
-    font-size: 18px;
-    line-height: 1.6;
-    overflow-x: hidden;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M3 17 L8 8 L14 14 Z' fill='%231a1612' stroke='%231a1612' stroke-width='0.5'/%3E%3Crect x='13' y='2' width='3' height='10' rx='1' transform='rotate(45 14.5 7)' fill='%231a1612'/%3E%3C/svg%3E"), auto;
-  }
-
-  /* Paper texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.13) 27px, rgba(180,170,155,0.13) 28px),
-      repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(180,170,155,0.05) 27px, rgba(180,170,155,0.05) 28px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Paper grain overlay */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
-  }
-
-  /* Tape strip element */
-  .tape {
-    position: absolute;
-    background: rgba(232, 184, 75, 0.35);
-    border-top: 1px solid rgba(232,184,75,0.4);
-    border-bottom: 1px solid rgba(232,184,75,0.4);
-    height: 22px;
-    width: 60px;
-    z-index: 10;
-    pointer-events: none;
-  }
-
-  /* Corner fold */
-  .corner-fold {
-    position: absolute;
-    bottom: 0; right: 0;
-    width: 28px; height: 28px;
-    background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
-    border-top: 1px solid var(--pencil);
-    border-left: 1px solid var(--pencil);
-    z-index: 5;
-    pointer-events: none;
-  }
-
-  /* SVG rough filter */
-  .rough-filter { position: absolute; width: 0; height: 0; }
-
-  /* ===== NAV ===== */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--paper);
-    border-bottom: 2.5px solid var(--ink);
-    padding: 14px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  /* Slight coffee-ring stain on nav */
-  nav::after {
-    content: '';
-    position: absolute;
-    right: 160px; bottom: -18px;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(160,130,90,0.18);
-    pointer-events: none;
-  }
-
-  .nav-logo {
-    font-family: var(--font-hand);
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    position: relative;
-  }
-
-  .nav-logo::after {
-    content: '';
-    position: absolute;
-    bottom: -2px; left: 0; right: 0;
-    height: 3px;
-    background: var(--accent-red);
-    border-radius: 2px;
-    transform: rotate(-0.8deg);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: var(--font-hand);
-    font-size: 17px;
-    color: var(--ink);
-    text-decoration: none;
-    position: relative;
-    padding-bottom: 2px;
-    transition: color 0.2s;
-  }
-
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
-    background: var(--ink);
-    transition: width 0.25s;
-    border-radius: 1px;
-  }
-
-  .nav-links a:hover::after { width: 100%; }
-
-  /* ===== HERO ===== */
-  .hero {
-    position: relative;
-    min-height: 90vh;
-    display: flex;
-    align-items: center;
-    padding: 80px 48px 60px;
-    overflow: hidden;
-  }
-
-  .hero-bg-doodles {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.55;
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 680px;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    color: var(--ink-faint);
-    margin-bottom: 24px;
-    text-transform: uppercase;
-  }
-
-  .hero-tag::before {
-    content: '';
-    display: inline-block;
-    width: 24px; height: 2px;
-    background: var(--accent-red);
-  }
-
-  .hero-name {
-    font-family: var(--font-hand);
-    font-size: clamp(52px, 8vw, 96px);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -2px;
-    margin-bottom: 8px;
-  }
-
-  .hero-name .underline-squiggle {
-    position: relative;
-    display: inline-block;
-  }
-
-  .hero-name .underline-squiggle svg {
-    position: absolute;
-    bottom: -8px;
-    left: -4px;
-    width: calc(100% + 8px);
-    pointer-events: none;
-  }
-
-  .hero-roles {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin: 24px 0 32px;
-  }
-
-  .role-pill {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    padding: 6px 14px;
-    border: 2px solid var(--ink);
-    border-radius: 0;
-    background: transparent;
-    text-transform: uppercase;
-    position: relative;
-    transform: rotate(-0.5deg);
-    transition: transform 0.2s, background 0.2s;
-  }
-
-  .role-pill:nth-child(2) { transform: rotate(0.8deg); }
-  .role-pill:nth-child(3) { transform: rotate(-0.3deg); }
-  .role-pill.filled { background: var(--ink); color: var(--paper); }
-
-  .hero-desc {
-    font-family: var(--font-hand);
-    font-size: 20px;
-    color: var(--ink-light);
-    max-width: 520px;
-    line-height: 1.55;
-    margin-bottom: 40px;
-  }
-
-  .hero-cta-group { display: flex; gap: 16px; flex-wrap: wrap; }
-
-  .btn-sketch {
-    font-family: var(--font-hand);
-    font-size: 18px;
-    font-weight: 700;
-    padding: 12px 28px;
-    border: 2.5px solid var(--ink);
-    background: transparent;
-    color: var(--ink);
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    transition: all 0.2s;
-    transform: rotate(-0.4deg);
-  }
-
-  .btn-sketch::after {
-    content: '';
-    position: absolute;
-    bottom: -4px; right: -4px;
-    width: 100%; height: 100%;
-    border: 2px solid var(--ink);
-    z-index: -1;
-    opacity: 0.3;
-    transition: all 0.2s;
-  }
-
-  .btn-sketch:hover { transform: rotate(0deg) translate(-2px, -2px); }
-  .btn-sketch:hover::after { bottom: -6px; right: -6px; opacity: 0.5; }
-  .btn-sketch.primary { background: var(--ink); color: var(--paper); }
-
-  /* ===== STICKY NOTE ===== */
-  .hero-sticky {
-    position: absolute;
-    right: 8%;
-    top: 50%;
-    transform: translateY(-50%) rotate(3deg);
-    z-index: 3;
-    width: 220px;
-    transition: transform 0.3s ease;
-  }
-
-  .hero-sticky:hover {
-    transform: translateY(-52%) rotate(1deg) scale(1.04);
-  }
-
-  .sticky-note {
-    background: var(--accent-yellow);
-    padding: 20px 20px 32px;
-    border: 1.5px solid rgba(0,0,0,0.15);
-    box-shadow: 4px 5px 0 rgba(0,0,0,0.12);
-    font-family: var(--font-hand);
-    font-size: 16px;
-    line-height: 1.5;
-    color: #2a1f00;
-    position: relative;
-  }
-
-  .sticky-note::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 40px; height: 8px;
-    background: rgba(0,0,0,0.15);
-    border-radius: 0 0 2px 2px;
-  }
-
-  .sticky-label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(0,0,0,0.4);
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  /* ===== DOODLE MARGIN STRIP ===== */
-  .margin-strip {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 44px;
-    border-right: 2px solid rgba(192,57,43,0.2);
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  /* ===== SECTION ===== */
-  section { position: relative; padding: 80px 48px; }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 56px;
-  }
-
-  .section-num {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.1em;
-  }
-
-  .section-title {
-    font-family: var(--font-hand);
-    font-size: 36px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    position: relative;
-  }
-
-  /* Hand-drawn circle around section title */
-  .section-title::before {
-    content: '';
-    position: absolute;
-    inset: -6px -12px;
-    border: 2px solid var(--pencil);
-    border-radius: 50% 48% 52% 46% / 48% 50% 46% 52%;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-  }
-
-  .section-header:hover .section-title::before { opacity: 1; }
-
-  .section-line {
-    flex: 1;
-    height: 1.5px;
-    background: var(--ink);
-    opacity: 0.2;
-  }
-
-  /* ===== PROJECT CARDS ===== */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-  }
-
-  .project-card {
-    border: 2px solid var(--ink);
-    background: var(--paper);
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.25s, box-shadow 0.25s;
-    text-decoration: none;
-    color: var(--ink);
-    display: block;
-    cursor: pointer;
-  }
-
-  /* Torn paper edge on cards */
-  .project-card::after {
-    content: '';
-    position: absolute;
-    bottom: -5px; right: -5px;
-    width: 100%; height: 100%;
-    border: 2px solid var(--ink);
-    opacity: 0.2;
-    z-index: 0;
-    transition: all 0.25s;
-  }
-
-  .project-card:hover { transform: translate(-3px, -3px); }
-  .project-card:hover::after { bottom: -8px; right: -8px; opacity: 0.35; }
-
-  .project-card.featured {
-    grid-column: span 2;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .card-visual {
-    background: var(--paper-dark);
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 2px solid var(--ink);
-    position: relative;
-    overflow: hidden;
-    padding: 32px;
-  }
-
-  /* Ruled lines inside card visuals */
-  .card-visual::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(180,170,155,0.15) 23px, rgba(180,170,155,0.15) 24px);
-    pointer-events: none;
-  }
-
-  .project-card.featured .card-visual {
-    border-bottom: none;
-    border-right: 2px solid var(--ink);
-    min-height: 280px;
-  }
-
-  .card-body { padding: 24px; position: relative; z-index: 1; }
-
-  /* Tape on featured card */
-  .project-card.featured .card-body::before {
-    content: '';
-    position: absolute;
-    top: -11px; left: 30px;
-    width: 50px; height: 22px;
-    background: rgba(232,184,75,0.35);
-    border-top: 1px solid rgba(232,184,75,0.5);
-    border-bottom: 1px solid rgba(232,184,75,0.5);
-    transform: rotate(-1.5deg);
-    pointer-events: none;
-  }
-
-  .card-tags {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
-  }
-
-  .card-tag {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border: 1.5px solid var(--ink);
-    opacity: 0.6;
-  }
-
-  .card-title {
-    font-family: var(--font-hand);
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    line-height: 1.2;
-  }
-
-  .card-desc {
-    font-family: var(--font-hand);
-    font-size: 16px;
-    color: var(--ink-light);
-    margin-bottom: 16px;
-    line-height: 1.5;
-  }
-
-  .card-metric {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--accent-green);
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
-  .card-metric::before { content: '↑'; font-size: 14px; }
-
-  .card-arrow {
-    display: inline-block;
-    margin-top: 16px;
-    font-family: var(--font-hand);
-    font-size: 15px;
-    color: var(--ink-faint);
-    text-decoration: none;
-    transition: all 0.2s;
-    border-bottom: 1.5px solid var(--pencil);
-  }
-
-  .project-card:hover .card-arrow { color: var(--ink); border-color: var(--ink); }
-
-  /* ===== SCRAPBOOK DIVIDER ===== */
-  .scrap-divider {
-    position: relative;
-    height: 40px;
-    overflow: visible;
-    pointer-events: none;
-  }
-
-  /* ===== ABOUT SECTION ===== */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    align-items: start;
-  }
-
-  .about-text {
-    font-family: var(--font-hand);
-    font-size: 20px;
-    line-height: 1.7;
-    color: var(--ink-light);
-    position: relative;
-  }
-
-  .about-text strong { color: var(--ink); font-weight: 700; }
-
-  /* Highlighter effect */
-  .highlight-yellow {
-    background: linear-gradient(120deg, rgba(232,184,75,0) 0%, rgba(232,184,75,0.45) 10%, rgba(232,184,75,0.45) 90%, rgba(232,184,75,0) 100%);
-    padding: 0 2px;
-  }
-
-  .highlight-blue {
-    background: linear-gradient(120deg, rgba(44,95,138,0) 0%, rgba(44,95,138,0.18) 10%, rgba(44,95,138,0.18) 90%, rgba(44,95,138,0) 100%);
-    padding: 0 2px;
-  }
-
-  /* Margin note */
-  .margin-note {
-    position: absolute;
-    left: -110px;
-    top: 0;
-    width: 90px;
-    font-family: var(--font-scrawl);
-    font-size: 15px;
-    color: var(--accent-red);
-    line-height: 1.3;
-    transform: rotate(-3deg);
-    pointer-events: none;
-  }
-
-  .margin-note::after {
-    content: '';
-    display: block;
-    width: 30px;
-    height: 1px;
-    background: var(--accent-red);
-    margin-top: 4px;
-    transform: rotate(2deg);
-  }
-
-  .skills-board {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .skill-cluster {
-    border: 2px solid var(--ink);
-    padding: 16px;
-    position: relative;
-    background: var(--paper);
-    transition: transform 0.2s;
-  }
-
-  .skill-cluster:hover { transform: rotate(0deg) !important; }
-
-  .skill-cluster-label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-bottom: 10px;
-  }
-
-  .skill-item {
-    font-family: var(--font-hand);
-    font-size: 16px;
-    color: var(--ink-light);
-    padding: 2px 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .skill-item::before { content: '—'; color: var(--pencil); font-size: 14px; }
-
-  /* ===== SKETCHBOOK PAGE TURN EFFECT ===== */
-  .page-edge {
-    position: relative;
-  }
-
-  .page-edge::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 6px;
-    background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, transparent 100%);
-    pointer-events: none;
-  }
-
-  /* ===== WASHI TAPE BANNER ===== */
-  .washi-banner {
-    position: relative;
-    margin: 0 -48px;
-    padding: 10px 64px;
-    background: rgba(44,95,138,0.12);
-    border-top: 1.5px solid rgba(44,95,138,0.25);
-    border-bottom: 1.5px solid rgba(44,95,138,0.25);
-    font-family: var(--font-scrawl);
-    font-size: 18px;
-    color: var(--accent-blue);
-    letter-spacing: 0.08em;
-    overflow: hidden;
-    white-space: nowrap;
-    transform: rotate(-0.3deg);
-  }
-
-  .washi-banner-inner {
-    display: inline-block;
-    animation: marquee 22s linear infinite;
-  }
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  /* ===== PROCESS STRIP ===== */
-  .process-strip {
-    display: flex;
-    gap: 0;
-    align-items: center;
-    flex-wrap: wrap;
-    border: 2px solid var(--ink);
-    background: var(--paper);
-    padding: 16px 20px;
-    transform: rotate(-0.5deg);
-    position: relative;
-    margin-top: 32px;
-  }
-
-  /* Tape on process strip */
-  .process-strip::before {
-    content: '';
-    position: absolute;
-    top: -11px; left: 20px;
-    width: 50px; height: 22px;
-    background: rgba(231, 178, 54, 0.4);
-    border-top: 1px solid rgba(232,184,75,0.5);
-    border-bottom: 1px solid rgba(232,184,75,0.5);
-    transform: rotate(1deg);
-  }
-
-  .process-strip-label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-bottom: 10px;
-    width: 100%;
-  }
-
-  .process-step {
-    font-family: var(--font-hand);
-    font-size: 16px;
-    color: var(--ink-light);
-    padding: 4px 10px;
-    border: 1.5px solid var(--pencil);
-    transition: background 0.2s;
-  }
-
-  .process-step:hover { background: var(--paper-dark); }
-  .process-step.done { color: var(--ink); border-color: var(--ink); background: var(--paper-dark); font-weight: 700; }
-
-  .process-arrow { color: var(--pencil); padding: 0 6px; }
-
-  /* ===== CONTACT ===== */
-  .contact-section {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 80px 48px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .contact-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(255,255,255,0.04) 27px, rgba(255,255,255,0.04) 28px);
-    pointer-events: none;
-  }
-
-  /* Red margin line on dark section */
-  .contact-section::after {
-    content: '';
-    position: absolute;
-    left: 80px; top: 0; bottom: 0;
-    width: 1.5px;
-    background: rgba(192,57,43,0.3);
-    pointer-events: none;
-  }
-
-  .contact-inner { position: relative; z-index: 1; max-width: 600px; }
-
-  .contact-title {
-    font-family: var(--font-hand);
-    font-size: 56px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 20px;
-    letter-spacing: -1px;
-  }
-
-  .contact-sub {
-    font-family: var(--font-hand);
-    font-size: 18px;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 40px;
-    line-height: 1.55;
-  }
-
-  .contact-links { display: flex; flex-direction: column; gap: 16px; }
-
-  .contact-link {
-    font-family: var(--font-hand);
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--paper);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    transition: opacity 0.2s;
-    border-bottom: 2px solid rgba(255,255,255,0.2);
-    padding-bottom: 6px;
-  }
-
-  .contact-link:hover { opacity: 0.7; }
-
-  /* ===== FOOTER ===== */
-  footer {
-    border-top: 2px solid var(--ink);
-    padding: 20px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--paper);
-    position: relative;
-  }
-
-  footer p {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-  }
-
-  /* ===== SKETCH ILLUSTRATIONS ===== */
-  .sketch-illustration { width: 100%; height: 100%; }
-
-  /* ===== SCROLL REVEAL ===== */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* ===== PENCIL CURSOR TRAIL ===== */
-  .cursor-dot {
-    position: fixed;
-    width: 4px; height: 4px;
-    background: rgba(26,22,18,0.25);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: opacity 0.4s ease;
-  }
-
-  /* ===== DOODLE ANNOTATION ===== */
-  .annotation {
-    position: absolute;
-    font-family: var(--font-scrawl);
-    font-size: 15px;
-    color: var(--accent-red);
-    pointer-events: none;
-    line-height: 1.3;
-    transform: rotate(-4deg);
-  }
-
-  /* ===== NOTEBOOK SPIRAL ===== */
-  .spiral-binding {
-    position: fixed;
-    left: 0; top: 0; bottom: 0;
-    width: 32px;
-    background: var(--paper-worn);
-    border-right: 2.5px solid var(--ink);
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 24px;
-    gap: 0;
-    pointer-events: none;
-  }
-
-  .spiral-hole {
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    border: 2px solid var(--ink);
-    background: var(--paper);
-    margin-bottom: 28px;
-    flex-shrink: 0;
-    box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
-  }
-
-  /* Push content right of spiral */
-  nav, .hero, section, .washi-banner, .contact-section, footer {
-    margin-left: 32px;
-  }
-
-  /* ===== BOT STYLES ===== */
-  .bot-bubble {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-  }
-
-  .bot-toggle {
-    width: 58px; height: 58px;
-    background: var(--ink);
-    border: 2.5px solid var(--ink);
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    box-shadow: 3px 3px 0 rgba(0,0,0,0.18);
-    transition: transform 0.2s;
-    position: relative;
-  }
-
-  .bot-toggle:hover { transform: scale(1.08) rotate(-4deg); }
-
-  .bot-toggle-label {
-    position: absolute;
-    bottom: 66px; right: 0;
-    background: var(--accent-yellow);
-    border: 2px solid var(--ink);
-    padding: 5px 10px;
-    font-family: var(--font-hand);
-    font-size: 13px;
-    color: #2a1f00;
-    white-space: nowrap;
-    transform: rotate(-2deg);
-    box-shadow: 2px 2px 0 rgba(0,0,0,0.12);
-    pointer-events: none;
-  }
-
-  .bot-toggle-label::after {
-    content: '';
-    position: absolute;
-    bottom: -8px; right: 14px;
-    width: 0; height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 8px solid var(--ink);
-  }
-
-  .bot-window {
-    width: 300px;
-    background: var(--paper);
-    border: 2.5px solid var(--ink);
-    box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
-    display: none;
-    flex-direction: column;
-    transform: rotate(-0.5deg);
-    overflow: hidden;
-  }
-
-  .bot-window.open { display: flex; }
-
-  .bot-header {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 12px 16px;
-    font-family: var(--font-hand);
-    font-size: 17px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .bot-header-left { display: flex; align-items: center; gap: 8px; }
-
-  .bot-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--accent-yellow);
-    animation: blink 1.8s infinite;
-  }
-
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  .bot-close {
-    background: none; border: none;
-    color: var(--paper); font-size: 20px;
-    cursor: pointer; font-family: var(--font-hand);
-    opacity: 0.7; padding: 0 2px;
-  }
-  .bot-close:hover { opacity: 1; }
-
-  .bot-messages {
-    padding: 14px;
-    min-height: 160px; max-height: 260px;
-    overflow-y: auto;
-    display: flex; flex-direction: column; gap: 10px;
-    background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(180,170,155,0.1) 27px, rgba(180,170,155,0.1) 28px);
-  }
-
-  .bot-msg {
-    font-family: var(--font-hand);
-    font-size: 16px;
-    line-height: 1.45;
-    padding: 10px 14px;
-    border: 1.5px solid var(--ink);
-    background: var(--paper-dark);
-    max-width: 240px;
-    position: relative;
-    animation: msgIn 0.25s ease;
-  }
-
-  @keyframes msgIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-
-  .bot-msg.user {
-    align-self: flex-end;
-    background: var(--ink); color: var(--paper);
-    border-color: var(--ink);
-    transform: rotate(0.4deg);
-  }
-  .bot-msg.bot { transform: rotate(-0.5deg); }
-
-  .bot-quick {
-    padding: 10px 14px;
-    border-top: 1.5px solid var(--pencil);
-    display: flex; flex-wrap: wrap; gap: 6px;
-  }
-
-  .bot-chip {
-    font-family: var(--font-hand);
-    font-size: 13px;
-    padding: 4px 10px;
-    border: 1.5px solid var(--ink);
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.15s;
-    transform: rotate(-0.5deg);
-  }
-  .bot-chip:hover { background: var(--ink); color: var(--paper); }
-
-  .bot-input-row { display: flex; border-top: 2px solid var(--ink); }
-
-  .bot-input {
-    flex: 1;
-    padding: 10px 12px;
-    font-family: var(--font-hand);
-    font-size: 16px;
-    border: none; background: var(--paper);
-    color: var(--ink); outline: none;
-  }
-
-  .bot-send {
-    padding: 10px 14px;
-    background: var(--ink); color: var(--paper);
-    border: none; font-family: var(--font-hand);
-    font-size: 18px; cursor: pointer;
-    border-left: 2px solid var(--ink);
-    transition: opacity 0.15s;
-  }
-  .bot-send:hover { opacity: 0.75; }
-
-  .bot-typing {
-    font-family: var(--font-hand);
-    font-size: 14px;
-    color: var(--ink-faint);
-    padding: 0 14px 8px;
-    display: none;
-  }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 768px) {
-    .spiral-binding { display: none; }
-    nav, .hero, section, .washi-banner, .contact-section, footer { margin-left: 0; }
-    nav { padding: 14px 24px; }
-    .hero { padding: 60px 24px 48px; min-height: auto; }
-    .hero-sticky { display: none; }
-    section { padding: 60px 24px; }
-    .projects-grid { grid-template-columns: 1fr; }
-    .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
-    .project-card.featured .card-visual { border-right: none; border-bottom: 2px solid var(--ink); }
-    .about-grid { grid-template-columns: 1fr; gap: 32px; }
-    .skills-board { grid-template-columns: 1fr; }
-    .contact-section { padding: 60px 24px; }
-    footer { flex-direction: column; gap: 8px; text-align: center; }
-    .margin-note { display: none; }
-  }
-</style>
-</head>
-<body>
-
-<!-- Pencil cursor trail dots -->
-<div id="cursorTrail"></div>
-
-<!-- SVG rough filter -->
-<svg class="rough-filter" aria-hidden="true">
-  <defs>
-    <filter id="rough">
-      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" result="noise"/>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G"/>
-    </filter>
-  </defs>
-</svg>
-
-<!-- Notebook spiral binding -->
-<div class="spiral-binding" aria-hidden="true">
-  <!-- Generate spiral holes via JS -->
-</div>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Inayat</div>
-  <ul class="nav-links">
-    <li><a href="Projects.html">More Projects</a></li>
-    <li><a href="./Playground.html">Playground</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
-    <li><a href="Playground.html">Playground</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="margin-strip"></div>
-
-  <!-- Background architectural doodles -->
-  <svg class="hero-bg-doodles" viewBox="0 0 1400 800" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <line x1="900" y1="60" x2="1380" y2="60" stroke="#1a1612" stroke-width="0.8" stroke-dasharray="4 4"/>
-    <line x1="900" y1="56" x2="900" y2="64" stroke="#1a1612" stroke-width="1"/>
-    <line x1="1380" y1="56" x2="1380" y2="64" stroke="#1a1612" stroke-width="1"/>
-    <text x="1140" y="54" font-family="Space Mono, monospace" font-size="10" fill="#1a1612" text-anchor="middle" opacity="0.5">480px</text>
-    <rect x="940" y="80" width="160" height="100" stroke="#1a1612" stroke-width="1" fill="none" opacity="0.4"/>
-    <rect x="1100" y="80" width="90" height="60" stroke="#1a1612" stroke-width="1" fill="none" opacity="0.4"/>
-    <line x1="940" y1="120" x2="1100" y2="120" stroke="#1a1612" stroke-width="0.5" opacity="0.3"/>
-    <line x1="990" y1="80" x2="990" y2="180" stroke="#1a1612" stroke-width="0.5" opacity="0.3"/>
-    <rect x="1240" y="120" width="100" height="180" rx="10" stroke="#1a1612" stroke-width="1.5" fill="none" opacity="0.35"/>
-    <rect x="1252" y="138" width="76" height="110" stroke="#1a1612" stroke-width="1" fill="none" opacity="0.25"/>
-    <line x1="1265" y1="255" x2="1315" y2="255" stroke="#1a1612" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
-    <rect x="1256" y="142" width="68" height="12" rx="2" stroke="#1a1612" stroke-width="0.7" fill="none" opacity="0.25"/>
-    <rect x="1256" y="160" width="30" height="30" rx="2" stroke="#1a1612" stroke-width="0.7" fill="none" opacity="0.25"/>
-    <rect x="1292" y="160" width="32" height="30" rx="2" stroke="#1a1612" stroke-width="0.7" fill="none" opacity="0.25"/>
-    <rect x="1256" y="196" width="68" height="8" rx="1" stroke="#1a1612" stroke-width="0.7" fill="none" opacity="0.2"/>
-    <rect x="1256" y="210" width="50" height="8" rx="1" stroke="#1a1612" stroke-width="0.7" fill="none" opacity="0.2"/>
-    <path d="M1340 160 C1360 150 1370 140 1380 120" stroke="#c0392b" stroke-width="1.2" fill="none" stroke-dasharray="3 3"/>
-    <polygon points="1380,116 1375,126 1385,123" fill="#c0392b" opacity="0.7"/>
-    <text x="1350" y="170" font-family="Caveat, cursive" font-size="13" fill="#c0392b" transform="rotate(-8, 1350, 170)" opacity="0.8">tested!</text>
-    <!-- Extra scrawled building sketch -->
-    <g opacity="0.13" transform="translate(950, 400)">
-      <rect x="0" y="60" width="40" height="80" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-      <rect x="45" y="30" width="55" height="110" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-      <rect x="105" y="50" width="35" height="90" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-      <rect x="8" y="80" width="10" height="14" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-      <rect x="22" y="80" width="10" height="14" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-      <rect x="53" y="50" width="12" height="16" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-      <rect x="70" y="50" width="12" height="16" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-      <rect x="53" y="75" width="12" height="16" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-      <rect x="70" y="75" width="12" height="16" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-      <line x1="0" y1="140" x2="145" y2="140" stroke="#1a1612" stroke-width="1.5"/>
-      <text x="20" y="158" font-family="Caveat, cursive" font-size="14" fill="#c0392b" transform="rotate(-2,20,158)">↑ city doodle</text>
-    </g>
-    <!-- Erased smudge area -->
-    <ellipse cx="700" cy="680" rx="120" ry="30" fill="rgba(180,170,155,0.08)"/>
-    <g opacity="0.12" transform="translate(0, 600)">
-      <line x1="0" y1="0" x2="300" y2="0" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="0" y1="40" x2="300" y2="40" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="0" y1="80" x2="300" y2="80" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="0" y1="120" x2="300" y2="120" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="0" y1="0" x2="0" y2="160" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="60" y1="0" x2="60" y2="160" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="120" y1="0" x2="120" y2="160" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="180" y1="0" x2="180" y2="160" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="240" y1="0" x2="240" y2="160" stroke="#1a1612" stroke-width="0.5"/>
-      <line x1="300" y1="0" x2="300" y2="160" stroke="#1a1612" stroke-width="0.5"/>
-    </g>
-    <g transform="translate(1320, 580)" opacity="0.2">
-      <circle cx="0" cy="0" r="30" stroke="#1a1612" stroke-width="0.8" fill="none"/>
-      <circle cx="0" cy="0" r="4" stroke="#1a1612" stroke-width="0.8" fill="none"/>
-      <line x1="0" y1="-30" x2="0" y2="30" stroke="#1a1612" stroke-width="0.6"/>
-      <line x1="-30" y1="0" x2="30" y2="0" stroke="#1a1612" stroke-width="0.6"/>
-      <polygon points="0,-34 -5,-14 0,-18 5,-14" fill="#1a1612"/>
-      <text x="0" y="-38" font-family="Space Mono, monospace" font-size="8" fill="#1a1612" text-anchor="middle">N</text>
-    </g>
-    <g transform="translate(60, 680)" opacity="0.18">
-      <line x1="0" y1="10" x2="0" y2="0" stroke="#1a1612" stroke-width="1.2"/>
-      <line x1="0" y1="0" x2="10" y2="0" stroke="#1a1612" stroke-width="1.2"/>
-      <line x1="60" y1="0" x2="70" y2="0" stroke="#1a1612" stroke-width="1.2"/>
-      <line x1="70" y1="0" x2="70" y2="10" stroke="#1a1612" stroke-width="1.2"/>
-      <line x1="0" y1="50" x2="0" y2="60" stroke="#1a1612" stroke-width="1.2"/>
-      <line x1="0" y1="60" x2="10" y2="60" stroke="#1a1612" stroke-width="1.2"/>
-      <line x1="60" y1="60" x2="70" y2="60" stroke="#1a1612" stroke-width="1.2"/>
-      <line x1="70" y1="50" x2="70" y2="60" stroke="#1a1612" stroke-width="1.2"/>
-      <text x="5" y="40" font-family="Space Mono, monospace" font-size="8" fill="#1a1612">Frame 01</text>
-    </g>
-  </svg>
-
-  <div class="hero-content">
-    <div class="hero-tag">Vancouver-based designer</div>
-    <h1 class="hero-name">
-      Hi, I'm
-      <span class="underline-squiggle">
-        Inayat
-        <svg viewBox="0 0 200 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2,8 C20,3 45,14 70,7 C95,2 120,13 145,6 C165,2 185,10 198,7" stroke="#c0392b" stroke-width="3" fill="none" stroke-linecap="round"/>
-        </svg>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inayat — UX/UI Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Reenie+Beanie&family=Kalam:wght@300;400;700&family=DM+Serif+Display&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #faf8f2;
+        --paper-dark: #f0ecdf;
+        --paper-worn: #e8e2d0;
+        --ink: #1a1612;
+        --ink-light: #3d3530;
+        --ink-faint: #8a7f72;
+        --pencil: #b8b0a0;
+        --pencil-light: #d4cfc4;
+        --accent-red: #c0392b;
+        --accent-blue: #2c5f8a;
+        --accent-yellow: #e8b84b;
+        --accent-green: #3a7d44;
+        --accent-orange: #c96a2b;
+        --font-hand: "Caveat", cursive;
+        --font-scrawl: "Reenie Beanie", cursive;
+        --font-mono: "Space Mono", monospace;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-hand);
+        font-size: 18px;
+        line-height: 1.6;
+        overflow-x: hidden;
+        cursor:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M3 17 L8 8 L14 14 Z' fill='%231a1612' stroke='%231a1612' stroke-width='0.5'/%3E%3Crect x='13' y='2' width='3' height='10' rx='1' transform='rotate(45 14.5 7)' fill='%231a1612'/%3E%3C/svg%3E"),
+          auto;
+      }
+
+      /* Paper texture */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 27px,
+            rgba(180, 170, 155, 0.13) 27px,
+            rgba(180, 170, 155, 0.13) 28px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 27px,
+            rgba(180, 170, 155, 0.05) 27px,
+            rgba(180, 170, 155, 0.05) 28px
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Paper grain overlay */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.5;
+      }
+
+      /* Tape strip element */
+      .tape {
+        position: absolute;
+        background: rgba(232, 184, 75, 0.35);
+        border-top: 1px solid rgba(232, 184, 75, 0.4);
+        border-bottom: 1px solid rgba(232, 184, 75, 0.4);
+        height: 22px;
+        width: 60px;
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      /* Corner fold */
+      .corner-fold {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(
+          225deg,
+          var(--paper-worn) 50%,
+          transparent 50%
+        );
+        border-top: 1px solid var(--pencil);
+        border-left: 1px solid var(--pencil);
+        z-index: 5;
+        pointer-events: none;
+      }
+
+      /* SVG rough filter */
+      .rough-filter {
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+
+      /* ===== NAV ===== */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--paper);
+        border-bottom: 2.5px solid var(--ink);
+        padding: 14px 48px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Slight coffee-ring stain on nav */
+      nav::after {
+        content: "";
+        position: absolute;
+        right: 160px;
+        bottom: -18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(160, 130, 90, 0.18);
+        pointer-events: none;
+      }
+
+      .nav-logo {
+        font-family: var(--font-hand);
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        position: relative;
+      }
+
+      .nav-logo::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--accent-red);
+        border-radius: 2px;
+        transform: rotate(-0.8deg);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-family: var(--font-hand);
+        font-size: 17px;
+        color: var(--ink);
+        text-decoration: none;
+        position: relative;
+        padding-bottom: 2px;
+        transition: color 0.2s;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--ink);
+        transition: width 0.25s;
+        border-radius: 1px;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* ===== HERO ===== */
+      .hero {
+        position: relative;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        padding: 80px 48px 60px;
+        overflow: hidden;
+      }
+
+      .hero-bg-doodles {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.55;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 680px;
+      }
+
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+        margin-bottom: 24px;
+        text-transform: uppercase;
+      }
+
+      .hero-tag::before {
+        content: "";
+        display: inline-block;
+        width: 24px;
+        height: 2px;
+        background: var(--accent-red);
+      }
+
+      .hero-name {
+        font-family: var(--font-hand);
+        font-size: clamp(52px, 8vw, 96px);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -2px;
+        margin-bottom: 8px;
+      }
+
+      .hero-name .underline-squiggle {
+        position: relative;
+        display: inline-block;
+      }
+
+      .hero-name .underline-squiggle svg {
+        position: absolute;
+        bottom: -8px;
+        left: -4px;
+        width: calc(100% + 8px);
+        pointer-events: none;
+      }
+
+      .hero-roles {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 24px 0 32px;
+      }
+
+      .role-pill {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        padding: 6px 14px;
+        border: 2px solid var(--ink);
+        border-radius: 0;
+        background: transparent;
+        text-transform: uppercase;
+        position: relative;
+        transform: rotate(-0.5deg);
+        transition:
+          transform 0.2s,
+          background 0.2s;
+      }
+
+      .role-pill:nth-child(2) {
+        transform: rotate(0.8deg);
+      }
+      .role-pill:nth-child(3) {
+        transform: rotate(-0.3deg);
+      }
+      .role-pill.filled {
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      .hero-desc {
+        font-family: var(--font-hand);
+        font-size: 20px;
+        color: var(--ink-light);
+        max-width: 520px;
+        line-height: 1.55;
+        margin-bottom: 40px;
+      }
+
+      .hero-cta-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .btn-sketch {
+        font-family: var(--font-hand);
+        font-size: 18px;
+        font-weight: 700;
+        padding: 12px 28px;
+        border: 2.5px solid var(--ink);
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        transition: all 0.2s;
+        transform: rotate(-0.4deg);
+      }
+
+      .btn-sketch::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        right: -4px;
+        width: 100%;
+        height: 100%;
+        border: 2px solid var(--ink);
+        z-index: -1;
+        opacity: 0.3;
+        transition: all 0.2s;
+      }
+
+      .btn-sketch:hover {
+        transform: rotate(0deg) translate(-2px, -2px);
+      }
+      .btn-sketch:hover::after {
+        bottom: -6px;
+        right: -6px;
+        opacity: 0.5;
+      }
+      .btn-sketch.primary {
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      /* ===== STICKY NOTE ===== */
+      .hero-sticky {
+        position: absolute;
+        right: 8%;
+        top: 50%;
+        transform: translateY(-50%) rotate(3deg);
+        z-index: 3;
+        width: 220px;
+        transition: transform 0.3s ease;
+      }
+
+      .hero-sticky:hover {
+        transform: translateY(-52%) rotate(1deg) scale(1.04);
+      }
+
+      .sticky-note {
+        background: var(--accent-yellow);
+        padding: 20px 20px 32px;
+        border: 1.5px solid rgba(0, 0, 0, 0.15);
+        box-shadow: 4px 5px 0 rgba(0, 0, 0, 0.12);
+        font-family: var(--font-hand);
+        font-size: 16px;
+        line-height: 1.5;
+        color: #2a1f00;
+        position: relative;
+      }
+
+      .sticky-note::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 8px;
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 0 0 2px 2px;
+      }
+
+      .sticky-label {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.4);
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      /* ===== DOODLE MARGIN STRIP ===== */
+      .margin-strip {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 44px;
+        border-right: 2px solid rgba(192, 57, 43, 0.2);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* ===== SECTION ===== */
+      section {
+        position: relative;
+        padding: 80px 48px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 56px;
+      }
+
+      .section-num {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--ink-faint);
+        letter-spacing: 0.1em;
+      }
+
+      .section-title {
+        font-family: var(--font-hand);
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        position: relative;
+      }
+
+      /* Hand-drawn circle around section title */
+      .section-title::before {
+        content: "";
+        position: absolute;
+        inset: -6px -12px;
+        border: 2px solid var(--pencil);
+        border-radius: 50% 48% 52% 46% / 48% 50% 46% 52%;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+      }
+
+      .section-header:hover .section-title::before {
+        opacity: 1;
+      }
+
+      .section-line {
+        flex: 1;
+        height: 1.5px;
+        background: var(--ink);
+        opacity: 0.2;
+      }
+
+      /* ===== PROJECT CARDS ===== */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px;
+      }
+
+      .project-card {
+        border: 2px solid var(--ink);
+        background: var(--paper);
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.25s,
+          box-shadow 0.25s;
+        text-decoration: none;
+        color: var(--ink);
+        display: block;
+        cursor: pointer;
+      }
+
+      /* Torn paper edge on cards */
+      .project-card::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        right: -5px;
+        width: 100%;
+        height: 100%;
+        border: 2px solid var(--ink);
+        opacity: 0.2;
+        z-index: 0;
+        transition: all 0.25s;
+      }
+
+      .project-card:hover {
+        transform: translate(-3px, -3px);
+      }
+      .project-card:hover::after {
+        bottom: -8px;
+        right: -8px;
+        opacity: 0.35;
+      }
+
+      .project-card.featured {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card-visual {
+        background: var(--paper-dark);
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid var(--ink);
+        position: relative;
+        overflow: hidden;
+        padding: 32px;
+      }
+
+      /* Ruled lines inside card visuals */
+      .card-visual::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 23px,
+          rgba(180, 170, 155, 0.15) 23px,
+          rgba(180, 170, 155, 0.15) 24px
+        );
+        pointer-events: none;
+      }
+
+      .project-card.featured .card-visual {
+        border-bottom: none;
+        border-right: 2px solid var(--ink);
+        min-height: 280px;
+      }
+
+      .card-body {
+        padding: 24px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Tape on featured card */
+      .project-card.featured .card-body::before {
+        content: "";
+        position: absolute;
+        top: -11px;
+        left: 30px;
+        width: 50px;
+        height: 22px;
+        background: rgba(232, 184, 75, 0.35);
+        border-top: 1px solid rgba(232, 184, 75, 0.5);
+        border-bottom: 1px solid rgba(232, 184, 75, 0.5);
+        transform: rotate(-1.5deg);
+        pointer-events: none;
+      }
+
+      .card-tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+
+      .card-tag {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border: 1.5px solid var(--ink);
+        opacity: 0.6;
+      }
+
+      .card-title {
+        font-family: var(--font-hand);
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        line-height: 1.2;
+      }
+
+      .card-desc {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        color: var(--ink-light);
+        margin-bottom: 16px;
+        line-height: 1.5;
+      }
+
+      .card-metric {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--accent-green);
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .card-metric::before {
+        content: "↑";
+        font-size: 14px;
+      }
+
+      .card-arrow {
+        display: inline-block;
+        margin-top: 16px;
+        font-family: var(--font-hand);
+        font-size: 15px;
+        color: var(--ink-faint);
+        text-decoration: none;
+        transition: all 0.2s;
+        border-bottom: 1.5px solid var(--pencil);
+      }
+
+      .project-card:hover .card-arrow {
+        color: var(--ink);
+        border-color: var(--ink);
+      }
+
+      /* ===== SCRAPBOOK DIVIDER ===== */
+      .scrap-divider {
+        position: relative;
+        height: 40px;
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      /* ===== ABOUT SECTION ===== */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: start;
+      }
+
+      .about-text {
+        font-family: var(--font-hand);
+        font-size: 20px;
+        line-height: 1.7;
+        color: var(--ink-light);
+        position: relative;
+      }
+
+      .about-text strong {
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      /* Highlighter effect */
+      .highlight-yellow {
+        background: linear-gradient(
+          120deg,
+          rgba(232, 184, 75, 0) 0%,
+          rgba(232, 184, 75, 0.45) 10%,
+          rgba(232, 184, 75, 0.45) 90%,
+          rgba(232, 184, 75, 0) 100%
+        );
+        padding: 0 2px;
+      }
+
+      .highlight-blue {
+        background: linear-gradient(
+          120deg,
+          rgba(44, 95, 138, 0) 0%,
+          rgba(44, 95, 138, 0.18) 10%,
+          rgba(44, 95, 138, 0.18) 90%,
+          rgba(44, 95, 138, 0) 100%
+        );
+        padding: 0 2px;
+      }
+
+      /* Margin note */
+      .margin-note {
+        position: absolute;
+        left: -110px;
+        top: 0;
+        width: 90px;
+        font-family: var(--font-scrawl);
+        font-size: 15px;
+        color: var(--accent-red);
+        line-height: 1.3;
+        transform: rotate(-3deg);
+        pointer-events: none;
+      }
+
+      .margin-note::after {
+        content: "";
+        display: block;
+        width: 30px;
+        height: 1px;
+        background: var(--accent-red);
+        margin-top: 4px;
+        transform: rotate(2deg);
+      }
+
+      .skills-board {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .skill-cluster {
+        border: 2px solid var(--ink);
+        padding: 16px;
+        position: relative;
+        background: var(--paper);
+        transition: transform 0.2s;
+      }
+
+      .skill-cluster:hover {
+        transform: rotate(0deg) !important;
+      }
+
+      .skill-cluster-label {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 10px;
+      }
+
+      .skill-item {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        color: var(--ink-light);
+        padding: 2px 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .skill-item::before {
+        content: "—";
+        color: var(--pencil);
+        font-size: 14px;
+      }
+
+      /* ===== SKETCHBOOK PAGE TURN EFFECT ===== */
+      .page-edge {
+        position: relative;
+      }
+
+      .page-edge::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.06) 0%,
+          transparent 100%
+        );
+        pointer-events: none;
+      }
+
+      /* ===== WASHI TAPE BANNER ===== */
+      .washi-banner {
+        position: relative;
+        margin: 0 -48px;
+        padding: 10px 64px;
+        background: rgba(44, 95, 138, 0.12);
+        border-top: 1.5px solid rgba(44, 95, 138, 0.25);
+        border-bottom: 1.5px solid rgba(44, 95, 138, 0.25);
+        font-family: var(--font-scrawl);
+        font-size: 18px;
+        color: var(--accent-blue);
+        letter-spacing: 0.08em;
+        overflow: hidden;
+        white-space: nowrap;
+        transform: rotate(-0.3deg);
+      }
+
+      .washi-banner-inner {
+        display: inline-block;
+        animation: marquee 22s linear infinite;
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* ===== PROCESS STRIP ===== */
+      .process-strip {
+        display: flex;
+        gap: 0;
+        align-items: center;
+        flex-wrap: wrap;
+        border: 2px solid var(--ink);
+        background: var(--paper);
+        padding: 16px 20px;
+        transform: rotate(-0.5deg);
+        position: relative;
+        margin-top: 32px;
+      }
+
+      /* Tape on process strip */
+      .process-strip::before {
+        content: "";
+        position: absolute;
+        top: -11px;
+        left: 20px;
+        width: 50px;
+        height: 22px;
+        background: rgba(231, 178, 54, 0.4);
+        border-top: 1px solid rgba(232, 184, 75, 0.5);
+        border-bottom: 1px solid rgba(232, 184, 75, 0.5);
+        transform: rotate(1deg);
+      }
+
+      .process-strip-label {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 10px;
+        width: 100%;
+      }
+
+      .process-step {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        color: var(--ink-light);
+        padding: 4px 10px;
+        border: 1.5px solid var(--pencil);
+        transition: background 0.2s;
+      }
+
+      .process-step:hover {
+        background: var(--paper-dark);
+      }
+      .process-step.done {
+        color: var(--ink);
+        border-color: var(--ink);
+        background: var(--paper-dark);
+        font-weight: 700;
+      }
+
+      .process-arrow {
+        color: var(--pencil);
+        padding: 0 6px;
+      }
+
+      /* ===== CONTACT ===== */
+      .contact-section {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 80px 48px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 27px,
+          rgba(255, 255, 255, 0.04) 27px,
+          rgba(255, 255, 255, 0.04) 28px
+        );
+        pointer-events: none;
+      }
+
+      /* Red margin line on dark section */
+      .contact-section::after {
+        content: "";
+        position: absolute;
+        left: 80px;
+        top: 0;
+        bottom: 0;
+        width: 1.5px;
+        background: rgba(192, 57, 43, 0.3);
+        pointer-events: none;
+      }
+
+      .contact-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 600px;
+      }
+
+      .contact-title {
+        font-family: var(--font-hand);
+        font-size: 56px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 20px;
+        letter-spacing: -1px;
+      }
+
+      .contact-sub {
+        font-family: var(--font-hand);
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 40px;
+        line-height: 1.55;
+      }
+
+      .contact-links {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .contact-link {
+        font-family: var(--font-hand);
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--paper);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        transition: opacity 0.2s;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 6px;
+      }
+
+      .contact-link:hover {
+        opacity: 0.7;
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        border-top: 2px solid var(--ink);
+        padding: 20px 48px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--paper);
+        position: relative;
+      }
+
+      footer p {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--ink-faint);
+        text-transform: uppercase;
+      }
+
+      /* ===== SKETCH ILLUSTRATIONS ===== */
+      .sketch-illustration {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ===== SCROLL REVEAL ===== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ===== PENCIL CURSOR TRAIL ===== */
+      .cursor-dot {
+        position: fixed;
+        width: 4px;
+        height: 4px;
+        background: rgba(26, 22, 18, 0.25);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transition: opacity 0.4s ease;
+      }
+
+      /* ===== DOODLE ANNOTATION ===== */
+      .annotation {
+        position: absolute;
+        font-family: var(--font-scrawl);
+        font-size: 15px;
+        color: var(--accent-red);
+        pointer-events: none;
+        line-height: 1.3;
+        transform: rotate(-4deg);
+      }
+
+      /* ===== NOTEBOOK SPIRAL ===== */
+      .spiral-binding {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 32px;
+        background: var(--paper-worn);
+        border-right: 2.5px solid var(--ink);
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 24px;
+        gap: 0;
+        pointer-events: none;
+      }
+
+      .spiral-hole {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid var(--ink);
+        background: var(--paper);
+        margin-bottom: 28px;
+        flex-shrink: 0;
+        box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      /* Push content right of spiral */
+      nav,
+      .hero,
+      section,
+      .washi-banner,
+      .contact-section,
+      footer {
+        margin-left: 32px;
+      }
+
+      /* ===== BOT STYLES ===== */
+      .bot-bubble {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+      }
+
+      .bot-toggle {
+        width: 58px;
+        height: 58px;
+        background: var(--ink);
+        border: 2.5px solid var(--ink);
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.18);
+        transition: transform 0.2s;
+        position: relative;
+      }
+
+      .bot-toggle:hover {
+        transform: scale(1.08) rotate(-4deg);
+      }
+
+      .bot-toggle-label {
+        position: absolute;
+        bottom: 66px;
+        right: 0;
+        background: var(--accent-yellow);
+        border: 2px solid var(--ink);
+        padding: 5px 10px;
+        font-family: var(--font-hand);
+        font-size: 13px;
+        color: #2a1f00;
+        white-space: nowrap;
+        transform: rotate(-2deg);
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.12);
+        pointer-events: none;
+      }
+
+      .bot-toggle-label::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        right: 14px;
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 8px solid var(--ink);
+      }
+
+      .bot-window {
+        width: 300px;
+        background: var(--paper);
+        border: 2.5px solid var(--ink);
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
+        display: none;
+        flex-direction: column;
+        transform: rotate(-0.5deg);
+        overflow: hidden;
+      }
+
+      .bot-window.open {
+        display: flex;
+      }
+
+      .bot-header {
+        background: var(--ink);
+        color: var(--paper);
+        padding: 12px 16px;
+        font-family: var(--font-hand);
+        font-size: 17px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .bot-header-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .bot-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent-yellow);
+        animation: blink 1.8s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .bot-close {
+        background: none;
+        border: none;
+        color: var(--paper);
+        font-size: 20px;
+        cursor: pointer;
+        font-family: var(--font-hand);
+        opacity: 0.7;
+        padding: 0 2px;
+      }
+      .bot-close:hover {
+        opacity: 1;
+      }
+
+      .bot-messages {
+        padding: 14px;
+        min-height: 160px;
+        max-height: 260px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-image: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 27px,
+          rgba(180, 170, 155, 0.1) 27px,
+          rgba(180, 170, 155, 0.1) 28px
+        );
+      }
+
+      .bot-msg {
+        font-family: var(--font-hand);
+        font-size: 16px;
+        line-height: 1.45;
+        padding: 10px 14px;
+        border: 1.5px solid var(--ink);
+        background: var(--paper-dark);
+        max-width: 240px;
+        position: relative;
+        animation: msgIn 0.25s ease;
+      }
+
+      @keyframes msgIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .bot-msg.user {
+        align-self: flex-end;
+        background: var(--ink);
+        color: var(--paper);
+        border-color: var(--ink);
+        transform: rotate(0.4deg);
+      }
+      .bot-msg.bot {
+        transform: rotate(-0.5deg);
+      }
+
+      .bot-quick {
+        padding: 10px 14px;
+        border-top: 1.5px solid var(--pencil);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .bot-chip {
+        font-family: var(--font-hand);
+        font-size: 13px;
+        padding: 4px 10px;
+        border: 1.5px solid var(--ink);
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.15s;
+        transform: rotate(-0.5deg);
+      }
+      .bot-chip:hover {
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      .bot-input-row {
+        display: flex;
+        border-top: 2px solid var(--ink);
+      }
+
+      .bot-input {
+        flex: 1;
+        padding: 10px 12px;
+        font-family: var(--font-hand);
+        font-size: 16px;
+        border: none;
+        background: var(--paper);
+        color: var(--ink);
+        outline: none;
+      }
+
+      .bot-send {
+        padding: 10px 14px;
+        background: var(--ink);
+        color: var(--paper);
+        border: none;
+        font-family: var(--font-hand);
+        font-size: 18px;
+        cursor: pointer;
+        border-left: 2px solid var(--ink);
+        transition: opacity 0.15s;
+      }
+      .bot-send:hover {
+        opacity: 0.75;
+      }
+
+      .bot-typing {
+        font-family: var(--font-hand);
+        font-size: 14px;
+        color: var(--ink-faint);
+        padding: 0 14px 8px;
+        display: none;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .spiral-binding {
+          display: none;
+        }
+        nav,
+        .hero,
+        section,
+        .washi-banner,
+        .contact-section,
+        footer {
+          margin-left: 0;
+        }
+        nav {
+          padding: 14px 24px;
+        }
+        .hero {
+          padding: 60px 24px 48px;
+          min-height: auto;
+        }
+        .hero-sticky {
+          display: none;
+        }
+        section {
+          padding: 60px 24px;
+        }
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+        .project-card.featured {
+          grid-column: span 1;
+          grid-template-columns: 1fr;
+        }
+        .project-card.featured .card-visual {
+          border-right: none;
+          border-bottom: 2px solid var(--ink);
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .skills-board {
+          grid-template-columns: 1fr;
+        }
+        .contact-section {
+          padding: 60px 24px;
+        }
+        footer {
+          flex-direction: column;
+          gap: 8px;
+          text-align: center;
+        }
+        .margin-note {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Pencil cursor trail dots -->
+    <div id="cursorTrail"></div>
+
+    <!-- SVG rough filter -->
+    <svg class="rough-filter" aria-hidden="true">
+      <defs>
+        <filter id="rough">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.04"
+            numOctaves="4"
+            result="noise"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="2"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- Notebook spiral binding -->
+    <div class="spiral-binding" aria-hidden="true">
+      <!-- Generate spiral holes via JS -->
+    </div>
+
+    <!-- NAV -->
+    <nav>
+      <div class="nav-logo">Inayat</div>
+      <ul class="nav-links">
+        <li><a href="Projects.html">More Projects</a></li>
+        <li><a href="./Playground.html">Playground</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li>
+          <a href="assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a>
+        </li>
+        <li><a href="Playground.html">Playground</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="margin-strip"></div>
+
+      <!-- Background architectural doodles -->
+      <svg
+        class="hero-bg-doodles"
+        viewBox="0 0 1400 800"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <line
+          x1="900"
+          y1="60"
+          x2="1380"
+          y2="60"
+          stroke="#1a1612"
+          stroke-width="0.8"
+          stroke-dasharray="4 4"
+        />
+        <line
+          x1="900"
+          y1="56"
+          x2="900"
+          y2="64"
+          stroke="#1a1612"
+          stroke-width="1"
+        />
+        <line
+          x1="1380"
+          y1="56"
+          x2="1380"
+          y2="64"
+          stroke="#1a1612"
+          stroke-width="1"
+        />
+        <text
+          x="1140"
+          y="54"
+          font-family="Space Mono, monospace"
+          font-size="10"
+          fill="#1a1612"
+          text-anchor="middle"
+          opacity="0.5"
+        >
+          480px
+        </text>
+        <rect
+          x="940"
+          y="80"
+          width="160"
+          height="100"
+          stroke="#1a1612"
+          stroke-width="1"
+          fill="none"
+          opacity="0.4"
+        />
+        <rect
+          x="1100"
+          y="80"
+          width="90"
+          height="60"
+          stroke="#1a1612"
+          stroke-width="1"
+          fill="none"
+          opacity="0.4"
+        />
+        <line
+          x1="940"
+          y1="120"
+          x2="1100"
+          y2="120"
+          stroke="#1a1612"
+          stroke-width="0.5"
+          opacity="0.3"
+        />
+        <line
+          x1="990"
+          y1="80"
+          x2="990"
+          y2="180"
+          stroke="#1a1612"
+          stroke-width="0.5"
+          opacity="0.3"
+        />
+        <rect
+          x="1240"
+          y="120"
+          width="100"
+          height="180"
+          rx="10"
+          stroke="#1a1612"
+          stroke-width="1.5"
+          fill="none"
+          opacity="0.35"
+        />
+        <rect
+          x="1252"
+          y="138"
+          width="76"
+          height="110"
+          stroke="#1a1612"
+          stroke-width="1"
+          fill="none"
+          opacity="0.25"
+        />
+        <line
+          x1="1265"
+          y1="255"
+          x2="1315"
+          y2="255"
+          stroke="#1a1612"
+          stroke-width="2"
+          stroke-linecap="round"
+          opacity="0.25"
+        />
+        <rect
+          x="1256"
+          y="142"
+          width="68"
+          height="12"
+          rx="2"
+          stroke="#1a1612"
+          stroke-width="0.7"
+          fill="none"
+          opacity="0.25"
+        />
+        <rect
+          x="1256"
+          y="160"
+          width="30"
+          height="30"
+          rx="2"
+          stroke="#1a1612"
+          stroke-width="0.7"
+          fill="none"
+          opacity="0.25"
+        />
+        <rect
+          x="1292"
+          y="160"
+          width="32"
+          height="30"
+          rx="2"
+          stroke="#1a1612"
+          stroke-width="0.7"
+          fill="none"
+          opacity="0.25"
+        />
+        <rect
+          x="1256"
+          y="196"
+          width="68"
+          height="8"
+          rx="1"
+          stroke="#1a1612"
+          stroke-width="0.7"
+          fill="none"
+          opacity="0.2"
+        />
+        <rect
+          x="1256"
+          y="210"
+          width="50"
+          height="8"
+          rx="1"
+          stroke="#1a1612"
+          stroke-width="0.7"
+          fill="none"
+          opacity="0.2"
+        />
+        <path
+          d="M1340 160 C1360 150 1370 140 1380 120"
+          stroke="#c0392b"
+          stroke-width="1.2"
+          fill="none"
+          stroke-dasharray="3 3"
+        />
+        <polygon
+          points="1380,116 1375,126 1385,123"
+          fill="#c0392b"
+          opacity="0.7"
+        />
+        <text
+          x="1350"
+          y="170"
+          font-family="Caveat, cursive"
+          font-size="13"
+          fill="#c0392b"
+          transform="rotate(-8, 1350, 170)"
+          opacity="0.8"
+        >
+          tested!
+        </text>
+        <!-- Extra scrawled building sketch -->
+        <g opacity="0.13" transform="translate(950, 400)">
+          <rect
+            x="0"
+            y="60"
+            width="40"
+            height="80"
+            stroke="#1a1612"
+            stroke-width="1.2"
+            fill="none"
+          />
+          <rect
+            x="45"
+            y="30"
+            width="55"
+            height="110"
+            stroke="#1a1612"
+            stroke-width="1.2"
+            fill="none"
+          />
+          <rect
+            x="105"
+            y="50"
+            width="35"
+            height="90"
+            stroke="#1a1612"
+            stroke-width="1.2"
+            fill="none"
+          />
+          <rect
+            x="8"
+            y="80"
+            width="10"
+            height="14"
+            stroke="#1a1612"
+            stroke-width="0.6"
+            fill="none"
+          />
+          <rect
+            x="22"
+            y="80"
+            width="10"
+            height="14"
+            stroke="#1a1612"
+            stroke-width="0.6"
+            fill="none"
+          />
+          <rect
+            x="53"
+            y="50"
+            width="12"
+            height="16"
+            stroke="#1a1612"
+            stroke-width="0.6"
+            fill="none"
+          />
+          <rect
+            x="70"
+            y="50"
+            width="12"
+            height="16"
+            stroke="#1a1612"
+            stroke-width="0.6"
+            fill="none"
+          />
+          <rect
+            x="53"
+            y="75"
+            width="12"
+            height="16"
+            stroke="#1a1612"
+            stroke-width="0.6"
+            fill="none"
+          />
+          <rect
+            x="70"
+            y="75"
+            width="12"
+            height="16"
+            stroke="#1a1612"
+            stroke-width="0.6"
+            fill="none"
+          />
+          <line
+            x1="0"
+            y1="140"
+            x2="145"
+            y2="140"
+            stroke="#1a1612"
+            stroke-width="1.5"
+          />
+          <text
+            x="20"
+            y="158"
+            font-family="Caveat, cursive"
+            font-size="14"
+            fill="#c0392b"
+            transform="rotate(-2,20,158)"
+          >
+            ↑ city doodle
+          </text>
+        </g>
+        <!-- Erased smudge area -->
+        <ellipse
+          cx="700"
+          cy="680"
+          rx="120"
+          ry="30"
+          fill="rgba(180,170,155,0.08)"
+        />
+        <g opacity="0.12" transform="translate(0, 600)">
+          <line
+            x1="0"
+            y1="0"
+            x2="300"
+            y2="0"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="0"
+            y1="40"
+            x2="300"
+            y2="40"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="0"
+            y1="80"
+            x2="300"
+            y2="80"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="0"
+            y1="120"
+            x2="300"
+            y2="120"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="160"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="60"
+            y1="0"
+            x2="60"
+            y2="160"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="120"
+            y1="0"
+            x2="120"
+            y2="160"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="180"
+            y1="0"
+            x2="180"
+            y2="160"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="240"
+            y1="0"
+            x2="240"
+            y2="160"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+          <line
+            x1="300"
+            y1="0"
+            x2="300"
+            y2="160"
+            stroke="#1a1612"
+            stroke-width="0.5"
+          />
+        </g>
+        <g transform="translate(1320, 580)" opacity="0.2">
+          <circle
+            cx="0"
+            cy="0"
+            r="30"
+            stroke="#1a1612"
+            stroke-width="0.8"
+            fill="none"
+          />
+          <circle
+            cx="0"
+            cy="0"
+            r="4"
+            stroke="#1a1612"
+            stroke-width="0.8"
+            fill="none"
+          />
+          <line
+            x1="0"
+            y1="-30"
+            x2="0"
+            y2="30"
+            stroke="#1a1612"
+            stroke-width="0.6"
+          />
+          <line
+            x1="-30"
+            y1="0"
+            x2="30"
+            y2="0"
+            stroke="#1a1612"
+            stroke-width="0.6"
+          />
+          <polygon points="0,-34 -5,-14 0,-18 5,-14" fill="#1a1612" />
+          <text
+            x="0"
+            y="-38"
+            font-family="Space Mono, monospace"
+            font-size="8"
+            fill="#1a1612"
+            text-anchor="middle"
+          >
+            N
+          </text>
+        </g>
+        <g transform="translate(60, 680)" opacity="0.18">
+          <line
+            x1="0"
+            y1="10"
+            x2="0"
+            y2="0"
+            stroke="#1a1612"
+            stroke-width="1.2"
+          />
+          <line
+            x1="0"
+            y1="0"
+            x2="10"
+            y2="0"
+            stroke="#1a1612"
+            stroke-width="1.2"
+          />
+          <line
+            x1="60"
+            y1="0"
+            x2="70"
+            y2="0"
+            stroke="#1a1612"
+            stroke-width="1.2"
+          />
+          <line
+            x1="70"
+            y1="0"
+            x2="70"
+            y2="10"
+            stroke="#1a1612"
+            stroke-width="1.2"
+          />
+          <line
+            x1="0"
+            y1="50"
+            x2="0"
+            y2="60"
+            stroke="#1a1612"
+            stroke-width="1.2"
+          />
+          <line
+            x1="0"
+            y1="60"
+            x2="10"
+            y2="60"
+            stroke="#1a1612"
+            stroke-width="1.2"
+          />
+          <line
+            x1="60"
+            y1="60"
+            x2="70"
+            y2="60"
+            stroke="#1a1612"
+            stroke-width="1.2"
+          />
+          <line
+            x1="70"
+            y1="50"
+            x2="70"
+            y2="60"
+            stroke="#1a1612"
+            stroke-width="1.2"
+          />
+          <text
+            x="5"
+            y="40"
+            font-family="Space Mono, monospace"
+            font-size="8"
+            fill="#1a1612"
+          >
+            Frame 01
+          </text>
+        </g>
+      </svg>
+
+      <div class="hero-content">
+        <div class="hero-tag">Vancouver-based designer</div>
+        <h1 class="hero-name">
+          Hi, I'm
+          <span class="underline-squiggle">
+            Inayat
+            <svg
+              viewBox="0 0 200 14"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2,8 C20,3 45,14 70,7 C95,2 120,13 145,6 C165,2 185,10 198,7"
+                stroke="#c0392b"
+                stroke-width="3"
+                fill="none"
+                stroke-linecap="round"
+              />
+            </svg>
+          </span>
+        </h1>
+        <div class="hero-roles">
+          <span class="role-pill filled">UX/UI Design</span>
+          <span class="role-pill">Frontend Dev</span>
+        </div>
+        <p class="hero-desc">
+          Turning messy problems into tested solutions — research-backed,
+          technically feasible, and built to actually ship.
+        </p>
+        <div class="hero-cta-group">
+          <a href="#work" class="btn-sketch primary">View my work →</a>
+          <a href="#contact" class="btn-sketch">Say hello</a>
+        </div>
+      </div>
+
+      <!-- Sticky note -->
+      <div class="hero-sticky">
+        <div class="sticky-note">
+          <span class="sticky-label">Note to self</span>
+          Bridge design &amp; build.<br />Always.<br /><br />— Research first<br />—
+          Sketch it out<br />— Test, test, test<br />— Ship it ✓
+        </div>
+      </div>
+
+      <!-- Corner fold on hero -->
+      <div class="corner-fold" style="bottom: 0; right: 0"></div>
+    </section>
+
+    <!-- Washi tape banner between sections -->
+    <div class="washi-banner" aria-hidden="true">
+      <span class="washi-banner-inner">
+        ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp;
+        iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship
+        &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp; ✏️ research
+        &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate
+        &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship
+        &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp; ✏️ research
+        &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate
+        &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship
+        &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
       </span>
-    </h1>
-    <div class="hero-roles">
-      <span class="role-pill filled">UX/UI Design</span>
-      <span class="role-pill">Frontend Dev</span>
     </div>
-    <p class="hero-desc">
-      Turning messy problems into tested solutions — research-backed, technically feasible, and built to actually ship.
-    </p>
-    <div class="hero-cta-group">
-      <a href="#work" class="btn-sketch primary">View my work →</a>
-      <a href="#contact" class="btn-sketch">Say hello</a>
-    </div>
-  </div>
 
-  <!-- Sticky note -->
-  <div class="hero-sticky">
-    <div class="sticky-note">
-      <span class="sticky-label">Note to self</span>
-      Bridge design &amp; build.<br>Always.<br><br>— Research first<br>— Sketch it out<br>— Test, test, test<br>— Ship it ✓
-    </div>
-  </div>
-
-  <!-- Corner fold on hero -->
-  <div class="corner-fold" style="bottom:0;right:0;"></div>
-</section>
-
-<!-- Washi tape banner between sections -->
-<div class="washi-banner" aria-hidden="true">
-  <span class="washi-banner-inner">
-    ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
-    ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
-    ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
-  </span>
-</div>
-
-<!-- SELECTED WORK -->
-<section id="work" class="page-edge">
-  <div class="margin-strip"></div>
-  <div class="section-header">
-    <span class="section-num">01</span>
-    <h2 class="section-title">Selected work</h2>
-    <div class="section-line"></div>
-    <!-- Hand-drawn asterisk annotation -->
-    <span style="font-family:'Reenie Beanie',cursive; font-size:16px; color:var(--accent-red); transform:rotate(3deg); display:inline-block; margin-left:8px; opacity:0.8;">← click to explore!</span>
-  </div>
-
-  <div class="projects-grid">
-
-    <!-- Featured: Mastercard Fraud -->
-    <a href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/mastercard-fraud-dashboard.html" class="project-card featured reveal">
-      <div class="card-visual">
-        <svg viewBox="0 0 320 220" class="sketch-illustration" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="10" width="300" height="200" rx="4" stroke="#1a1612" stroke-width="1.5" fill="none"/>
-          <rect x="10" y="10" width="60" height="200" stroke="#1a1612" stroke-width="1" fill="rgba(26,22,18,0.04)"/>
-          <rect x="18" y="20" width="44" height="8" rx="2" stroke="#1a1612" stroke-width="0.8" fill="rgba(26,22,18,0.08)"/>
-          <rect x="18" y="34" width="44" height="6" rx="1" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-          <rect x="18" y="44" width="44" height="6" rx="1" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-          <rect x="18" y="54" width="44" height="6" rx="1" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-          <rect x="70" y="10" width="240" height="22" stroke="#1a1612" stroke-width="1" fill="rgba(26,22,18,0.03)"/>
-          <rect x="78" y="40" width="60" height="40" rx="2" stroke="#1a1612" stroke-width="1" fill="rgba(192,57,43,0.08)"/>
-          <text x="108" y="60" font-family="Space Mono, monospace" font-size="11" text-anchor="middle" fill="#c0392b" font-weight="bold">60%</text>
-          <text x="108" y="72" font-family="Space Mono, monospace" font-size="6" text-anchor="middle" fill="#1a1612" opacity="0.5">less time</text>
-          <rect x="146" y="40" width="60" height="40" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-          <text x="176" y="60" font-family="Space Mono, monospace" font-size="11" text-anchor="middle" fill="#3a7d44" font-weight="bold">0</text>
-          <text x="176" y="72" font-family="Space Mono, monospace" font-size="6" text-anchor="middle" fill="#1a1612" opacity="0.5">critical fails</text>
-          <rect x="214" y="40" width="60" height="40" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-          <text x="244" y="60" font-family="Space Mono, monospace" font-size="11" text-anchor="middle" fill="#2c5f8a" font-weight="bold">2</text>
-          <text x="244" y="72" font-family="Space Mono, monospace" font-size="6" text-anchor="middle" fill="#1a1612" opacity="0.5">test rounds</text>
-          <rect x="78" y="90" width="130" height="80" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-          <polyline points="90,155 100,140 115,145 130,125 145,130 160,110 175,118 190,105" stroke="#c0392b" stroke-width="1.5" fill="none"/>
-          <polyline points="90,160 100,155 115,158 130,150 145,153 160,144 175,148 190,140" stroke="#1a1612" stroke-width="0.8" fill="none" stroke-dasharray="2 2"/>
-          <rect x="216" y="90" width="98" height="80" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-          <line x1="216" y1="103" x2="314" y2="103" stroke="#1a1612" stroke-width="0.5"/>
-          <line x1="216" y1="116" x2="314" y2="116" stroke="#1a1612" stroke-width="0.5"/>
-          <line x1="216" y1="129" x2="314" y2="129" stroke="#1a1612" stroke-width="0.5"/>
-          <line x1="216" y1="142" x2="314" y2="142" stroke="#1a1612" stroke-width="0.5"/>
-          <rect x="220" y="105" width="30" height="8" rx="1" fill="rgba(192,57,43,0.2)"/>
-          <rect x="256" y="105" width="50" height="8" rx="1" fill="rgba(26,22,18,0.06)"/>
-          <rect x="220" y="118" width="30" height="8" rx="1" fill="rgba(192,57,43,0.12)"/>
-          <rect x="256" y="118" width="50" height="8" rx="1" fill="rgba(26,22,18,0.06)"/>
-          <path d="M175 56 C185 48 195 44 210 42" stroke="#c0392b" stroke-width="1" fill="none"/>
-          <text x="178" y="56" font-family="Caveat, cursive" font-size="11" fill="#c0392b" transform="rotate(-5,178,56)">← AI flag</text>
-          <circle cx="280" cy="16" r="4" fill="#3a7d44"/>
-        </svg>
+    <!-- SELECTED WORK -->
+    <section id="work" class="page-edge">
+      <div class="margin-strip"></div>
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2 class="section-title">Selected work</h2>
+        <div class="section-line"></div>
+        <!-- Hand-drawn asterisk annotation -->
+        <span
+          style="
+            font-family: &quot;Reenie Beanie&quot;, cursive;
+            font-size: 16px;
+            color: var(--accent-red);
+            transform: rotate(3deg);
+            display: inline-block;
+            margin-left: 8px;
+            opacity: 0.8;
+          "
+          >← click to explore!</span
+        >
       </div>
-      <div class="card-body">
-        <div class="card-tags">
-          <span class="card-tag">Mastercard</span>
-          <span class="card-tag">Interaction Design</span>
-          <span class="card-tag">2025</span>
-        </div>
-        <h3 class="card-title">Fraud Detection Dashboard</h3>
-        <p class="card-desc">Embedded with a real Mastercard PM on a live initiative. Led user research with analysts, mapped workflows, and co-designed an AI-driven dashboard — zero critical failures across two usability rounds.</p>
-        <div class="card-metric">60% less analysis time</div><br>
-        <span class="card-arrow">Explore case study →</span>
-      </div>
-      <div class="corner-fold"></div>
-    </a>
 
-    <!-- Mastercard Workplace -->
-    <a href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/Mastercard_Project.html" class="project-card reveal">
-      <div class="card-visual" style="min-height: 160px; padding: 24px;">
-        <svg viewBox="0 0 260 140" class="sketch-illustration" xmlns="http://www.w3.org/2000/svg">
-          <rect x="100" y="8" width="60" height="24" rx="2" stroke="#1a1612" stroke-width="1.5" fill="rgba(26,22,18,0.06)"/>
-          <text x="130" y="23" font-family="Space Mono, monospace" font-size="7" text-anchor="middle" fill="#1a1612">Home</text>
-          <line x1="130" y1="32" x2="130" y2="44" stroke="#1a1612" stroke-width="1"/>
-          <line x1="40" y1="44" x2="220" y2="44" stroke="#1a1612" stroke-width="1"/>
-          <line x1="40" y1="44" x2="40" y2="56" stroke="#1a1612" stroke-width="1"/>
-          <line x1="130" y1="44" x2="130" y2="56" stroke="#1a1612" stroke-width="1"/>
-          <line x1="220" y1="44" x2="220" y2="56" stroke="#1a1612" stroke-width="1"/>
-          <rect x="10" y="56" width="60" height="20" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-          <text x="40" y="69" font-family="Space Mono, monospace" font-size="6" text-anchor="middle" fill="#1a1612">News</text>
-          <rect x="100" y="56" width="60" height="20" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-          <text x="130" y="69" font-family="Space Mono, monospace" font-size="6" text-anchor="middle" fill="#1a1612">Tools</text>
-          <rect x="190" y="56" width="60" height="20" rx="2" stroke="#1a1612" stroke-width="1" fill="none"/>
-          <text x="220" y="69" font-family="Space Mono, monospace" font-size="6" text-anchor="middle" fill="#1a1612">HR</text>
-          <text x="4" y="106" font-family="Caveat, cursive" font-size="13" fill="#2c5f8a">15,000+ employees</text>
-          <text x="4" y="122" font-family="Space Mono, monospace" font-size="7" fill="#1a1612" opacity="0.5">VAN · DUB · IND · US</text>
-          <line x1="192" y1="58" x2="198" y2="64" stroke="#c0392b" stroke-width="1.5"/>
-          <line x1="198" y1="58" x2="192" y2="64" stroke="#c0392b" stroke-width="1.5"/>
-          <text x="194" y="82" font-family="Caveat, cursive" font-size="10" fill="#c0392b" transform="rotate(-3,194,82)">old nav</text>
-          <text x="148" y="22" font-family="Space Mono, monospace" font-size="9" fill="#3a7d44">✓</text>
-        </svg>
-      </div>
-      <div class="card-body">
-        <div class="card-tags">
-          <span class="card-tag">Enterprise UX</span>
-          <span class="card-tag">2025</span>
-        </div>
-        <h3 class="card-title">Mastercard Workplace UX</h3>
-        <p class="card-desc">Redesigned internal SharePoint for 15,000+ global employees.</p>
-        <div class="card-metric">40% faster navigation</div><br>
-        <span class="card-arrow">Explore project →</span>
-      </div>
-      <div class="corner-fold"></div>
-    </a>
+      <div class="projects-grid">
+        <!-- Featured: Mastercard Fraud -->
+        <a
+          href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/mastercard-fraud-dashboard.html"
+          class="project-card featured reveal"
+        >
+          <div class="card-visual">
+            <svg
+              viewBox="0 0 320 220"
+              class="sketch-illustration"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="10"
+                y="10"
+                width="300"
+                height="200"
+                rx="4"
+                stroke="#1a1612"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <rect
+                x="10"
+                y="10"
+                width="60"
+                height="200"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="rgba(26,22,18,0.04)"
+              />
+              <rect
+                x="18"
+                y="20"
+                width="44"
+                height="8"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="0.8"
+                fill="rgba(26,22,18,0.08)"
+              />
+              <rect
+                x="18"
+                y="34"
+                width="44"
+                height="6"
+                rx="1"
+                stroke="#1a1612"
+                stroke-width="0.6"
+                fill="none"
+              />
+              <rect
+                x="18"
+                y="44"
+                width="44"
+                height="6"
+                rx="1"
+                stroke="#1a1612"
+                stroke-width="0.6"
+                fill="none"
+              />
+              <rect
+                x="18"
+                y="54"
+                width="44"
+                height="6"
+                rx="1"
+                stroke="#1a1612"
+                stroke-width="0.6"
+                fill="none"
+              />
+              <rect
+                x="70"
+                y="10"
+                width="240"
+                height="22"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="rgba(26,22,18,0.03)"
+              />
+              <rect
+                x="78"
+                y="40"
+                width="60"
+                height="40"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="rgba(192,57,43,0.08)"
+              />
+              <text
+                x="108"
+                y="60"
+                font-family="Space Mono, monospace"
+                font-size="11"
+                text-anchor="middle"
+                fill="#c0392b"
+                font-weight="bold"
+              >
+                60%
+              </text>
+              <text
+                x="108"
+                y="72"
+                font-family="Space Mono, monospace"
+                font-size="6"
+                text-anchor="middle"
+                fill="#1a1612"
+                opacity="0.5"
+              >
+                less time
+              </text>
+              <rect
+                x="146"
+                y="40"
+                width="60"
+                height="40"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="none"
+              />
+              <text
+                x="176"
+                y="60"
+                font-family="Space Mono, monospace"
+                font-size="11"
+                text-anchor="middle"
+                fill="#3a7d44"
+                font-weight="bold"
+              >
+                0
+              </text>
+              <text
+                x="176"
+                y="72"
+                font-family="Space Mono, monospace"
+                font-size="6"
+                text-anchor="middle"
+                fill="#1a1612"
+                opacity="0.5"
+              >
+                critical fails
+              </text>
+              <rect
+                x="214"
+                y="40"
+                width="60"
+                height="40"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="none"
+              />
+              <text
+                x="244"
+                y="60"
+                font-family="Space Mono, monospace"
+                font-size="11"
+                text-anchor="middle"
+                fill="#2c5f8a"
+                font-weight="bold"
+              >
+                2
+              </text>
+              <text
+                x="244"
+                y="72"
+                font-family="Space Mono, monospace"
+                font-size="6"
+                text-anchor="middle"
+                fill="#1a1612"
+                opacity="0.5"
+              >
+                test rounds
+              </text>
+              <rect
+                x="78"
+                y="90"
+                width="130"
+                height="80"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="none"
+              />
+              <polyline
+                points="90,155 100,140 115,145 130,125 145,130 160,110 175,118 190,105"
+                stroke="#c0392b"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <polyline
+                points="90,160 100,155 115,158 130,150 145,153 160,144 175,148 190,140"
+                stroke="#1a1612"
+                stroke-width="0.8"
+                fill="none"
+                stroke-dasharray="2 2"
+              />
+              <rect
+                x="216"
+                y="90"
+                width="98"
+                height="80"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="none"
+              />
+              <line
+                x1="216"
+                y1="103"
+                x2="314"
+                y2="103"
+                stroke="#1a1612"
+                stroke-width="0.5"
+              />
+              <line
+                x1="216"
+                y1="116"
+                x2="314"
+                y2="116"
+                stroke="#1a1612"
+                stroke-width="0.5"
+              />
+              <line
+                x1="216"
+                y1="129"
+                x2="314"
+                y2="129"
+                stroke="#1a1612"
+                stroke-width="0.5"
+              />
+              <line
+                x1="216"
+                y1="142"
+                x2="314"
+                y2="142"
+                stroke="#1a1612"
+                stroke-width="0.5"
+              />
+              <rect
+                x="220"
+                y="105"
+                width="30"
+                height="8"
+                rx="1"
+                fill="rgba(192,57,43,0.2)"
+              />
+              <rect
+                x="256"
+                y="105"
+                width="50"
+                height="8"
+                rx="1"
+                fill="rgba(26,22,18,0.06)"
+              />
+              <rect
+                x="220"
+                y="118"
+                width="30"
+                height="8"
+                rx="1"
+                fill="rgba(192,57,43,0.12)"
+              />
+              <rect
+                x="256"
+                y="118"
+                width="50"
+                height="8"
+                rx="1"
+                fill="rgba(26,22,18,0.06)"
+              />
+              <path
+                d="M175 56 C185 48 195 44 210 42"
+                stroke="#c0392b"
+                stroke-width="1"
+                fill="none"
+              />
+              <text
+                x="178"
+                y="56"
+                font-family="Caveat, cursive"
+                font-size="11"
+                fill="#c0392b"
+                transform="rotate(-5,178,56)"
+              >
+                ← AI flag
+              </text>
+              <circle cx="280" cy="16" r="4" fill="#3a7d44" />
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="card-tag">Mastercard</span>
+              <span class="card-tag">Interaction Design</span>
+              <span class="card-tag">2025</span>
+            </div>
+            <h3 class="card-title">Fraud Detection Dashboard</h3>
+            <p class="card-desc">
+              Embedded with a real Mastercard PM on a live initiative. Led user
+              research with analysts, mapped workflows, and co-designed an
+              AI-driven dashboard — zero critical failures across two usability
+              rounds.
+            </p>
+            <div class="card-metric">60% less analysis time</div>
+            <br />
+            <span class="card-arrow">Explore case study →</span>
+          </div>
+          <div class="corner-fold"></div>
+        </a>
 
-    <!-- Pawth -->
-    <a href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/Pawth_Project.html" class="project-card reveal">
-      <div class="card-visual" style="min-height: 160px; padding: 24px;">
-        <svg viewBox="0 0 260 140" class="sketch-illustration" xmlns="http://www.w3.org/2000/svg">
-          <rect x="30" y="10" width="70" height="120" rx="8" stroke="#1a1612" stroke-width="1.5" fill="none"/>
-          <rect x="38" y="24" width="54" height="74" stroke="#1a1612" stroke-width="0.8" fill="rgba(26,22,18,0.04)"/>
-          <circle cx="65" cy="51" r="18" stroke="#1a1612" stroke-width="0.8" fill="rgba(26,22,18,0.06)"/>
-          <text x="65" y="55" font-family="Caveat, cursive" font-size="16" text-anchor="middle" fill="#1a1612">🐾</text>
-          <rect x="42" y="72" width="46" height="8" rx="2" stroke="#1a1612" stroke-width="0.6" fill="rgba(26,22,18,0.08)"/>
-          <rect x="48" y="84" width="34" height="6" rx="1" stroke="#1a1612" stroke-width="0.5" fill="none"/>
-          <circle cx="65" cy="122" r="4" stroke="#1a1612" stroke-width="1" fill="rgba(26,22,18,0.1)"/>
-          <rect x="105" y="20" width="70" height="110" rx="8" stroke="#1a1612" stroke-width="1.5" fill="rgba(250,248,242,0.9)"/>
-          <rect x="113" y="34" width="54" height="64" stroke="#1a1612" stroke-width="0.8" fill="none"/>
-          <line x1="113" y1="46" x2="167" y2="46" stroke="#1a1612" stroke-width="0.5"/>
-          <rect x="117" y="50" width="20" height="20" rx="2" stroke="#1a1612" stroke-width="0.6" fill="rgba(26,22,18,0.05)"/>
-          <rect x="141" y="50" width="22" height="20" rx="2" stroke="#1a1612" stroke-width="0.6" fill="rgba(26,22,18,0.05)"/>
-          <rect x="117" y="75" width="46" height="6" rx="1" stroke="#1a1612" stroke-width="0.5" fill="rgba(26,22,18,0.07)"/>
-          <rect x="117" y="85" width="36" height="5" rx="1" stroke="#1a1612" stroke-width="0.5" fill="rgba(26,22,18,0.04)"/>
-          <path d="M178 60 C192 55 205 50 215 46" stroke="#c0392b" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
-          <text x="186" y="74" font-family="Caveat, cursive" font-size="12" fill="#c0392b" transform="rotate(-8,186,74)">community</text>
-          <text x="186" y="87" font-family="Caveat, cursive" font-size="12" fill="#c0392b" transform="rotate(-8,186,87)">map view</text>
-        </svg>
-      </div>
-      <div class="card-body">
-        <div class="card-tags">
-          <span class="card-tag">UX/UI</span>
-          <span class="card-tag">Frontend</span>
-          <span class="card-tag">2026</span>
-        </div>
-        <h3 class="card-title">Pawth Pet App</h3>
-        <p class="card-desc">Social platform for pet owners — share moments, find pet-friendly places, connect with fellow pet lovers.</p>
-        <span class="card-arrow">Explore project →</span>
-      </div>
-      <div class="corner-fold"></div>
-    </a>
+        <!-- Mastercard Workplace -->
+        <a
+          href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/Mastercard_Project.html"
+          class="project-card reveal"
+        >
+          <div class="card-visual" style="min-height: 160px; padding: 24px">
+            <svg
+              viewBox="0 0 260 140"
+              class="sketch-illustration"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="100"
+                y="8"
+                width="60"
+                height="24"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1.5"
+                fill="rgba(26,22,18,0.06)"
+              />
+              <text
+                x="130"
+                y="23"
+                font-family="Space Mono, monospace"
+                font-size="7"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                Home
+              </text>
+              <line
+                x1="130"
+                y1="32"
+                x2="130"
+                y2="44"
+                stroke="#1a1612"
+                stroke-width="1"
+              />
+              <line
+                x1="40"
+                y1="44"
+                x2="220"
+                y2="44"
+                stroke="#1a1612"
+                stroke-width="1"
+              />
+              <line
+                x1="40"
+                y1="44"
+                x2="40"
+                y2="56"
+                stroke="#1a1612"
+                stroke-width="1"
+              />
+              <line
+                x1="130"
+                y1="44"
+                x2="130"
+                y2="56"
+                stroke="#1a1612"
+                stroke-width="1"
+              />
+              <line
+                x1="220"
+                y1="44"
+                x2="220"
+                y2="56"
+                stroke="#1a1612"
+                stroke-width="1"
+              />
+              <rect
+                x="10"
+                y="56"
+                width="60"
+                height="20"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="none"
+              />
+              <text
+                x="40"
+                y="69"
+                font-family="Space Mono, monospace"
+                font-size="6"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                News
+              </text>
+              <rect
+                x="100"
+                y="56"
+                width="60"
+                height="20"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="none"
+              />
+              <text
+                x="130"
+                y="69"
+                font-family="Space Mono, monospace"
+                font-size="6"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                Tools
+              </text>
+              <rect
+                x="190"
+                y="56"
+                width="60"
+                height="20"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="none"
+              />
+              <text
+                x="220"
+                y="69"
+                font-family="Space Mono, monospace"
+                font-size="6"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                HR
+              </text>
+              <text
+                x="4"
+                y="106"
+                font-family="Caveat, cursive"
+                font-size="13"
+                fill="#2c5f8a"
+              >
+                15,000+ employees
+              </text>
+              <text
+                x="4"
+                y="122"
+                font-family="Space Mono, monospace"
+                font-size="7"
+                fill="#1a1612"
+                opacity="0.5"
+              >
+                VAN · DUB · IND · US
+              </text>
+              <line
+                x1="192"
+                y1="58"
+                x2="198"
+                y2="64"
+                stroke="#c0392b"
+                stroke-width="1.5"
+              />
+              <line
+                x1="198"
+                y1="58"
+                x2="192"
+                y2="64"
+                stroke="#c0392b"
+                stroke-width="1.5"
+              />
+              <text
+                x="194"
+                y="82"
+                font-family="Caveat, cursive"
+                font-size="10"
+                fill="#c0392b"
+                transform="rotate(-3,194,82)"
+              >
+                old nav
+              </text>
+              <text
+                x="148"
+                y="22"
+                font-family="Space Mono, monospace"
+                font-size="9"
+                fill="#3a7d44"
+              >
+                ✓
+              </text>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="card-tag">Enterprise UX</span>
+              <span class="card-tag">2025</span>
+            </div>
+            <h3 class="card-title">Mastercard Workplace UX</h3>
+            <p class="card-desc">
+              Redesigned internal SharePoint for 15,000+ global employees.
+            </p>
+            <div class="card-metric">40% faster navigation</div>
+            <br />
+            <span class="card-arrow">Explore project →</span>
+          </div>
+          <div class="corner-fold"></div>
+        </a>
 
-    <!-- Fitness App -->
-    <a href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/Fitness_App.html" class="project-card reveal">
-      <div class="card-visual" style="min-height: 160px; padding: 24px;">
-        <svg viewBox="0 0 260 140" class="sketch-illustration" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="55" width="48" height="28" rx="3" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-          <text x="32" y="72" font-family="Caveat, cursive" font-size="10" text-anchor="middle" fill="#1a1612">Open app</text>
-          <line x1="56" y1="69" x2="70" y2="69" stroke="#1a1612" stroke-width="1"/>
-          <polygon points="70,66 76,69 70,72" fill="#1a1612"/>
-          <rect x="76" y="55" width="52" height="28" rx="3" stroke="#1a1612" stroke-width="1.2" fill="rgba(26,22,18,0.06)"/>
-          <text x="102" y="72" font-family="Caveat, cursive" font-size="10" text-anchor="middle" fill="#1a1612">Pick micro</text>
-          <line x1="128" y1="69" x2="142" y2="69" stroke="#1a1612" stroke-width="1"/>
-          <polygon points="142,66 148,69 142,72" fill="#1a1612"/>
-          <rect x="148" y="55" width="52" height="28" rx="3" stroke="#3a7d44" stroke-width="1.2" fill="rgba(58,125,68,0.06)"/>
-          <text x="174" y="68" font-family="Caveat, cursive" font-size="10" text-anchor="middle" fill="#1a1612">Start</text>
-          <text x="174" y="78" font-family="Caveat, cursive" font-size="10" text-anchor="middle" fill="#3a7d44">workout ✓</text>
-          <line x1="200" y1="69" x2="214" y2="69" stroke="#1a1612" stroke-width="1"/>
-          <polygon points="214,66 220,69 214,72" fill="#1a1612"/>
-          <rect x="220" y="55" width="36" height="28" rx="3" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-          <text x="238" y="72" font-family="Caveat, cursive" font-size="10" text-anchor="middle" fill="#1a1612">Done!</text>
-          <text x="76" y="34" font-family="Space Mono, monospace" font-size="14" fill="#2c5f8a" font-weight="bold">40%</text>
-          <text x="76" y="46" font-family="Caveat, cursive" font-size="11" fill="#1a1612" opacity="0.6">faster first workout</text>
-          <path d="M102 48 C100 52 100 54 102 55" stroke="#c0392b" stroke-width="1" fill="none"/>
-          <text x="8" y="108" font-family="Caveat, cursive" font-size="12" fill="#1a1612" opacity="0.7">"I have 10 mins, that's it"</text>
-          <text x="8" y="122" font-family="Space Mono, monospace" font-size="7" fill="#1a1612" opacity="0.4">— busy parent persona</text>
-        </svg>
-      </div>
-      <div class="card-body">
-        <div class="card-tags">
-          <span class="card-tag">Interface Design</span>
-          <span class="card-tag">2024</span>
-        </div>
-        <h3 class="card-title">Fitness Tracking App</h3>
-        <p class="card-desc">Micro-workouts for busy parents — flexible, realistic, tested.</p>
-        <div class="card-metric">40% faster first workout</div><br>
-        <span class="card-arrow">Explore project →</span>
-      </div>
-      <div class="corner-fold"></div>
-    </a>
+        <!-- Pawth -->
+        <a
+          href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/Pawth_Project.html"
+          class="project-card reveal"
+        >
+          <div class="card-visual" style="min-height: 160px; padding: 24px">
+            <svg
+              viewBox="0 0 260 140"
+              class="sketch-illustration"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="30"
+                y="10"
+                width="70"
+                height="120"
+                rx="8"
+                stroke="#1a1612"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <rect
+                x="38"
+                y="24"
+                width="54"
+                height="74"
+                stroke="#1a1612"
+                stroke-width="0.8"
+                fill="rgba(26,22,18,0.04)"
+              />
+              <circle
+                cx="65"
+                cy="51"
+                r="18"
+                stroke="#1a1612"
+                stroke-width="0.8"
+                fill="rgba(26,22,18,0.06)"
+              />
+              <text
+                x="65"
+                y="55"
+                font-family="Caveat, cursive"
+                font-size="16"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                🐾
+              </text>
+              <rect
+                x="42"
+                y="72"
+                width="46"
+                height="8"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="0.6"
+                fill="rgba(26,22,18,0.08)"
+              />
+              <rect
+                x="48"
+                y="84"
+                width="34"
+                height="6"
+                rx="1"
+                stroke="#1a1612"
+                stroke-width="0.5"
+                fill="none"
+              />
+              <circle
+                cx="65"
+                cy="122"
+                r="4"
+                stroke="#1a1612"
+                stroke-width="1"
+                fill="rgba(26,22,18,0.1)"
+              />
+              <rect
+                x="105"
+                y="20"
+                width="70"
+                height="110"
+                rx="8"
+                stroke="#1a1612"
+                stroke-width="1.5"
+                fill="rgba(250,248,242,0.9)"
+              />
+              <rect
+                x="113"
+                y="34"
+                width="54"
+                height="64"
+                stroke="#1a1612"
+                stroke-width="0.8"
+                fill="none"
+              />
+              <line
+                x1="113"
+                y1="46"
+                x2="167"
+                y2="46"
+                stroke="#1a1612"
+                stroke-width="0.5"
+              />
+              <rect
+                x="117"
+                y="50"
+                width="20"
+                height="20"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="0.6"
+                fill="rgba(26,22,18,0.05)"
+              />
+              <rect
+                x="141"
+                y="50"
+                width="22"
+                height="20"
+                rx="2"
+                stroke="#1a1612"
+                stroke-width="0.6"
+                fill="rgba(26,22,18,0.05)"
+              />
+              <rect
+                x="117"
+                y="75"
+                width="46"
+                height="6"
+                rx="1"
+                stroke="#1a1612"
+                stroke-width="0.5"
+                fill="rgba(26,22,18,0.07)"
+              />
+              <rect
+                x="117"
+                y="85"
+                width="36"
+                height="5"
+                rx="1"
+                stroke="#1a1612"
+                stroke-width="0.5"
+                fill="rgba(26,22,18,0.04)"
+              />
+              <path
+                d="M178 60 C192 55 205 50 215 46"
+                stroke="#c0392b"
+                stroke-width="1"
+                fill="none"
+                stroke-dasharray="2 2"
+              />
+              <text
+                x="186"
+                y="74"
+                font-family="Caveat, cursive"
+                font-size="12"
+                fill="#c0392b"
+                transform="rotate(-8,186,74)"
+              >
+                community
+              </text>
+              <text
+                x="186"
+                y="87"
+                font-family="Caveat, cursive"
+                font-size="12"
+                fill="#c0392b"
+                transform="rotate(-8,186,87)"
+              >
+                map view
+              </text>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="card-tag">UX/UI</span>
+              <span class="card-tag">Frontend</span>
+              <span class="card-tag">2026</span>
+            </div>
+            <h3 class="card-title">Pawth Pet App</h3>
+            <p class="card-desc">
+              Social platform for pet owners — share moments, find pet-friendly
+              places, connect with fellow pet lovers.
+            </p>
+            <span class="card-arrow">Explore project →</span>
+          </div>
+          <div class="corner-fold"></div>
+        </a>
 
-    <!-- Exhibition Locator -->
-    <a href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/Discoverisola_project.html" class="project-card reveal" style="grid-column: span 2;">
-      <div style="display:grid; grid-template-columns: 1fr 1fr;">
-        <div class="card-visual" style="min-height:180px; border-right: 2px solid var(--ink); border-bottom: none; padding: 32px;">
-          <svg viewBox="0 0 280 160" class="sketch-illustration" xmlns="http://www.w3.org/2000/svg">
-            <rect x="10" y="10" width="260" height="140" rx="3" stroke="#1a1612" stroke-width="1.5" fill="rgba(26,22,18,0.03)"/>
-            <line x1="10" y1="50" x2="270" y2="50" stroke="#1a1612" stroke-width="0.6" opacity="0.3"/>
-            <line x1="10" y1="90" x2="270" y2="90" stroke="#1a1612" stroke-width="0.6" opacity="0.3"/>
-            <line x1="10" y1="120" x2="270" y2="120" stroke="#1a1612" stroke-width="0.6" opacity="0.3"/>
-            <line x1="60" y1="10" x2="60" y2="150" stroke="#1a1612" stroke-width="0.6" opacity="0.3"/>
-            <line x1="130" y1="10" x2="130" y2="150" stroke="#1a1612" stroke-width="0.6" opacity="0.3"/>
-            <line x1="200" y1="10" x2="200" y2="150" stroke="#1a1612" stroke-width="0.6" opacity="0.3"/>
-            <circle cx="80" cy="68" r="8" stroke="#c0392b" stroke-width="1.5" fill="rgba(192,57,43,0.15)"/>
-            <circle cx="80" cy="68" r="3" fill="#c0392b"/>
-            <circle cx="155" cy="38" r="8" stroke="#c0392b" stroke-width="1.5" fill="rgba(192,57,43,0.15)"/>
-            <circle cx="155" cy="38" r="3" fill="#c0392b"/>
-            <circle cx="220" cy="105" r="8" stroke="#c0392b" stroke-width="1.5" fill="rgba(192,57,43,0.15)"/>
-            <circle cx="220" cy="105" r="3" fill="#c0392b"/>
-            <circle cx="40" cy="108" r="6" stroke="#2c5f8a" stroke-width="1.2" fill="rgba(44,95,138,0.1)"/>
-            <circle cx="40" cy="108" r="2.5" fill="#2c5f8a"/>
-            <path d="M40 108 C55 90 70 80 80 68 C100 48 130 42 155 38 C180 34 200 65 220 105" stroke="#c0392b" stroke-width="1.2" fill="none" stroke-dasharray="4 3" opacity="0.6"/>
-            <rect x="14" y="14" width="80" height="18" rx="2" fill="rgba(26,22,18,0.06)" stroke="#1a1612" stroke-width="0.5"/>
-            <text x="54" y="26" font-family="Space Mono, monospace" font-size="7" text-anchor="middle" fill="#1a1612">ISOLA DESIGN DISTRICT</text>
-            <text x="165" y="128" font-family="Space Mono, monospace" font-size="14" fill="#3a7d44" font-weight="bold">90%</text>
-            <text x="165" y="140" font-family="Caveat, cursive" font-size="11" fill="#1a1612" opacity="0.6">task success</text>
+        <!-- Fitness App -->
+        <a
+          href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/Fitness_App.html"
+          class="project-card reveal"
+        >
+          <div class="card-visual" style="min-height: 160px; padding: 24px">
+            <svg
+              viewBox="0 0 260 140"
+              class="sketch-illustration"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="8"
+                y="55"
+                width="48"
+                height="28"
+                rx="3"
+                stroke="#1a1612"
+                stroke-width="1.2"
+                fill="none"
+              />
+              <text
+                x="32"
+                y="72"
+                font-family="Caveat, cursive"
+                font-size="10"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                Open app
+              </text>
+              <line
+                x1="56"
+                y1="69"
+                x2="70"
+                y2="69"
+                stroke="#1a1612"
+                stroke-width="1"
+              />
+              <polygon points="70,66 76,69 70,72" fill="#1a1612" />
+              <rect
+                x="76"
+                y="55"
+                width="52"
+                height="28"
+                rx="3"
+                stroke="#1a1612"
+                stroke-width="1.2"
+                fill="rgba(26,22,18,0.06)"
+              />
+              <text
+                x="102"
+                y="72"
+                font-family="Caveat, cursive"
+                font-size="10"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                Pick micro
+              </text>
+              <line
+                x1="128"
+                y1="69"
+                x2="142"
+                y2="69"
+                stroke="#1a1612"
+                stroke-width="1"
+              />
+              <polygon points="142,66 148,69 142,72" fill="#1a1612" />
+              <rect
+                x="148"
+                y="55"
+                width="52"
+                height="28"
+                rx="3"
+                stroke="#3a7d44"
+                stroke-width="1.2"
+                fill="rgba(58,125,68,0.06)"
+              />
+              <text
+                x="174"
+                y="68"
+                font-family="Caveat, cursive"
+                font-size="10"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                Start
+              </text>
+              <text
+                x="174"
+                y="78"
+                font-family="Caveat, cursive"
+                font-size="10"
+                text-anchor="middle"
+                fill="#3a7d44"
+              >
+                workout ✓
+              </text>
+              <line
+                x1="200"
+                y1="69"
+                x2="214"
+                y2="69"
+                stroke="#1a1612"
+                stroke-width="1"
+              />
+              <polygon points="214,66 220,69 214,72" fill="#1a1612" />
+              <rect
+                x="220"
+                y="55"
+                width="36"
+                height="28"
+                rx="3"
+                stroke="#1a1612"
+                stroke-width="1.2"
+                fill="none"
+              />
+              <text
+                x="238"
+                y="72"
+                font-family="Caveat, cursive"
+                font-size="10"
+                text-anchor="middle"
+                fill="#1a1612"
+              >
+                Done!
+              </text>
+              <text
+                x="76"
+                y="34"
+                font-family="Space Mono, monospace"
+                font-size="14"
+                fill="#2c5f8a"
+                font-weight="bold"
+              >
+                40%
+              </text>
+              <text
+                x="76"
+                y="46"
+                font-family="Caveat, cursive"
+                font-size="11"
+                fill="#1a1612"
+                opacity="0.6"
+              >
+                faster first workout
+              </text>
+              <path
+                d="M102 48 C100 52 100 54 102 55"
+                stroke="#c0392b"
+                stroke-width="1"
+                fill="none"
+              />
+              <text
+                x="8"
+                y="108"
+                font-family="Caveat, cursive"
+                font-size="12"
+                fill="#1a1612"
+                opacity="0.7"
+              >
+                "I have 10 mins, that's it"
+              </text>
+              <text
+                x="8"
+                y="122"
+                font-family="Space Mono, monospace"
+                font-size="7"
+                fill="#1a1612"
+                opacity="0.4"
+              >
+                — busy parent persona
+              </text>
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="card-tag">Interface Design</span>
+              <span class="card-tag">2024</span>
+            </div>
+            <h3 class="card-title">Fitness Tracking App</h3>
+            <p class="card-desc">
+              Micro-workouts for busy parents — flexible, realistic, tested.
+            </p>
+            <div class="card-metric">40% faster first workout</div>
+            <br />
+            <span class="card-arrow">Explore project →</span>
+          </div>
+          <div class="corner-fold"></div>
+        </a>
+
+        <!-- Exhibition Locator -->
+        <a
+          href="https://inayatgulati.github.io/Inayat_Portfolio/Projects/Discoverisola_project.html"
+          class="project-card reveal"
+          style="grid-column: span 2"
+        >
+          <div style="display: grid; grid-template-columns: 1fr 1fr">
+            <div
+              class="card-visual"
+              style="
+                min-height: 180px;
+                border-right: 2px solid var(--ink);
+                border-bottom: none;
+                padding: 32px;
+              "
+            >
+              <svg
+                viewBox="0 0 280 160"
+                class="sketch-illustration"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="10"
+                  y="10"
+                  width="260"
+                  height="140"
+                  rx="3"
+                  stroke="#1a1612"
+                  stroke-width="1.5"
+                  fill="rgba(26,22,18,0.03)"
+                />
+                <line
+                  x1="10"
+                  y1="50"
+                  x2="270"
+                  y2="50"
+                  stroke="#1a1612"
+                  stroke-width="0.6"
+                  opacity="0.3"
+                />
+                <line
+                  x1="10"
+                  y1="90"
+                  x2="270"
+                  y2="90"
+                  stroke="#1a1612"
+                  stroke-width="0.6"
+                  opacity="0.3"
+                />
+                <line
+                  x1="10"
+                  y1="120"
+                  x2="270"
+                  y2="120"
+                  stroke="#1a1612"
+                  stroke-width="0.6"
+                  opacity="0.3"
+                />
+                <line
+                  x1="60"
+                  y1="10"
+                  x2="60"
+                  y2="150"
+                  stroke="#1a1612"
+                  stroke-width="0.6"
+                  opacity="0.3"
+                />
+                <line
+                  x1="130"
+                  y1="10"
+                  x2="130"
+                  y2="150"
+                  stroke="#1a1612"
+                  stroke-width="0.6"
+                  opacity="0.3"
+                />
+                <line
+                  x1="200"
+                  y1="10"
+                  x2="200"
+                  y2="150"
+                  stroke="#1a1612"
+                  stroke-width="0.6"
+                  opacity="0.3"
+                />
+                <circle
+                  cx="80"
+                  cy="68"
+                  r="8"
+                  stroke="#c0392b"
+                  stroke-width="1.5"
+                  fill="rgba(192,57,43,0.15)"
+                />
+                <circle cx="80" cy="68" r="3" fill="#c0392b" />
+                <circle
+                  cx="155"
+                  cy="38"
+                  r="8"
+                  stroke="#c0392b"
+                  stroke-width="1.5"
+                  fill="rgba(192,57,43,0.15)"
+                />
+                <circle cx="155" cy="38" r="3" fill="#c0392b" />
+                <circle
+                  cx="220"
+                  cy="105"
+                  r="8"
+                  stroke="#c0392b"
+                  stroke-width="1.5"
+                  fill="rgba(192,57,43,0.15)"
+                />
+                <circle cx="220" cy="105" r="3" fill="#c0392b" />
+                <circle
+                  cx="40"
+                  cy="108"
+                  r="6"
+                  stroke="#2c5f8a"
+                  stroke-width="1.2"
+                  fill="rgba(44,95,138,0.1)"
+                />
+                <circle cx="40" cy="108" r="2.5" fill="#2c5f8a" />
+                <path
+                  d="M40 108 C55 90 70 80 80 68 C100 48 130 42 155 38 C180 34 200 65 220 105"
+                  stroke="#c0392b"
+                  stroke-width="1.2"
+                  fill="none"
+                  stroke-dasharray="4 3"
+                  opacity="0.6"
+                />
+                <rect
+                  x="14"
+                  y="14"
+                  width="80"
+                  height="18"
+                  rx="2"
+                  fill="rgba(26,22,18,0.06)"
+                  stroke="#1a1612"
+                  stroke-width="0.5"
+                />
+                <text
+                  x="54"
+                  y="26"
+                  font-family="Space Mono, monospace"
+                  font-size="7"
+                  text-anchor="middle"
+                  fill="#1a1612"
+                >
+                  ISOLA DESIGN DISTRICT
+                </text>
+                <text
+                  x="165"
+                  y="128"
+                  font-family="Space Mono, monospace"
+                  font-size="14"
+                  fill="#3a7d44"
+                  font-weight="bold"
+                >
+                  90%
+                </text>
+                <text
+                  x="165"
+                  y="140"
+                  font-family="Caveat, cursive"
+                  font-size="11"
+                  fill="#1a1612"
+                  opacity="0.6"
+                >
+                  task success
+                </text>
+              </svg>
+            </div>
+            <div class="card-body" style="align-self: center">
+              <div class="card-tags">
+                <span class="card-tag">Interaction Design</span>
+                <span class="card-tag">2024</span>
+              </div>
+              <h3 class="card-title">Exhibition Locator — Milan</h3>
+              <p class="card-desc">
+                Making Milan's Isola Design District accessible — 9 of 10 users
+                navigated without assistance during testing.
+              </p>
+              <div class="card-metric">90% task success rate</div>
+              <br />
+              <span class="card-arrow">Explore project →</span>
+            </div>
+          </div>
+          <div class="corner-fold"></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" style="background: var(--paper-dark)" class="page-edge">
+      <div class="margin-strip"></div>
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">A bit about me</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="about-grid">
+        <div style="position: relative; padding-left: 80px">
+          <!-- Margin annotation -->
+
+          <p class="about-text reveal">
+            I'm a <strong>Vancouver-based UX/UI designer</strong> with a
+            background in frontend development and a
+            <span class="highlight-yellow"
+              >genuine passion for architecture</span
+            >
+            — sketchbook always close by.<br /><br />
+            I explored architecture for a while although never finished the
+            degree, but it left me with a
+            <strong>deep love for sketching buildings</strong>, thinking in
+            systems, and caring obsessively about spatial logic. That passion
+            bleeds into everything I design.<br /><br />
+            My work tends to live at the intersection of
+            <span class="highlight-blue"
+              >research, craft, and technical feasibility</span
+            >. I can actually <strong>build the things I design</strong>. No
+            pixel left unjustified.
+          </p>
+
+          <!-- Process strip -->
+          <div class="process-strip reveal">
+            <span class="process-strip-label">Process</span>
+            <span class="process-step">Discover</span>
+            <span class="process-arrow">→</span>
+            <span class="process-step">Define</span>
+            <span class="process-arrow">→</span>
+            <span class="process-step">Sketch</span>
+            <span class="process-arrow">→</span>
+            <span class="process-step done">Ship ✓</span>
+          </div>
+
+          <!-- Small building doodle below process -->
+          <svg
+            viewBox="0 0 200 80"
+            style="margin-top: 24px; opacity: 0.22; transform: rotate(-1deg)"
+            width="180"
+            aria-hidden="true"
+          >
+            <rect
+              x="10"
+              y="30"
+              width="30"
+              height="50"
+              stroke="#1a1612"
+              stroke-width="1.2"
+              fill="none"
+            />
+            <rect
+              x="44"
+              y="10"
+              width="40"
+              height="70"
+              stroke="#1a1612"
+              stroke-width="1.2"
+              fill="none"
+            />
+            <rect
+              x="88"
+              y="22"
+              width="28"
+              height="58"
+              stroke="#1a1612"
+              stroke-width="1.2"
+              fill="none"
+            />
+            <rect
+              x="120"
+              y="40"
+              width="22"
+              height="40"
+              stroke="#1a1612"
+              stroke-width="1.2"
+              fill="none"
+            />
+            <rect
+              x="146"
+              y="28"
+              width="36"
+              height="52"
+              stroke="#1a1612"
+              stroke-width="1.2"
+              fill="none"
+            />
+            <rect
+              x="15"
+              y="44"
+              width="8"
+              height="10"
+              stroke="#1a1612"
+              stroke-width="0.6"
+              fill="none"
+            />
+            <rect
+              x="26"
+              y="44"
+              width="8"
+              height="10"
+              stroke="#1a1612"
+              stroke-width="0.6"
+              fill="none"
+            />
+            <rect
+              x="50"
+              y="24"
+              width="10"
+              height="12"
+              stroke="#1a1612"
+              stroke-width="0.6"
+              fill="none"
+            />
+            <rect
+              x="65"
+              y="24"
+              width="10"
+              height="12"
+              stroke="#1a1612"
+              stroke-width="0.6"
+              fill="none"
+            />
+            <rect
+              x="50"
+              y="42"
+              width="10"
+              height="12"
+              stroke="#1a1612"
+              stroke-width="0.6"
+              fill="none"
+            />
+            <rect
+              x="65"
+              y="42"
+              width="10"
+              height="12"
+              stroke="#1a1612"
+              stroke-width="0.6"
+              fill="none"
+            />
+            <line
+              x1="5"
+              y1="80"
+              x2="195"
+              y2="80"
+              stroke="#1a1612"
+              stroke-width="1.5"
+            />
+            <text
+              x="60"
+              y="76"
+              font-family="Reenie Beanie, cursive"
+              font-size="12"
+              fill="#c0392b"
+              transform="rotate(-1,60,76)"
+            >
+              still sketching these ✏️
+            </text>
           </svg>
         </div>
-        <div class="card-body" style="align-self: center;">
-          <div class="card-tags">
-            <span class="card-tag">Interaction Design</span>
-            <span class="card-tag">2024</span>
+
+        <div class="skills-board reveal">
+          <div class="skill-cluster">
+            <div class="skill-cluster-label">Design tools</div>
+            <div class="skill-item">Figma</div>
+            <div class="skill-item">Framer</div>
+            <div class="skill-item">Prototyping</div>
+            <div class="skill-item">Design Systems</div>
           </div>
-          <h3 class="card-title">Exhibition Locator — Milan</h3>
-          <p class="card-desc">Making Milan's Isola Design District accessible — 9 of 10 users navigated without assistance during testing.</p>
-          <div class="card-metric">90% task success rate</div><br>
-          <span class="card-arrow">Explore project →</span>
+          <div class="skill-cluster" style="transform: rotate(0.6deg)">
+            <div class="skill-cluster-label">Research</div>
+            <div class="skill-item">User Interviews</div>
+            <div class="skill-item">Usability Testing</div>
+            <div class="skill-item">Journey Mapping</div>
+            <div class="skill-item">Heuristics</div>
+          </div>
+          <div class="skill-cluster" style="transform: rotate(-0.4deg)">
+            <div class="skill-cluster-label">Frontend</div>
+            <div class="skill-item">HTML/CSS</div>
+            <div class="skill-item">JavaScript</div>
+            <div class="skill-item">React</div>
+            <div class="skill-item">Git</div>
+          </div>
+          <div class="skill-cluster" style="transform: rotate(0.3deg)">
+            <div class="skill-cluster-label">Architecture</div>
+            <div class="skill-item">Spatial Design</div>
+            <div class="skill-item">Building Sketches</div>
+            <div class="skill-item">AutoCAD</div>
+            <div class="skill-item">Rhino</div>
+          </div>
         </div>
       </div>
-      <div class="corner-fold"></div>
-    </a>
+    </section>
 
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" style="background: var(--paper-dark);" class="page-edge">
-  <div class="margin-strip"></div>
-  <div class="section-header">
-    <span class="section-num">02</span>
-    <h2 class="section-title">A bit about me</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="about-grid">
-    <div style="position: relative; padding-left: 80px;">
-
-      <!-- Margin annotation -->
-     
-
-      <p class="about-text reveal">
-        I'm a <strong>Vancouver-based UX/UI designer</strong> with a background in frontend development and a <span class="highlight-yellow">genuine passion for architecture</span> — sketchbook always close by.<br><br>
-        I explored architecture for a while although never finished the degree, but it left me with a <strong>deep love for sketching buildings</strong>, thinking in systems, and caring obsessively about spatial logic. That passion bleeds into everything I design.<br><br>
-        My work tends to live at the intersection of <span class="highlight-blue">research, craft, and technical feasibility</span>. I can actually <strong>build the things I design</strong>. No pixel left unjustified.
-      </p>
-
-      <!-- Process strip -->
-      <div class="process-strip reveal">
-        <span class="process-strip-label">Process</span>
-        <span class="process-step">Discover</span>
-        <span class="process-arrow">→</span>
-        <span class="process-step">Define</span>
-        <span class="process-arrow">→</span>
-        <span class="process-step">Sketch</span>
-        <span class="process-arrow">→</span>
-        <span class="process-step done">Ship ✓</span>
+    <!-- CONTACT -->
+    <div id="contact" class="contact-section">
+      <div class="contact-inner">
+        <h2 class="contact-title">Let's work<br />together.</h2>
+        <p class="contact-sub">
+          Always open to discussing new projects, creative ideas, or
+          opportunities. Grab a virtual coffee?
+        </p>
+        <div class="contact-links">
+          <a
+            href="https://www.linkedin.com/in/inayat-inayat"
+            target="_blank"
+            class="contact-link"
+            >LinkedIn →</a
+          >
+          <a href="mailto:inayatgulati@gmail.com" class="contact-link"
+            >inayatgulati@gmail.com →</a
+          >
+        </div>
       </div>
 
-      <!-- Small building doodle below process -->
-      <svg viewBox="0 0 200 80" style="margin-top:24px; opacity:0.22; transform:rotate(-1deg);" width="180" aria-hidden="true">
-        <rect x="10" y="30" width="30" height="50" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-        <rect x="44" y="10" width="40" height="70" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-        <rect x="88" y="22" width="28" height="58" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-        <rect x="120" y="40" width="22" height="40" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-        <rect x="146" y="28" width="36" height="52" stroke="#1a1612" stroke-width="1.2" fill="none"/>
-        <rect x="15" y="44" width="8" height="10" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-        <rect x="26" y="44" width="8" height="10" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-        <rect x="50" y="24" width="10" height="12" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-        <rect x="65" y="24" width="10" height="12" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-        <rect x="50" y="42" width="10" height="12" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-        <rect x="65" y="42" width="10" height="12" stroke="#1a1612" stroke-width="0.6" fill="none"/>
-        <line x1="5" y1="80" x2="195" y2="80" stroke="#1a1612" stroke-width="1.5"/>
-        <text x="60" y="76" font-family="Reenie Beanie, cursive" font-size="12" fill="#c0392b" transform="rotate(-1,60,76)">still sketching these ✏️</text>
+      <svg
+        style="position: absolute; right: 48px; bottom: 48px; opacity: 0.12"
+        width="180"
+        height="180"
+        viewBox="0 0 180 180"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <circle cx="90" cy="90" r="80" stroke="white" stroke-width="1" />
+        <circle
+          cx="90"
+          cy="90"
+          r="60"
+          stroke="white"
+          stroke-width="0.5"
+          stroke-dasharray="4 4"
+        />
+        <circle cx="90" cy="90" r="40" stroke="white" stroke-width="0.5" />
+        <line
+          x1="10"
+          y1="90"
+          x2="170"
+          y2="90"
+          stroke="white"
+          stroke-width="0.5"
+        />
+        <line
+          x1="90"
+          y1="10"
+          x2="90"
+          y2="170"
+          stroke="white"
+          stroke-width="0.5"
+        />
+        <polygon points="90,8 84,22 90,18 96,22" fill="white" />
+        <text
+          x="90"
+          y="6"
+          font-family="Space Mono, monospace"
+          font-size="7"
+          fill="white"
+          text-anchor="middle"
+        >
+          N
+        </text>
       </svg>
-    </div>
 
-    <div class="skills-board reveal">
-      <div class="skill-cluster">
-        <div class="skill-cluster-label">Design tools</div>
-        <div class="skill-item">Figma</div>
-        <div class="skill-item">Framer</div>
-        <div class="skill-item">Prototyping</div>
-        <div class="skill-item">Design Systems</div>
-      </div>
-      <div class="skill-cluster" style="transform: rotate(0.6deg);">
-        <div class="skill-cluster-label">Research</div>
-        <div class="skill-item">User Interviews</div>
-        <div class="skill-item">Usability Testing</div>
-        <div class="skill-item">Journey Mapping</div>
-        <div class="skill-item">Heuristics</div>
-      </div>
-      <div class="skill-cluster" style="transform: rotate(-0.4deg);">
-        <div class="skill-cluster-label">Frontend</div>
-        <div class="skill-item">HTML/CSS</div>
-        <div class="skill-item">JavaScript</div>
-        <div class="skill-item">React</div>
-        <div class="skill-item">Git</div>
-      </div>
-      <div class="skill-cluster" style="transform: rotate(0.3deg);">
-        <div class="skill-cluster-label">Architecture</div>
-        <div class="skill-item">Spatial Design</div>
-        <div class="skill-item">Building Sketches</div>
-        <div class="skill-item">AutoCAD</div>
-        <div class="skill-item">Rhino</div>
+      <!-- Scrawled note on contact section -->
+      <div
+        style="
+          position: absolute;
+          right: 80px;
+          top: 60px;
+          font-family: &quot;Reenie Beanie&quot;, cursive;
+          font-size: 20px;
+          color: rgba(255, 255, 255, 0.25);
+          transform: rotate(-5deg);
+          pointer-events: none;
+          line-height: 1.4;
+        "
+      >
+        don't be shy —<br />say hi! 👋
       </div>
     </div>
-  </div>
-</section>
 
-<!-- CONTACT -->
-<div id="contact" class="contact-section">
-  <div class="contact-inner">
-    <h2 class="contact-title">Let's work<br>together.</h2>
-    <p class="contact-sub">
-      Always open to discussing new projects, creative ideas, or opportunities. Grab a virtual coffee?
-    </p>
-    <div class="contact-links">
-      <a href="https://www.linkedin.com/in/inayat-inayat" target="_blank" class="contact-link">LinkedIn →</a>
-      <a href="mailto:inayatgulati@gmail.com" class="contact-link">inayatgulati@gmail.com →</a>
-    </div>
-  </div>
+    <!-- FOOTER -->
+    <footer>
+      <p>© 2025 Inayat Gulati</p>
+      <p>Vancouver, BC</p>
+      <p>UX/UI · Frontend · Architecture</p>
+      <!-- Coffee ring stain decoration -->
+      <div
+        style="
+          position: absolute;
+          right: 80px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          border: 1.5px solid rgba(160, 130, 90, 0.2);
+          pointer-events: none;
+        "
+      ></div>
+      <div
+        style="
+          position: absolute;
+          right: 96px;
+          top: 50%;
+          transform: translateY(-60%);
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          border: 1px solid rgba(160, 130, 90, 0.12);
+          pointer-events: none;
+        "
+      ></div>
+    </footer>
 
-  <svg style="position:absolute; right: 48px; bottom: 48px; opacity: 0.12;" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="90" cy="90" r="80" stroke="white" stroke-width="1"/>
-    <circle cx="90" cy="90" r="60" stroke="white" stroke-width="0.5" stroke-dasharray="4 4"/>
-    <circle cx="90" cy="90" r="40" stroke="white" stroke-width="0.5"/>
-    <line x1="10" y1="90" x2="170" y2="90" stroke="white" stroke-width="0.5"/>
-    <line x1="90" y1="10" x2="90" y2="170" stroke="white" stroke-width="0.5"/>
-    <polygon points="90,8 84,22 90,18 96,22" fill="white"/>
-    <text x="90" y="6" font-family="Space Mono, monospace" font-size="7" fill="white" text-anchor="middle">N</text>
-  </svg>
-
-  <!-- Scrawled note on contact section -->
-  <div style="position:absolute; right: 80px; top: 60px; font-family:'Reenie Beanie',cursive; font-size:20px; color:rgba(255,255,255,0.25); transform:rotate(-5deg); pointer-events:none; line-height:1.4;">
-    don't be shy —<br>say hi! 👋
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <p>© 2025 Inayat Gulati</p>
-  <p>Vancouver, BC</p>
-  <p>UX/UI · Frontend · Architecture</p>
-  <!-- Coffee ring stain decoration -->
-  <div style="position:absolute; right:80px; top:50%; transform:translateY(-50%); width:28px; height:28px; border-radius:50%; border:1.5px solid rgba(160,130,90,0.2); pointer-events:none;"></div>
-  <div style="position:absolute; right:96px; top:50%; transform:translateY(-60%); width:20px; height:20px; border-radius:50%; border:1px solid rgba(160,130,90,0.12); pointer-events:none;"></div>
-</footer>
-
-<!-- BOT -->
-<div class="bot-bubble">
-  <div class="bot-window" id="botWindow">
-    <div class="bot-header">
-      <div class="bot-header-left">
-        <div class="bot-dot"></div>
-        <span>Inayat's Bot ✏️</span>
+    <!-- BOT -->
+    <div class="bot-bubble">
+      <div class="bot-window" id="botWindow">
+        <div class="bot-header">
+          <div class="bot-header-left">
+            <div class="bot-dot"></div>
+            <span>Inayat's Bot ✏️</span>
+          </div>
+          <button class="bot-close" onclick="toggleBot()">×</button>
+        </div>
+        <div class="bot-messages" id="botMessages"></div>
+        <div class="bot-typing" id="botTyping">drawing a response...</div>
+        <div class="bot-quick" id="botChips">
+          <button class="bot-chip" onclick="askBot('Tell me about your work')">
+            Work 🗂
+          </button>
+          <button class="bot-chip" onclick="askBot('What tools do you use?')">
+            Tools 🖊
+          </button>
+          <button class="bot-chip" onclick="askBot('How can I contact you?')">
+            Contact 📬
+          </button>
+        </div>
+        <div class="bot-input-row">
+          <input
+            class="bot-input"
+            id="botInput"
+            placeholder="Ask me anything..."
+            onkeydown="if (event.key === 'Enter') sendBot();"
+          />
+          <button class="bot-send" onclick="sendBot()">→</button>
+        </div>
       </div>
-      <button class="bot-close" onclick="toggleBot()">×</button>
+
+      <div
+        class="bot-toggle"
+        onclick="toggleBot()"
+        title="Chat with Inayat's bot"
+      >
+        <span id="botIcon">✏️</span>
+        <div class="bot-toggle-label" id="botLabel">
+          👋 Click me for quick help!
+        </div>
+      </div>
     </div>
-    <div class="bot-messages" id="botMessages"></div>
-    <div class="bot-typing" id="botTyping">drawing a response...</div>
-    <div class="bot-quick" id="botChips">
-      <button class="bot-chip" onclick="askBot('Tell me about your work')">Work 🗂</button>
-      <button class="bot-chip" onclick="askBot('What tools do you use?')">Tools 🖊</button>
-      <button class="bot-chip" onclick="askBot('How can I contact you?')">Contact 📬</button>
-    </div>
-    <div class="bot-input-row">
-      <input class="bot-input" id="botInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter') sendBot()"/>
-      <button class="bot-send" onclick="sendBot()">→</button>
-    </div>
-  </div>
 
-  <div class="bot-toggle" onclick="toggleBot()" title="Chat with Inayat's bot">
-    <span id="botIcon">✏️</span>
-    <div class="bot-toggle-label" id="botLabel">👋 Click me for quick help!</div>
-  </div>
-</div>
-
-<script>
-  // ===== SPIRAL HOLES =====
-  const spiral = document.querySelector('.spiral-binding');
-  const holeCount = Math.floor(window.innerHeight / 44) + 2;
-  for (let i = 0; i < holeCount; i++) {
-    const hole = document.createElement('div');
-    hole.className = 'spiral-hole';
-    spiral.appendChild(hole);
-  }
-
-  // ===== PENCIL CURSOR TRAIL =====
-  const trailContainer = document.getElementById('cursorTrail');
-  let trails = [];
-  document.addEventListener('mousemove', (e) => {
-    if (Math.random() > 0.4) return; // sparse trail
-    const dot = document.createElement('div');
-    dot.className = 'cursor-dot';
-    dot.style.left = (e.clientX + (Math.random()-0.5)*6) + 'px';
-    dot.style.top = (e.clientY + (Math.random()-0.5)*6) + 'px';
-    dot.style.width = (Math.random()*3+1) + 'px';
-    dot.style.height = (Math.random()*3+1) + 'px';
-    dot.style.opacity = (Math.random()*0.3+0.1).toString();
-    trailContainer.appendChild(dot);
-    trails.push(dot);
-    setTimeout(() => {
-      dot.style.opacity = '0';
-      setTimeout(() => { if (dot.parentNode) dot.parentNode.removeChild(dot); }, 400);
-    }, 300);
-    if (trails.length > 40) {
-      const old = trails.shift();
-      if (old.parentNode) old.parentNode.removeChild(old);
-    }
-  });
-
-  // ===== SCROLL REVEAL =====
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 60);
-        observer.unobserve(entry.target);
+    <script>
+      // ===== SPIRAL HOLES =====
+      const spiral = document.querySelector(".spiral-binding");
+      const holeCount = Math.floor(window.innerHeight / 44) + 2;
+      for (let i = 0; i < holeCount; i++) {
+        const hole = document.createElement("div");
+        hole.className = "spiral-hole";
+        spiral.appendChild(hole);
       }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(el => observer.observe(el));
 
-  // ===== BOT =====
-  let botOpen = false;
-  let botGreeted = false;
+      // ===== PENCIL CURSOR TRAIL =====
+      const trailContainer = document.getElementById("cursorTrail");
+      let trails = [];
+      document.addEventListener("mousemove", (e) => {
+        if (Math.random() > 0.4) return; // sparse trail
+        const dot = document.createElement("div");
+        dot.className = "cursor-dot";
+        dot.style.left = e.clientX + (Math.random() - 0.5) * 6 + "px";
+        dot.style.top = e.clientY + (Math.random() - 0.5) * 6 + "px";
+        dot.style.width = Math.random() * 3 + 1 + "px";
+        dot.style.height = Math.random() * 3 + 1 + "px";
+        dot.style.opacity = (Math.random() * 0.3 + 0.1).toString();
+        trailContainer.appendChild(dot);
+        trails.push(dot);
+        setTimeout(() => {
+          dot.style.opacity = "0";
+          setTimeout(() => {
+            if (dot.parentNode) dot.parentNode.removeChild(dot);
+          }, 400);
+        }, 300);
+        if (trails.length > 40) {
+          const old = trails.shift();
+          if (old.parentNode) old.parentNode.removeChild(old);
+        }
+      });
 
-  const botResponses = {
-    keywords: [
-      { keys: ['work','project','case','portfolio','mastercard','fraud','fitness','pawth','milan','isola','exhibition'], reply: "I've worked on some fun projects! Highlights include a fraud detection dashboard for Mastercard (60% less analysis time 📊), an intranet redesign for 15k+ employees, and a pet social app called Pawth. Scroll up or check the Projects page to dig in →" },
-      { keys: ['tool','figma','design','software','sketch','prototype'], reply: "My main tools are Figma + FigJam for design, plus I can actually code — HTML, CSS, JS, React. Architecture background means I also know AutoCAD and Rhino ✏️" },
-      { keys: ['contact','email','reach','hire','opportunity','hello','hi','hey'], reply: "Let's chat! Drop me a line at inayatgulati@gmail.com or connect on LinkedIn. I'm always open to new projects and creative collabs 📬" },
-      { keys: ['architecture','building','spatial','arch','sketch','sketching'], reply: "I explored architecture for a while and fell in love with it — especially sketching buildings. Never finished the degree but it completely shaped how I think about space and systems 🏛✏️" },
-      { keys: ['frontend','code','dev','developer','react','html','css'], reply: "I bridge design and dev — so I don't just hand off specs, I can actually build the thing. HTML, CSS, JS, React are all in the toolkit 💻" },
-      { keys: ['process','how','approach','research','test'], reply: "I follow a research-first approach: discover → define → sketch → test → ship. No pixel left unjustified 🔍" },
-      { keys: ['vancouver','location','where','based'], reply: "Based in Vancouver, BC 🍁 Open to remote opportunities worldwide!" },
-      { keys: ['resume','cv','experience'], reply: "You can grab my résumé from the nav menu above! Or I can tell you about specific projects — just ask 📄" },
-    ],
-    fallback: "Good question! I'm Inayat's little doodle bot — I know about her work, tools, and process. Try asking about a specific project or how to get in touch ✏️"
-  };
+      // ===== SCROLL REVEAL =====
+      const reveals = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => entry.target.classList.add("visible"), i * 60);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+      );
+      reveals.forEach((el) => observer.observe(el));
 
-  function toggleBot() {
-    botOpen = !botOpen;
-    const win = document.getElementById('botWindow');
-    const label = document.getElementById('botLabel');
-    const icon = document.getElementById('botIcon');
-    win.classList.toggle('open', botOpen);
-    icon.textContent = botOpen ? '×' : '✏️';
-    label.style.display = botOpen ? 'none' : 'block';
-    if (botOpen && !botGreeted) {
-      botGreeted = true;
-      setTimeout(() => addMsg("Hey! I'm Inayat's portfolio bot 👋 Ask me about her work, tools, process, or how to get in touch!", 'bot'), 300);
-    }
-  }
+      // ===== BOT =====
+      let botOpen = false;
+      let botGreeted = false;
 
-  function addMsg(text, type) {
-    const msgs = document.getElementById('botMessages');
-    const div = document.createElement('div');
-    div.className = 'bot-msg ' + type;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
+      const botResponses = {
+        keywords: [
+          {
+            keys: [
+              "work",
+              "project",
+              "case",
+              "portfolio",
+              "mastercard",
+              "fraud",
+              "fitness",
+              "pawth",
+              "milan",
+              "isola",
+              "exhibition",
+            ],
+            reply:
+              "I've worked on some fun projects! Highlights include a fraud detection dashboard for Mastercard (60% less analysis time 📊), an intranet redesign for 15k+ employees, and a pet social app called Pawth. Scroll up or check the Projects page to dig in →",
+          },
+          {
+            keys: [
+              "tool",
+              "figma",
+              "design",
+              "software",
+              "sketch",
+              "prototype",
+            ],
+            reply:
+              "My main tools are Figma + FigJam for design, plus I can actually code — HTML, CSS, JS, React. Architecture background means I also know AutoCAD and Rhino ✏️",
+          },
+          {
+            keys: [
+              "contact",
+              "email",
+              "reach",
+              "hire",
+              "opportunity",
+              "hello",
+              "hi",
+              "hey",
+            ],
+            reply:
+              "Let's chat! Drop me a line at inayatgulati@gmail.com or connect on LinkedIn. I'm always open to new projects and creative collabs 📬",
+          },
+          {
+            keys: [
+              "architecture",
+              "building",
+              "spatial",
+              "arch",
+              "sketch",
+              "sketching",
+            ],
+            reply:
+              "I explored architecture for a while and fell in love with it — especially sketching buildings. Never finished the degree but it completely shaped how I think about space and systems 🏛✏️",
+          },
+          {
+            keys: [
+              "frontend",
+              "code",
+              "dev",
+              "developer",
+              "react",
+              "html",
+              "css",
+            ],
+            reply:
+              "I bridge design and dev — so I don't just hand off specs, I can actually build the thing. HTML, CSS, JS, React are all in the toolkit 💻",
+          },
+          {
+            keys: ["process", "how", "approach", "research", "test"],
+            reply:
+              "I follow a research-first approach: discover → define → sketch → test → ship. No pixel left unjustified 🔍",
+          },
+          {
+            keys: ["vancouver", "location", "where", "based"],
+            reply:
+              "Based in Vancouver, BC 🍁 Open to remote opportunities worldwide!",
+          },
+          {
+            keys: ["resume", "cv", "experience"],
+            reply:
+              "You can grab my résumé from the nav menu above! Or I can tell you about specific projects — just ask 📄",
+          },
+        ],
+        fallback:
+          "Good question! I'm Inayat's little doodle bot — I know about her work, tools, and process. Try asking about a specific project or how to get in touch ✏️",
+      };
 
-  function getBotReply(text) {
-    const lower = text.toLowerCase();
-    for (const item of botResponses.keywords) {
-      if (item.keys.some(k => lower.includes(k))) return item.reply;
-    }
-    return botResponses.fallback;
-  }
+      function toggleBot() {
+        botOpen = !botOpen;
+        const win = document.getElementById("botWindow");
+        const label = document.getElementById("botLabel");
+        const icon = document.getElementById("botIcon");
+        win.classList.toggle("open", botOpen);
+        icon.textContent = botOpen ? "×" : "✏️";
+        label.style.display = botOpen ? "none" : "block";
+        if (botOpen && !botGreeted) {
+          botGreeted = true;
+          setTimeout(
+            () =>
+              addMsg(
+                "Hey! I'm Inayat's portfolio bot 👋 Ask me about her work, tools, process, or how to get in touch!",
+                "bot",
+              ),
+            300,
+          );
+        }
+      }
 
-  function askBot(question) {
-    addMsg(question, 'user');
-    document.getElementById('botChips').style.display = 'none';
-    const typing = document.getElementById('botTyping');
-    typing.style.display = 'block';
-    setTimeout(() => {
-      typing.style.display = 'none';
-      addMsg(getBotReply(question), 'bot');
-    }, 800);
-  }
+      function addMsg(text, type) {
+        const msgs = document.getElementById("botMessages");
+        const div = document.createElement("div");
+        div.className = "bot-msg " + type;
+        div.textContent = text;
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
 
-  function sendBot() {
-    const input = document.getElementById('botInput');
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    addMsg(text, 'user');
-    document.getElementById('botChips').style.display = 'none';
-    const typing = document.getElementById('botTyping');
-    typing.style.display = 'block';
-    setTimeout(() => {
-      typing.style.display = 'none';
-      addMsg(getBotReply(text), 'bot');
-    }, 700);
-  }
-</script>
-</body>
+      function getBotReply(text) {
+        const lower = text.toLowerCase();
+        for (const item of botResponses.keywords) {
+          if (item.keys.some((k) => lower.includes(k))) return item.reply;
+        }
+        return botResponses.fallback;
+      }
+
+      function askBot(question) {
+        addMsg(question, "user");
+        document.getElementById("botChips").style.display = "none";
+        const typing = document.getElementById("botTyping");
+        typing.style.display = "block";
+        setTimeout(() => {
+          typing.style.display = "none";
+          addMsg(getBotReply(question), "bot");
+        }, 800);
+      }
+
+      function sendBot() {
+        const input = document.getElementById("botInput");
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = "";
+        addMsg(text, "user");
+        document.getElementById("botChips").style.display = "none";
+        const typing = document.getElementById("botTyping");
+        typing.style.display = "block";
+        setTimeout(() => {
+          typing.style.display = "none";
+          addMsg(getBotReply(text), "bot");
+        }, 700);
+      }
+    </script>
+  </body>
 </html>

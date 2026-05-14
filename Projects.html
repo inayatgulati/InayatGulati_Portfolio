@@ -18,24 +18,19 @@
       --ink-light: #3d3530;
       --ink-faint: #8a7f72;
       --pencil: #b8b0a0;
+      --pencil-light: #d4cfc4;
       --accent-red: #c0392b;
       --accent-blue: #2c5f8a;
       --accent-yellow: #e8b84b;
       --accent-green: #3a7d44;
+      --accent-orange: #c96a2b;
       --font-hand: 'Caveat', cursive;
       --font-scrawl: 'Reenie Beanie', cursive;
       --font-mono: 'Space Mono', monospace;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--paper);
@@ -44,8 +39,10 @@
       font-size: 18px;
       line-height: 1.6;
       overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M3 17 L8 8 L14 14 Z' fill='%231a1612' stroke='%231a1612' stroke-width='0.5'/%3E%3Crect x='13' y='2' width='3' height='10' rx='1' transform='rotate(45 14.5 7)' fill='%231a1612'/%3E%3C/svg%3E"), auto;
     }
 
+    /* Paper ruled lines */
     body::before {
       content: '';
       position: fixed;
@@ -57,6 +54,7 @@
       z-index: 0;
     }
 
+    /* Paper grain */
     body::after {
       content: '';
       position: fixed;
@@ -67,11 +65,10 @@
       opacity: 0.5;
     }
 
+    /* ===== SPIRAL BINDING ===== */
     .spiral-binding {
       position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
+      left: 0; top: 0; bottom: 0;
       width: 32px;
       background: var(--paper-worn);
       border-right: 2.5px solid var(--ink);
@@ -79,7 +76,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       padding-top: 24px;
+      gap: 0;
       pointer-events: none;
     }
 
@@ -90,17 +89,15 @@
       border: 2px solid var(--ink);
       background: var(--paper);
       margin-bottom: 28px;
+      flex-shrink: 0;
       box-shadow: inset 1px 1px 0 rgba(0,0,0,0.1);
     }
 
-    nav,
-    .hero,
-    .projects-container,
-    .projects-section,
-    footer {
+    nav, .hero, .projects-wrap, footer {
       margin-left: 32px;
     }
 
+    /* ===== NAV ===== */
     nav {
       position: sticky;
       top: 0;
@@ -108,31 +105,37 @@
       background: var(--paper);
       border-bottom: 2.5px solid var(--ink);
       padding: 14px 48px;
-    }
-
-    .nav-container {
-      max-width: 1400px;
-      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .logo {
+    nav::after {
+      content: '';
+      position: absolute;
+      right: 160px;
+      bottom: -18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(160,130,90,0.18);
+      pointer-events: none;
+    }
+
+    .nav-logo {
       font-family: var(--font-hand);
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
+      letter-spacing: -0.5px;
       color: var(--ink);
       text-decoration: none;
       position: relative;
     }
 
-    .logo::after {
+    .nav-logo::after {
       content: '';
       position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
+      bottom: -2px; left: 0; right: 0;
       height: 3px;
       background: var(--accent-red);
       border-radius: 2px;
@@ -147,7 +150,7 @@
 
     .nav-links a {
       font-family: var(--font-hand);
-      font-size: 18px;
+      font-size: 17px;
       color: var(--ink);
       text-decoration: none;
       position: relative;
@@ -157,54 +160,36 @@
     .nav-links a::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
       background: var(--ink);
       transition: width 0.25s;
+      border-radius: 1px;
     }
 
     .nav-links a:hover::after,
-    .nav-links a.active::after {
-      width: 100%;
-    }
+    .nav-links a.active::after { width: 100%; }
 
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-    }
-
-    .hamburger span {
-      width: 25px;
-      height: 2px;
-      background: var(--ink);
-    }
-
+    /* ===== HERO ===== */
     .hero {
-      padding: 90px 48px 40px;
       position: relative;
+      padding: 72px 48px 52px;
       overflow: hidden;
     }
 
     .hero::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
+      left: 0; top: 0; bottom: 0;
       width: 44px;
       border-right: 2px solid rgba(192,57,43,0.2);
       pointer-events: none;
     }
 
-    .hero-container {
-      max-width: 1200px;
-      margin: 0 auto;
+    .hero-inner {
       position: relative;
-      z-index: 1;
+      z-index: 2;
+      max-width: 800px;
     }
 
     .hero-tag {
@@ -221,84 +206,175 @@
 
     .hero-tag::before {
       content: '';
-      width: 24px;
-      height: 2px;
+      display: inline-block;
+      width: 24px; height: 2px;
       background: var(--accent-red);
     }
 
     .page-title {
       font-family: var(--font-hand);
-      font-size: clamp(54px, 8vw, 92px);
+      font-size: clamp(52px, 8vw, 92px);
       font-weight: 700;
       line-height: 1;
-      letter-spacing: -1px;
-      color: var(--ink);
+      letter-spacing: -2px;
       margin-bottom: 18px;
     }
 
-    .page-subtitle {
-      max-width: 720px;
-      font-family: var(--font-hand);
-      font-size: 22px;
-      color: var(--ink-light);
-      line-height: 1.55;
+    .page-title .underline-squiggle {
+      position: relative;
+      display: inline-block;
     }
 
-    .projects-container {
-      max-width: 1400px;
-      margin-right: auto;
-      padding: 0 48px;
+    .page-title .underline-squiggle svg {
+      position: absolute;
+      bottom: -8px; left: -4px;
+      width: calc(100% + 8px);
+      pointer-events: none;
+    }
+
+    .page-subtitle {
+      font-family: var(--font-hand);
+      font-size: 21px;
+      color: var(--ink-light);
+      line-height: 1.55;
+      max-width: 640px;
+    }
+
+    /* Count badge */
+    .project-count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      border: 1.5px solid var(--pencil);
+      padding: 6px 14px;
+      transform: rotate(-0.5deg);
+    }
+
+    .project-count-badge strong {
+      font-size: 18px;
+      color: var(--ink);
+      font-family: var(--font-hand);
+    }
+
+    /* Background hero doodles */
+    .hero-doodles {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 40%;
+      pointer-events: none;
+      opacity: 0.12;
+    }
+
+    /* ===== WASHI TAPE BANNER ===== */
+    .washi-banner {
+      position: relative;
+      margin-left: 32px;
+      margin-right: 0;
+      padding: 10px 64px;
+      background: rgba(44,95,138,0.12);
+      border-top: 1.5px solid rgba(44,95,138,0.25);
+      border-bottom: 1.5px solid rgba(44,95,138,0.25);
+      font-family: var(--font-scrawl);
+      font-size: 18px;
+      color: var(--accent-blue);
+      letter-spacing: 0.08em;
+      overflow: hidden;
+      white-space: nowrap;
+      transform: rotate(-0.3deg);
+    }
+
+    .washi-banner-inner {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ===== PROJECTS WRAP ===== */
+    .projects-wrap {
+      padding: 52px 48px 90px;
       position: relative;
       z-index: 1;
     }
 
-    .filter-tabs {
+    /* ===== FILTER BAR ===== */
+    .filter-bar {
       display: flex;
-      gap: 12px;
+      align-items: center;
+      gap: 10px;
       flex-wrap: wrap;
-      margin: 28px auto 48px;
+      margin-bottom: 52px;
+      position: relative;
+    }
+
+    .filter-label {
+      font-family: var(--font-scrawl);
+      font-size: 17px;
+      color: var(--ink-faint);
+      margin-right: 4px;
+      transform: rotate(-2deg);
+      display: inline-block;
     }
 
     .filter-tab {
       font-family: var(--font-hand);
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
-      padding: 8px 18px;
+      padding: 7px 16px;
       background: transparent;
       border: 2px solid var(--ink);
       color: var(--ink);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.18s ease;
       transform: rotate(-0.4deg);
+      position: relative;
     }
 
-    .filter-tab:nth-child(even) {
-      transform: rotate(0.5deg);
+    .filter-tab:nth-child(even) { transform: rotate(0.5deg); }
+    .filter-tab:nth-child(3) { transform: rotate(-0.3deg); }
+
+    .filter-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; right: -3px;
+      width: 100%; height: 100%;
+      border: 1.5px solid var(--ink);
+      opacity: 0;
+      transition: opacity 0.18s;
     }
+
+    .filter-tab:hover::after,
+    .filter-tab.active::after { opacity: 0.2; }
 
     .filter-tab:hover,
     .filter-tab.active {
       background: var(--ink);
       color: var(--paper);
-      transform: translate(-2px, -2px);
-      box-shadow: 3px 3px 0 rgba(26,22,18,0.18);
+      transform: translate(-2px, -2px) rotate(0deg);
     }
 
-    .projects-section {
-      padding: 0 48px 90px;
-      position: relative;
-    }
-
+    /* ===== GRID LAYOUT ===== */
+    /* 
+      Layout: 
+      Featured card spans full width (row 1)
+      Then 2-col grid for the rest
+    */
     .projects-grid {
-      max-width: 1400px;
-      margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 28px;
-      position: relative;
-      z-index: 1;
     }
 
+    /* ===== PROJECT CARD ===== */
     .project-card {
       background: var(--paper);
       border: 2px solid var(--ink);
@@ -306,46 +382,62 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease;
+      transition: transform 0.25s ease;
+      text-decoration: none;
+      color: var(--ink);
     }
 
+    /* Shadow offset */
+    .project-card::before {
+      content: '';
+      position: absolute;
+      bottom: -5px; right: -5px;
+      width: 100%; height: 100%;
+      border: 2px solid var(--ink);
+      opacity: 0.18;
+      z-index: 0;
+      transition: all 0.25s;
+      pointer-events: none;
+    }
+
+    /* Corner fold */
     .project-card::after {
       content: '';
       position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 28px;
-      height: 28px;
+      bottom: 0; right: 0;
+      width: 28px; height: 28px;
       background: linear-gradient(225deg, var(--paper-worn) 50%, transparent 50%);
       border-top: 1px solid var(--pencil);
       border-left: 1px solid var(--pencil);
+      z-index: 5;
       pointer-events: none;
     }
 
     .project-card:hover {
       transform: translate(-3px, -3px);
-      box-shadow: 6px 6px 0 rgba(26,22,18,0.18);
     }
 
-    .project-card-link {
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+    .project-card:hover::before {
+      bottom: -8px; right: -8px;
+      opacity: 0.3;
     }
 
-    .project-image {
-      width: 100%;
-      height: 280px;
-      background: var(--paper-dark) !important;
-      border-bottom: 2px solid var(--ink);
+    /* Featured card spans full width */
+    .project-card.featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    /* ===== CARD IMAGE ===== */
+    .card-image {
       position: relative;
       overflow: hidden;
+      border-bottom: 2px solid var(--ink);
+      background: var(--paper-dark);
     }
 
-    .project-image::before {
+    .card-image::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -356,48 +448,64 @@
         rgba(180,170,155,0.15) 23px,
         rgba(180,170,155,0.15) 24px
       );
-      z-index: 1;
+      z-index: 2;
       pointer-events: none;
     }
 
-    .project-image img,
-    .project-image video {
+    .card-image img,
+    .card-image video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      filter: saturate(0.9) contrast(0.98);
+      filter: saturate(0.92) contrast(0.97);
       transition: transform 0.35s ease;
     }
 
-    .project-card:hover .project-image img,
-    .project-card:hover .project-image video {
+    .project-card:hover .card-image img,
+    .project-card:hover .card-image video {
       transform: scale(1.04);
     }
 
-    .project-content {
-      padding: 24px;
+    .card-image-height-regular { min-height: 240px; }
+    .card-image-height-featured { min-height: 340px; }
+
+    /* Featured: image sits beside content, no bottom border, right border instead */
+    .project-card.featured .card-image {
+      border-bottom: none;
+      border-right: 2px solid var(--ink);
+      min-height: 340px;
+    }
+
+    /* ===== CARD BODY ===== */
+    .card-body {
+      padding: 26px 26px 32px;
       display: flex;
       flex-direction: column;
       flex: 1;
       position: relative;
+      z-index: 1;
     }
 
-    .project-content::before {
+    /* Tape strip */
+    .card-body::before {
       content: '';
       position: absolute;
-      top: -11px;
-      left: 24px;
-      width: 54px;
-      height: 22px;
-      background: rgba(232,184,75,0.35);
+      top: -11px; left: 28px;
+      width: 52px; height: 22px;
+      background: rgba(232,184,75,0.38);
       border-top: 1px solid rgba(232,184,75,0.5);
       border-bottom: 1px solid rgba(232,184,75,0.5);
       transform: rotate(-1.5deg);
       pointer-events: none;
     }
 
-    .project-category {
+    .project-card.featured .card-body {
+      justify-content: center;
+      padding: 40px 36px;
+    }
+
+    .card-category {
       font-family: var(--font-mono);
       font-size: 10px;
       letter-spacing: 0.08em;
@@ -406,42 +514,178 @@
       margin-bottom: 10px;
     }
 
-    .project-title {
+    .card-title {
       font-family: var(--font-hand);
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
       line-height: 1.15;
-      color: var(--ink);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
-    .project-description {
+    .project-card.featured .card-title {
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+
+    .card-desc {
       font-family: var(--font-hand);
-      font-size: 18px;
+      font-size: 17px;
       color: var(--ink-light);
-      line-height: 1.5;
+      line-height: 1.55;
       flex: 1;
     }
 
-    .project-link {
-      margin-top: 18px;
-      font-family: var(--font-hand);
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--accent-red);
-      border-bottom: 1.5px solid var(--pencil);
-      align-self: flex-start;
-      transition: all 0.2s ease;
+    .project-card.featured .card-desc {
+      font-size: 19px;
     }
 
-    .project-card:hover .project-link {
+    /* Metric badge */
+    .card-metric {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--accent-green);
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 14px;
+    }
+
+    .card-metric::before { content: "↑"; font-size: 14px; }
+
+    /* Tags row */
+    .card-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1.5px solid var(--ink);
+      opacity: 0.6;
+    }
+
+    /* Arrow CTA */
+    .card-arrow {
+      display: inline-block;
+      margin-top: 18px;
+      font-family: var(--font-hand);
+      font-size: 17px;
+      color: var(--ink-faint);
+      border-bottom: 1.5px solid var(--pencil);
+      transition: all 0.2s;
+      align-self: flex-start;
+    }
+
+    .project-card:hover .card-arrow {
       color: var(--ink);
       border-color: var(--ink);
     }
 
+    /* Year stamp */
+    .year-stamp {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+      border: 1px solid var(--pencil-light);
+      padding: 3px 7px;
+      transform: rotate(2deg);
+      z-index: 6;
+      background: var(--paper);
+    }
+
+    /* Annotation scrawl on featured card */
+    .scrawl-note {
+      position: absolute;
+      font-family: var(--font-scrawl);
+      font-size: 15px;
+      color: var(--accent-red);
+      pointer-events: none;
+      line-height: 1.3;
+      transform: rotate(-5deg);
+      z-index: 6;
+    }
+
+    /* ===== SECTION DIVIDER ===== */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 60px 0 40px;
+    }
+
+    .section-divider-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+    }
+
+    .section-divider-title {
+      font-family: var(--font-hand);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .section-divider-line {
+      flex: 1;
+      height: 1.5px;
+      background: var(--ink);
+      opacity: 0.18;
+    }
+
+    .section-divider-note {
+      font-family: var(--font-scrawl);
+      font-size: 16px;
+      color: var(--accent-red);
+      transform: rotate(2deg);
+      display: inline-block;
+      opacity: 0.8;
+    }
+
+    /* ===== SCROLL REVEAL ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== PENCIL CURSOR TRAIL ===== */
+    .cursor-dot {
+      position: fixed;
+      width: 4px; height: 4px;
+      background: rgba(26,22,18,0.25);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+
+    /* ===== FOOTER ===== */
     footer {
       border-top: 2px solid var(--ink);
-      padding: 22px 48px;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: var(--paper);
       position: relative;
       z-index: 1;
@@ -453,30 +697,53 @@
       letter-spacing: 0.06em;
       color: var(--ink-faint);
       text-transform: uppercase;
-      text-align: center;
+    }
+
+    /* Coffee ring decorations */
+    footer::after {
+      content: '';
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(160,130,90,0.2);
+      pointer-events: none;
+    }
+
+    /* ===== HIDDEN (filtered out) ===== */
+    .project-card.hidden {
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      visibility: hidden;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .project-card.featured {
+        grid-template-columns: 1fr;
+        grid-column: span 1;
+      }
+
+      .project-card.featured .card-image {
+        border-right: none;
+        border-bottom: 2px solid var(--ink);
+      }
     }
 
     @media (max-width: 768px) {
-      .spiral-binding {
-        display: none;
-      }
+      .spiral-binding { display: none; }
 
-      nav,
-      .hero,
-      .projects-container,
-      .projects-section,
-      footer {
-        margin-left: 0;
-      }
+      nav, .hero, .projects-wrap, footer,
+      .washi-banner { margin-left: 0; }
 
-      nav {
-        padding: 14px 24px;
-      }
+      nav { padding: 14px 24px; }
 
       .nav-links {
         position: fixed;
-        top: 62px;
-        left: -100%;
+        top: 62px; left: -100%;
         width: 100%;
         background: var(--paper);
         border-bottom: 2px solid var(--ink);
@@ -484,345 +751,437 @@
         padding: 24px;
         gap: 18px;
         transition: left 0.3s ease;
+        z-index: 99;
       }
 
-      .nav-links.active {
-        left: 0;
-      }
+      .nav-links.open { left: 0; }
 
       .hamburger {
         display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 4px;
       }
 
-      .hero {
-        padding: 64px 24px 32px;
+      .hamburger span {
+        display: block;
+        width: 25px; height: 2px;
+        background: var(--ink);
+        transition: all 0.2s;
       }
 
-      .projects-container {
-        padding: 0 24px;
-      }
+      .hero { padding: 56px 24px 36px; }
 
-      .projects-section {
-        padding: 0 24px 70px;
-      }
+      .projects-wrap { padding: 36px 24px 70px; }
 
       .projects-grid {
         grid-template-columns: 1fr;
       }
 
-      .project-image {
-        height: 240px;
+      .project-card.featured {
+        grid-column: span 1;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
       }
     }
   </style>
 </head>
 
 <body>
+  <div id="cursorTrail"></div>
+
+  <!-- Notebook spiral -->
   <div class="spiral-binding" aria-hidden="true"></div>
 
+  <!-- NAV -->
   <nav>
-    <div class="nav-container">
-      <a href="./index.html" class="logo">Inayat</a>
+    <a href="./index.html" class="nav-logo">Inayat</a>
 
-      <ul class="nav-links">
-        <li><a href="./index.html">Home</a></li>
-        <li><a href="./index.html#about">About</a></li>
-        <li><a href="./Projects.html" class="active">More Projects</a></li>
-        <li><a href="./Playground.html">Playground</a></li>
-        <li><a href="./assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
-        <li><a href="./index.html#contact">Contact</a></li>
-      </ul>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./index.html#about">About</a></li>
+      <li><a href="./Projects.html" class="active">More Projects</a></li>
+      <li><a href="./Playground.html">Playground</a></li>
+      <li><a href="./assets/Resume_InayatDesign.pdf" target="_blank">Résumé</a></li>
+      <li><a href="./index.html#contact">Contact</a></li>
+    </ul>
 
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
+  <!-- HERO -->
   <section class="hero">
-    <div class="hero-container">
+    <!-- Background architectural doodles -->
+    <svg class="hero-doodles" viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="60" y="80" width="80" height="140" stroke="#1a1612" stroke-width="1.2" fill="none"/>
+      <rect x="145" y="40" width="100" height="180" stroke="#1a1612" stroke-width="1.2" fill="none"/>
+      <rect x="250" y="60" width="70" height="160" stroke="#1a1612" stroke-width="1.2" fill="none"/>
+      <rect x="325" y="100" width="60" height="120" stroke="#1a1612" stroke-width="1.2" fill="none"/>
+      <rect x="390" y="70" width="80" height="150" stroke="#1a1612" stroke-width="1.2" fill="none"/>
+      <rect x="72" y="100" width="14" height="18" stroke="#1a1612" stroke-width="0.6" fill="none"/>
+      <rect x="92" y="100" width="14" height="18" stroke="#1a1612" stroke-width="0.6" fill="none"/>
+      <rect x="160" y="62" width="16" height="20" stroke="#1a1612" stroke-width="0.6" fill="none"/>
+      <rect x="185" y="62" width="16" height="20" stroke="#1a1612" stroke-width="0.6" fill="none"/>
+      <rect x="160" y="90" width="16" height="20" stroke="#1a1612" stroke-width="0.6" fill="none"/>
+      <rect x="185" y="90" width="16" height="20" stroke="#1a1612" stroke-width="0.6" fill="none"/>
+      <line x1="60" y1="220" x2="475" y2="220" stroke="#1a1612" stroke-width="1.5"/>
+      <line x1="40" y1="300" x2="200" y2="300" stroke="#1a1612" stroke-width="0.4" opacity="0.4"/>
+      <line x1="40" y1="340" x2="200" y2="340" stroke="#1a1612" stroke-width="0.4" opacity="0.4"/>
+      <line x1="40" y1="380" x2="200" y2="380" stroke="#1a1612" stroke-width="0.4" opacity="0.4"/>
+      <circle cx="440" cy="360" r="50" stroke="#1a1612" stroke-width="0.8" fill="none"/>
+      <circle cx="440" cy="360" r="4" fill="#1a1612"/>
+      <line x1="440" y1="310" x2="440" y2="410" stroke="#1a1612" stroke-width="0.6"/>
+      <line x1="390" y1="360" x2="490" y2="360" stroke="#1a1612" stroke-width="0.6"/>
+      <polygon points="440,306 437,316 440,313 443,316" fill="#1a1612"/>
+      <text x="440" y="302" font-family="Space Mono, monospace" font-size="8" fill="#1a1612" text-anchor="middle">N</text>
+      <text x="80" y="268" font-family="Reenie Beanie, cursive" font-size="16" fill="#c0392b" transform="rotate(-3,80,268)">still sketching ✏️</text>
+    </svg>
+
+    <div class="hero-inner">
       <div class="hero-tag">Selected design archive</div>
-      <h1 class="page-title">My Projects</h1>
+      <h1 class="page-title">
+        My <span class="underline-squiggle">Projects
+          <svg viewBox="0 0 240 14" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2,8 C24,3 54,14 84,7 C114,2 144,13 174,6 C198,2 222,10 238,7"
+              stroke="#c0392b" stroke-width="3" fill="none" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </h1>
       <p class="page-subtitle">
-        A collection of design and development work spanning UX/UI design,
-        web development, mobile interfaces, interactive systems, and spatial experiments.
+        A collection of work spanning UX/UI design, frontend development, mobile interfaces, and spatial experiments — all research-backed and built to ship.
       </p>
+      <div class="project-count-badge">
+        <strong id="visibleCount">8</strong> projects · across 4 disciplines
+      </div>
     </div>
   </section>
 
-  <div class="projects-container">
-    <div class="filter-tabs">
-      <button class="filter-tab active" data-filter="all">All Projects</button>
-      <button class="filter-tab" data-filter="internship">Internship</button>
-      <button class="filter-tab" data-filter="ui-ux">UI/UX Design</button>
-      <button class="filter-tab" data-filter="web">Web Development</button>
-      <button class="filter-tab" data-filter="mobile">Mobile App</button>
-      <button class="filter-tab" data-filter="3d">3D Modelling</button>
-    </div>
+  <!-- WASHI TAPE BANNER -->
+  <div class="washi-banner" aria-hidden="true">
+    <span class="washi-banner-inner">
+      ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
+      ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
+      ✏️ research &nbsp;&nbsp;·&nbsp;&nbsp; sketch &nbsp;&nbsp;·&nbsp;&nbsp; iterate &nbsp;&nbsp;·&nbsp;&nbsp; test &nbsp;&nbsp;·&nbsp;&nbsp; ship &nbsp;&nbsp;·&nbsp;&nbsp; repeat &nbsp;&nbsp;·&nbsp;&nbsp;
+    </span>
   </div>
 
-  <section class="projects-section">
-    <div class="projects-grid">
+  <!-- PROJECTS SECTION -->
+  <div class="projects-wrap">
 
-      <div class="project-card" data-category="internship">
-        <a href="./Projects/Mastercard_Project.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/Mastercard.png" alt="MasterCard SharePoint" />
-          </div>
-          <div class="project-content">
-            <p class="project-category">Internship</p>
-            <h3 class="project-title">WEx SharePoint - MasterCard</h3>
-            <p class="project-description">
-              Contributed to enterprise-level SharePoint solutions, enhancing user experience
-              and functionality for internal collaboration and document management systems.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <span class="filter-label">filter →</span>
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="internship">Internship</button>
+      <button class="filter-tab" data-filter="ui-ux">UI / UX</button>
+      <button class="filter-tab" data-filter="web">Web Dev</button>
+      <button class="filter-tab" data-filter="mobile">Mobile</button>
+      <button class="filter-tab" data-filter="3d">3D / Spatial</button>
+    </div>
 
-      <div class="project-card" data-category="mobile ui-ux">
-        <a href="./Projects/Chemtrails_Project.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/SigninPage.png" alt="Chemtrails" />
-          </div>
-          <div class="project-content">
-            <p class="project-category">Mobile App UX/UI Design</p>
-            <h3 class="project-title">Chemtrails Mobile App</h3>
-            <p class="project-description">
-              A user-centered travel planning and journaling app that reduces planning friction
-              by consolidating discovery, organization, and memory capture into one experience.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+    <!-- Grid -->
+    <div class="projects-grid" id="projectsGrid">
 
-      <div class="project-card" data-category="ui-ux">
-        <a href="./Projects/mastercard-fraud-dashboard.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/Chart 2.png" alt="Fraud Detection Dashboard" />
+      <!-- 1. FEATURED: Mastercard Fraud Dashboard -->
+      <a href="./Projects/mastercard-fraud-dashboard.html"
+         class="project-card featured reveal"
+         data-category="internship ui-ux">
+        <div class="card-image card-image-height-featured">
+          <img src="./Images/Chart 2.png" alt="Fraud Detection Dashboard" />
+          <span class="scrawl-note" style="bottom: 24px; left: 20px;">← AI-driven flags!</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Mastercard</span>
+            <span class="card-tag">Interaction Design</span>
+            <span class="card-tag">2025</span>
           </div>
-          <div class="project-content">
-            <p class="project-category">UX/UI Design</p>
-            <h3 class="project-title">Fraud Detection Dashboard - Case Study</h3>
-            <p class="project-description">
-              Led participatory design research with MasterCard's fraud analyst team to redesign
-              their dashboard, improve visualization, and introduce AI-driven insights.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+          <p class="card-category">Internship · UX/UI Design</p>
+          <h3 class="card-title">Fraud Detection Dashboard</h3>
+          <p class="card-desc">
+            Embedded with a real Mastercard PM on a live initiative. Led user research with fraud analysts, mapped workflows, and co-designed an AI-driven dashboard — zero critical failures across two usability rounds.
+          </p>
+          <div class="card-metric">60% less analysis time</div>
+          <span class="card-arrow">Explore case study →</span>
+        </div>
+        <div class="year-stamp">2025</div>
+      </a>
 
-      <div class="project-card" data-category="mobile ui-ux">
-        <a href="./Projects/Fitness_App.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/Interface.png" alt="Fitness App" />
+      <!-- 2. Mastercard Workplace -->
+      <a href="./Projects/Mastercard_Project.html"
+         class="project-card reveal"
+         data-category="internship ui-ux web">
+        <div class="card-image card-image-height-regular">
+          <img src="./Images/Mastercard.png" alt="Mastercard SharePoint" />
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Enterprise UX</span>
+            <span class="card-tag">SharePoint</span>
           </div>
-          <div class="project-content">
-            <p class="project-category">Mobile App Interface</p>
-            <h3 class="project-title">Fitness Tracking App</h3>
-            <p class="project-description">
-              A fitness tracking app featuring real-time feedback, gamification elements,
-              motivation systems, and community engagement for social support.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+          <p class="card-category">Internship · Enterprise UX</p>
+          <h3 class="card-title">Mastercard Workplace UX</h3>
+          <p class="card-desc">
+            Redesigned internal SharePoint intranet for 15,000+ global employees across Vancouver, Dublin, India, and the US — focused on navigation clarity and information architecture.
+          </p>
+          <div class="card-metric">40% faster navigation</div>
+          <span class="card-arrow">Explore project →</span>
+        </div>
+        <div class="year-stamp">2025</div>
+      </a>
 
-      <div class="project-card" data-category="mobile ui-ux">
-        <a href="./Projects/Pawth_Project.html" class="project-card-link">
-          <div class="project-image">
-            <video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video>
+      <!-- 3. Pawth Pet App -->
+      <a href="./Projects/Pawth_Project.html"
+         class="project-card reveal"
+         data-category="mobile ui-ux">
+        <div class="card-image card-image-height-regular">
+          <video src="./Images/Pawth.mp4" autoplay muted loop playsinline></video>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">UX/UI</span>
+            <span class="card-tag">Frontend</span>
           </div>
-          <div class="project-content">
-            <p class="project-category">UX/UI Design · Frontend</p>
-            <h3 class="project-title">Pawth Pet App</h3>
-            <p class="project-description">
-              A social platform for pet owners to share moments, discover pet-friendly places,
-              and connect with fellow pet lovers.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+          <p class="card-category">Mobile App · UX/UI · Frontend</p>
+          <h3 class="card-title">Pawth Pet App</h3>
+          <p class="card-desc">
+            Social platform for pet owners — share moments, find pet-friendly places, and connect with fellow pet lovers. Designed and built the frontend.
+          </p>
+          <span class="card-arrow">Explore project →</span>
+        </div>
+        <div class="year-stamp">2026</div>
+      </a>
 
-      <div class="project-card" data-category="web ui-ux">
-        <a href="./Projects/SojoyScribbles.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/Sojoy Scribble.png" alt="Sojoy Scribbles" />
+      <!-- 4. Chemtrails Travel App -->
+      <a href="./Projects/Chemtrails_Project.html"
+         class="project-card reveal"
+         data-category="mobile ui-ux">
+        <div class="card-image card-image-height-regular">
+          <img src="./Images/SigninPage.png" alt="Chemtrails Travel App" />
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Travel</span>
+            <span class="card-tag">Mobile UX</span>
           </div>
-          <div class="project-content">
-            <p class="project-category">Web Development</p>
-            <h3 class="project-title">Sojoy Scribbles Website</h3>
-            <p class="project-description">
-              A responsive product website designed for accessibility and easy navigation,
-              helping users explore illustrations and place personalized orders.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+          <p class="card-category">Mobile App · UX/UI Design</p>
+          <h3 class="card-title">Chemtrails Travel App</h3>
+          <p class="card-desc">
+            A user-centered travel planning and journaling app that reduces friction by consolidating discovery, organization, and memory capture into one cohesive experience.
+          </p>
+          <span class="card-arrow">Explore project →</span>
+        </div>
+        <div class="year-stamp">2024</div>
+      </a>
 
-      <div class="project-card" data-category="ui-ux web">
-        <a href="./Projects/Discoverisola_project.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/IsolaDesign.png" alt="IsolaDesign" />
+      <!-- 5. Fitness App -->
+      <a href="./Projects/Fitness_App.html"
+         class="project-card reveal"
+         data-category="mobile ui-ux">
+        <div class="card-image card-image-height-regular">
+          <img src="./Images/Interface.png" alt="Fitness App" />
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Interface Design</span>
+            <span class="card-tag">Mobile</span>
           </div>
-          <div class="project-content">
-            <p class="project-category">Interaction Design</p>
-            <h3 class="project-title">Discover Isola</h3>
-            <p class="project-description">
-              A collaborative website and poster project helping locals and tourists explore
-              restaurants, galleries, and exhibitions through an interactive guide map.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+          <p class="card-category">Mobile App · Interface Design</p>
+          <h3 class="card-title">Fitness Tracking App</h3>
+          <p class="card-desc">
+            Micro-workouts for busy parents — flexible, realistic, and tested. Real-time feedback, gamification, and community support built in.
+          </p>
+          <div class="card-metric">40% faster first workout</div>
+          <span class="card-arrow">Explore project →</span>
+        </div>
+        <div class="year-stamp">2024</div>
+      </a>
 
-      <div class="project-card" data-category="ui-ux">
-        <a href="./Projects/Zine_Project.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/poster_pub.png" alt="Language in the Landscape" />
+      <!-- 6. Discover Isola -->
+      <a href="./Projects/Discoverisola_project.html"
+         class="project-card reveal"
+         data-category="ui-ux web">
+        <div class="card-image card-image-height-regular">
+          <img src="./Images/IsolaDesign.png" alt="Discover Isola Milan" />
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Interaction Design</span>
+            <span class="card-tag">Milan</span>
           </div>
-          <div class="project-content">
-            <p class="project-category">Publication Design · Indigenous Languages</p>
-            <h3 class="project-title">Language in the Landscape</h3>
-            <p class="project-description">
-              Led a team of three to design a pocket-sized zine helping newcomers in Vancouver
-              engage with Indigenous languages and unceded territories.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+          <p class="card-category">Interaction Design · Web</p>
+          <h3 class="card-title">Exhibition Locator — Milan</h3>
+          <p class="card-desc">
+            Making Milan's Isola Design District accessible — a collaborative website and interactive guide map. 9 of 10 users navigated without assistance in testing.
+          </p>
+          <div class="card-metric">90% task success rate</div>
+          <span class="card-arrow">Explore project →</span>
+        </div>
+        <div class="year-stamp">2024</div>
+      </a>
 
-      <div class="project-card" data-category="ui-ux">
-        <a href="./Projects/2D_PandaGame.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/Panda.png" alt="Panda game" />
+      <!-- 7. Sojoy Scribbles -->
+      <a href="./Projects/SojoyScribbles.html"
+         class="project-card reveal"
+         data-category="web ui-ux">
+        <div class="card-image card-image-height-regular">
+          <img src="./Images/Sojoy Scribble.png" alt="Sojoy Scribbles" />
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Web Dev</span>
+            <span class="card-tag">Responsive</span>
           </div>
-          <div class="project-content">
-            <p class="project-category">Game Design</p>
-            <h3 class="project-title">Panda Adventure Game</h3>
-            <p class="project-description">
-              A 2D tile-based game where players guide Poh the panda through environments,
-              collect bamboo, defeat enemies, and unlock pathways.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+          <p class="card-category">Web Development · UI Design</p>
+          <h3 class="card-title">Sojoy Scribbles Website</h3>
+          <p class="card-desc">
+            A responsive product website designed for accessibility and easy navigation, helping users explore illustrations and place personalized orders.
+          </p>
+          <span class="card-arrow">Explore project →</span>
+        </div>
+        <div class="year-stamp">2024</div>
+      </a>
 
-      <div class="project-card" data-category="3d">
-        <a href="./Projects/Sculpturepavilion.html" class="project-card-link">
-          <div class="project-image">
-            <img src="./Images/Sculpture.png" alt="Sculpture Pavilion" />
+      <!-- 8. Sculpture Pavilion -->
+      <a href="./Projects/Sculpturepavilion.html"
+         class="project-card reveal"
+         data-category="3d">
+        <div class="card-image card-image-height-regular">
+          <img src="./Images/Sculpture.png" alt="Sculpture Pavilion" />
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">Spatial Design</span>
+            <span class="card-tag">3D Modelling</span>
           </div>
-          <div class="project-content">
-            <p class="project-category">Spatial Design · 3D Modelling</p>
-            <h3 class="project-title">Sculpture Pavilion</h3>
-            <p class="project-description">
-              A two-story design featuring layered panels, dynamic pathways, natural light,
-              and an immersive accessible space for art and events.
-            </p>
-            <span class="project-link">View Details →</span>
-          </div>
-        </a>
-      </div>
+          <p class="card-category">Spatial Design · 3D Modelling</p>
+          <h3 class="card-title">Sculpture Pavilion</h3>
+          <p class="card-desc">
+            A two-storey pavilion featuring layered panels, dynamic pathways, natural light choreography, and an immersive accessible space for art and events.
+          </p>
+          <span class="card-arrow">Explore project →</span>
+        </div>
+        <div class="year-stamp">2023</div>
+      </a>
 
     </div>
-  </section>
+    <!-- /projects-grid -->
 
+  </div>
+  <!-- /projects-wrap -->
+
+  <!-- FOOTER -->
   <footer>
-    <p>&copy; 2025 Inayat. All rights reserved.</p>
+    <p>© 2025 Inayat Gulati</p>
+    <p>Vancouver, BC</p>
+    <p>UX/UI · Frontend · Architecture</p>
   </footer>
 
   <script>
-    const spiral = document.querySelector(".spiral-binding");
+    // ===== SPIRAL HOLES =====
+    const spiral = document.querySelector('.spiral-binding');
     const holeCount = Math.floor(window.innerHeight / 44) + 2;
-
     for (let i = 0; i < holeCount; i++) {
-      const hole = document.createElement("div");
-      hole.className = "spiral-hole";
+      const hole = document.createElement('div');
+      hole.className = 'spiral-hole';
       spiral.appendChild(hole);
     }
 
-    const hamburger = document.querySelector(".hamburger");
-    const navLinks = document.querySelector(".nav-links");
+    // ===== HAMBURGER =====
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-    hamburger.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
+    // ===== PENCIL CURSOR TRAIL =====
+    const trailContainer = document.getElementById('cursorTrail');
+    let trails = [];
+    document.addEventListener('mousemove', (e) => {
+      if (Math.random() > 0.4) return;
+      const dot = document.createElement('div');
+      dot.className = 'cursor-dot';
+      dot.style.left = e.clientX + (Math.random() - 0.5) * 6 + 'px';
+      dot.style.top  = e.clientY + (Math.random() - 0.5) * 6 + 'px';
+      dot.style.width  = Math.random() * 3 + 1 + 'px';
+      dot.style.height = Math.random() * 3 + 1 + 'px';
+      dot.style.opacity = (Math.random() * 0.3 + 0.1).toString();
+      trailContainer.appendChild(dot);
+      trails.push(dot);
+      setTimeout(() => {
+        dot.style.opacity = '0';
+        setTimeout(() => { if (dot.parentNode) dot.parentNode.removeChild(dot); }, 400);
+      }, 300);
+      if (trails.length > 40) {
+        const old = trails.shift();
+        if (old.parentNode) old.parentNode.removeChild(old);
+      }
     });
 
-    document.querySelectorAll(".nav-links a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("active");
+    // ===== SCROLL REVEAL =====
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
       });
-    });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
 
-    const filterTabs = document.querySelectorAll(".filter-tab");
-    const projectCards = document.querySelectorAll(".project-card");
+    // ===== FILTER =====
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const projectCards = document.querySelectorAll('.project-card');
+    const countEl = document.getElementById('visibleCount');
+
+    // Featured card should only span 2 cols when visible
+    const featuredCard = document.querySelector('.project-card.featured');
+
+    function updateCount() {
+      const visible = document.querySelectorAll('.project-card:not([style*="display: none"])').length;
+      if (countEl) countEl.textContent = visible;
+    }
 
     filterTabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        filterTabs.forEach((t) => t.classList.remove("active"));
-        tab.classList.add("active");
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
 
-        const filter = tab.getAttribute("data-filter");
-
-        projectCards.forEach((card) => {
-          const categories = card.getAttribute("data-category").split(" ");
-
-          if (filter === "all" || categories.includes(filter)) {
-            card.style.display = "flex";
-            setTimeout(() => {
-              card.style.opacity = "1";
-              card.style.transform = "translate(0, 0)";
-            }, 10);
-          } else {
-            card.style.opacity = "0";
-            card.style.transform = "translateY(20px)";
-            setTimeout(() => {
-              card.style.display = "none";
-            }, 250);
-          }
-        });
-      });
-    });
-  </script>
-const filterTabs = document.querySelectorAll(".filter-tab");
-    const projectCards = document.querySelectorAll(".project-card");
-
-    filterTabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        filterTabs.forEach((t) => t.classList.remove("active"));
-        tab.classList.add("active");
-
-        const filter = tab.getAttribute("data-filter");
+        const filter = tab.getAttribute('data-filter');
 
         projectCards.forEach((card) => {
-          const categories = card.getAttribute("data-category").split(" ");
+          const cats = card.getAttribute('data-category').split(' ');
+          const show = filter === 'all' || cats.includes(filter);
 
-          if (filter === "all" || categories.includes(filter)) {
-            card.style.display = "flex";
+          if (show) {
+            card.style.display = '';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(16px)';
+            // Re-apply featured span only on "all"
+            if (card.classList.contains('featured')) {
+              card.style.gridColumn = (filter === 'all') ? 'span 2' : 'span 1';
+            }
             setTimeout(() => {
-              card.style.opacity = "1";
-              card.style.transform = "translate(0, 0)";
-            }, 10);
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, 30);
           } else {
-            card.style.opacity = "0";
-            card.style.transform = "translateY(20px)";
-            setTimeout(() => {
-              card.style.display = "none";
-            }, 250);
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(16px)';
+            setTimeout(() => { card.style.display = 'none'; }, 250);
           }
         });
+
+        setTimeout(updateCount, 300);
       });
     });
   </script>
